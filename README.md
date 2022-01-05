@@ -27,3 +27,7 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+https://github.com/nklayman/vue-cli-plugin-electron-builder
+
+https://www.electronjs.org/docs/latest/api/ipc-main

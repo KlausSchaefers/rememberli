@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <textarea v-model="content.value"/>
+    <button @click="save">Save</button>
   </div>
   <router-view/>
 </template>
@@ -15,16 +15,34 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
+</style>
 
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+//import { ipcRenderer } from 'electron'
+
+export default {
+  name: 'App',
+  data: function () {
+      return {
+           content: {
+             value : 'hello'
+           }
+		
     }
+  },
+  methods: {
+    save () {
+      console.debug('save()', this.content)
+      let ipcRenderer = window.ipcRenderer
+      ipcRenderer.send('save', JSON.stringify(this.content, null, 2))
+    }
+  },
+  mounted () {
+    window.ipcRenderer.receive('save:reply', (e) => {
+      console.debug('mounted() save:reply', e)
+    })
   }
 }
-</style>
+</script>
+
