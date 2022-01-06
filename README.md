@@ -31,3 +31,14 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 https://github.com/nklayman/vue-cli-plugin-electron-builder
 
 https://www.electronjs.org/docs/latest/api/ipc-main
+
+
+### Links
+
+https://github.com/prosemirror
+https://github.com/outline/outline
+https://www.mmap.it/
+https://github.com/ianstormtaylor/slate
+https://github.com/ianstormtaylor/slate/blob/main/site/examples/check-lists.tsx
+https://draftjs.org/
+https://github.com/Laverna/laverna

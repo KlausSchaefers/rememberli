@@ -1,0 +1,10 @@
+@import './ds.scss';
+
+.rmli-editor {
+    padding: $spacing-l;
+    border: 1px solid red;
+
+    textarea{
+        border:0px;
+    }
+}
