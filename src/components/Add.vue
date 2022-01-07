@@ -1,17 +1,15 @@
 
 <template>
   <div :class="['rmli-note rmli-add', {'rmli-focus': hasFocus}]" @click="$emit('click')">
-      <textarea
-        v-model="value" 
-        @keydown="onKeyDown" 
-        @keyup="onKeyUp" 
-        row=1
-        @blur="onBlur" 
-        @change="onChange"
-        @focus="hasFocus = true"
+      <div 
+        :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
+        contenteditable="true" 
         ref="input"
-        :placeholder="placeholder"
-    />
+        @click="onClick"
+        @input="update"
+        @keyup="onKeyUp"
+        @focus="hasFocus = true" 
+        @blur="onBlur"/>
   </div>
 </template>
 
@@ -22,6 +20,7 @@
 <script>
 
 import Note from './Note.vue'
+import Logger from '../util/Logger'
 
 export default {
   name: 'Add',
@@ -30,28 +29,40 @@ export default {
   props: ['placeholder'],
   data: function () {
     return {
-        hasFocus: false,
-        value: ''
     }
   },
   components: {
   },
+  computed: {
+      hasPlaceHolder () {
+          return  this.value === this.$t('add.start')
+      }
+  },
   methods: {
+    onClick () {
+        if (this.getValue() === this.$t('add.start')) {
+            this.setValue('')
+        }
+    },
     onChange (e) {
         this.$emit('change', e.target.value)
     },
-    onBlur (e) {
-        if (this.value) {
-            this.$emit('add', e.target.value)
-        }
-        this.value =''
+    onBlur () {
+        Logger.log(-1, 'Add.onBlur()', this.getValue())
+        let value = this.getValue()
         this.hasFocus = false
-        const input = this.$refs.input
-        // input.style.height = input.scrollHeight - 4 + 'px';
-        input.style.height = "auto"
+        if (value) {
+            this.$emit('add', value)
+        }
+        this.reset()
+    },
+    reset () {
+        // make somehow invisible and then popin again...
+        this.setValue(this.$t('add.start'))
     }
   },
   mounted () {
+      this.reset()
   }
 }
 </script>

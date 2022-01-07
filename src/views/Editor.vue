@@ -12,7 +12,7 @@
 
       <div v-for="(element) in filteredElements" :key="element.id">
         <div class="rmli-element">
-          <component :is="element.type" :element="element" @change="onElementChange(element, $event)" ref="elements"/>
+          <component :is="element.type" :element="element" @change="onElementChange(element, $event)" @join="onJoinElement(element)" ref="elements"/>
         </div>
 
          <div class="rmli-element rmli-element-add-behind" v-if="hasAddBehind">
@@ -43,21 +43,21 @@ export default {
   name: 'Editor',
   data: function () {
       return {
-        isDebug: false,
+        isDebug: true,
         hasAddBehind: false,
         query: '',
         isDirty: false,
         file: {
           url: '',
           content: {
-            created: new Date().getUTCDate(),
-            lastUpdate: new Date().getUTCDate(),
+            created: this.getTimestamp(),
+            lastUpdate: this.getTimestamp(),
             name: 'My File.json',
             elements: [
               {
                 id: new Date().getTime(),
-                created: new Date().getUTCDate(),
-                lastUpdate: new Date().getUTCDate(),
+                created: this.getTimestamp(),
+                lastUpdate: this.getTimestamp(),
                 type: 'Note',
                 value: 'Hello'
               }
@@ -83,13 +83,8 @@ export default {
     },
     addToEnd (value) {
       Logger.log(-1, 'Editor.addToEnd()', value)
-      this.file.content.elements.push({
-        id: new Date().getTime(),
-        created: new Date().getUTCDate(),
-        lastUpdate: new Date().getUTCDate(),
-        type: 'Note',
-        value: value
-      })
+      let note = this.createNote(value)
+      this.file.content.elements.push(note)
     },
     addAfter (element, value) {
       Logger.log(-1, 'Editor.addAfter()', element, value)
@@ -103,24 +98,60 @@ export default {
     createNote (value) {
       return {
         id: new Date().getTime(),
-        created: new Date().getUTCDate(),
-        lastUpdate: new Date().getUTCDate(),
+        created: this.getTimestamp(),
+        lastUpdate: this.getTimestamp(),
         elements:[],
         type: 'Note',
         value: value
       }
     },
+    getTimestamp () {
+      return new Date().getTime()
+    },
+    onJoinElement (element) {
+      Logger.log(-1, 'Editor.onJoinElement() > split element', element.id) 
+    },
     onElementChange (element, value) {
+      /**
+       * Here we do some evil parsing
+       * 
+       * 1) If value === '', we delete the node
+       * 
+       * 2) If we have '---' inside we split
+       * 
+       * 3) Otherwise we set the value
+       */
       if (value) {
-        Logger.log(-1, 'Editor.onElementChange() > update element', element.id, value)
-        element.value = value
+     
         element.lastUpdate = new Date().getUTCDate()
+        let parts = value.split('---')
+
+        if (parts.length > 1) {
+
+          Logger.log(-1, 'Editor.onElementChange() > split element', element.id, parts) 
+          let index = this.file.content.elements.findIndex(e => e.id === element.id)
+          element.value = parts[0]
+          for (let i = 1; i < parts.length; i++) {
+            let part = parts[i].trim()
+            
+            let note = this.createNote(part)
+            this.file.content.elements.splice(index + i, 0, note); 
+          }
+
+        } else {
+
+          Logger.log(-1, 'Editor.onElementChange() > update element', element.id, value)
+          element.value = value
+
+        }
       } else {
+
         Logger.log(1, 'Editor.onElementChange() > Delete element', element.id, value)
         let index = this.file.content.elements.findIndex(e => e.id === element.id)
         if (index > -1) {
           this.file.content.elements.splice(index, 1)
         }
+
       }
       this.onChange()
     },
@@ -155,6 +186,13 @@ export default {
             lastUpdate: new Date().getUTCDate(),
             name: 'New File',
             elements: [
+              {
+                id: new Date().getTime(),
+                created: new Date().getUTCDate(),
+                lastUpdate: new Date().getUTCDate(),
+                type: 'Note',
+                value: 'Hello\n world.\n\nPapa was here'
+              }
             ]
           }
       }

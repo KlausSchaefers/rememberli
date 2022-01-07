@@ -3,6 +3,9 @@ $primary-color-hover:rgb(62, 164, 223);
 
 $color1: #2c3e50;
 $color1-hover: $primary-color;
+$color1-placeholder:  #2c3e5050;
+
+$color-hint: #2c3e5050;
 
 $button-background:$primary-color;
 $button-background-hover: $primary-color-hover;
@@ -25,6 +28,7 @@ $font-size-l: 24px;
 $font-size-m: 22px;
 $font-size-default: 18px;
 $font-size-s: 16px;
+$font-size-xs: 12px;
 
 $line-height: 1.5;
 

@@ -3,10 +3,18 @@
 .rmli-note{
    
     margin: 0px;
-    padding: 0px;
+    padding: $spacing-m 0px;
+    padding-top: 0px;
     border-top: 1px solid rgba(0,0,0, 0.05);
-
     border-left: 3px solid $border-color-transparent;
+
+    .rmli-note-status {
+        height: $spacing-m;
+        font-size: $font-size-xs;
+        text-align: right;
+        color: $color-hint;
+    }
+
 
     &:hover{
         border-left: 3px solid $border-color-hover;
@@ -16,10 +24,8 @@
         border-left: 3px solid $border-color-focus;
     }
 
-    textarea{
+    textarea, .rmli-editable{
         border: none;
-        background: rgba(0,0,0, 0.05);
-  
         line-height: $line-height;
         font-weight: $font-weight;
         width: 100%;
@@ -37,5 +43,9 @@
         &:focus {
             outline: none;
         }
+    }
+
+    .rmli-editable-placeholder {
+        color: $color1-placeholder;
     }
 }
