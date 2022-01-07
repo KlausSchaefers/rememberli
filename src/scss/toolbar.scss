@@ -1,0 +1,38 @@
+@import './ds.scss';
+
+.rmli-toolbar {
+    display: flex;
+    gap: $spacing-m;
+
+    .rmli-tools {
+        display: flex;
+        align-items: center;
+    }
+
+    .rmli-search {
+        display: flex;
+        flex-grow: 1;
+        font-size: $font-size-m;
+        gap: $spacing-m;
+        align-items: center;
+
+        input {
+            border: 1px solid transparent;
+            flex-grow: 1;
+            text-align: right;
+            &:focus {
+                border: 1px solid $border-color-focus;
+                outline:none;
+            }
+        }
+    }
+    
+    i {
+        font-size: $font-size-xl;
+        color: $color1;
+
+        &:hover {
+            color: $color1-hover;
+        }
+    }
+}

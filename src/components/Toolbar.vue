@@ -1,28 +1,41 @@
 <template>
   <div class="rmli-toolbar">
-    <button @click="save">Save <span v-if="isDirty">*</span></button>
-    <button @click="select">Select</button>
+    <div class="rmli-tools">
+        <i class="ri-save-line" @click="onSave"></i> <span v-if="isDirty">*</span>
+        <i class="ri-folder-line" @click="onSelect"></i>
+    </div>
+     <div class="rmli-search">
+        <input v-model="search" :placeholder="$t('toolbar.search')" @keydown="onSearch">
+        <i class="ri-search-line"></i>
+    </div>
   </div>
 </template>
 
+<style lang="scss">
+  @import '../scss/toolbar.scss';
+</style>
 <script>
 
 export default {
   name: 'Toolbar',
-  emits: ['save', 'select'],
+  emits: ['save', 'select', 'search'],
   props: ['file', 'isDirty'],
   data: function () {
     return {
+        search: ''
     }
   },
   components: {
   },
   methods: {
-    save () {
+    onSave () {
         this.$emit('save')
     },
-    select () {
-     this.$emit('select')
+    onSelect () {
+        this.$emit('select')
+    },
+    onSearch () {
+        this.$emit('search', this.search)
     }
   },
   mounted () {

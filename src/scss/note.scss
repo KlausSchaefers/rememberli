@@ -1,0 +1,18 @@
+@import './ds.scss';
+
+.rmli-note{
+   
+    textarea{
+        border: none;
+        border-left: 3px solid transparent;
+
+        width: 100%;
+        box-sizing: border-box;
+        font-family: $font-family;
+
+        &:focus {
+            border-left: 3px solid blue;
+            outline: none;
+        }
+    }
+}

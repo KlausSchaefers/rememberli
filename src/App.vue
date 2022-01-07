@@ -2,21 +2,14 @@
   <router-view/>
 </template>
 
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-
+  @import './scss/app.scss';
+  @import './scss/layout.scss';
 </style>
 
 <script>
-//import { ipcRenderer } from 'electron'
-
+import 'remixicon/fonts/remixicon.css'
 export default {
   name: 'App',
   data: function () {
