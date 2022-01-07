@@ -1,8 +1,35 @@
 @import './ds.scss';
 
-.rmli-add{
-   
+.rmli-add.rmli-note{
+    border-top: 1px solid rgba(0,0,0, 0.00);
+
     textarea{
-        height: 30px;
+        height: 20px;
+        padding: 0px $spacing-m;
+      
+        &:focus {
+            padding: $spacing-m;
+            height: 60px;
+        }
+    }
+}
+
+.rmli-element-add-top {
+    
+    .rmli-add.rmli-note{
+    
+        textarea{
+            padding: $spacing-m;
+            height: 60px;
+            font-weight: $font-weight-l;
+            font-size: $font-size-m;
+
+            &:focus {
+                font-size: $font-size-default;
+                font-weight: $font-weight;
+            }
+        }
+
+      
     }
 }

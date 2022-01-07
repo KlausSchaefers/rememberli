@@ -3,36 +3,49 @@
 .rmli-toolbar {
     display: flex;
     gap: $spacing-m;
+    margin-bottom: $spacing-l;
+    padding: $spacing-s $spacing-m;
 
     .rmli-tools {
         display: flex;
         align-items: center;
+        flex-grow: 1;
+        gap: $spacing-m;
+ 
     }
 
     .rmli-search {
         display: flex;
-        flex-grow: 1;
+      
         font-size: $font-size-m;
+        justify-content: flex-end;
         gap: $spacing-m;
         align-items: center;
+        position: relative;
 
         input {
             border: 1px solid transparent;
-            flex-grow: 1;
-            text-align: right;
+            padding: $spacing-s $spacing-m;
+            padding-right: 24px;
+            font-size: $font-size-default;
+            width: 200px;
+            border-radius: $border-radius-xl;
+            background: none;
+            background: $border-color-hover;
+        
             &:focus {
                 border: 1px solid $border-color-focus;
                 outline:none;
+                background: none;
             }
+        }
+
+        i {
+            position: absolute;
+            right: 10px;
+            font-size: $font-size-default;
         }
     }
     
-    i {
-        font-size: $font-size-xl;
-        color: $color1;
-
-        &:hover {
-            color: $color1-hover;
-        }
-    }
+  
 }

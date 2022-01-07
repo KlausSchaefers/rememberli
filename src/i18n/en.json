@@ -1,8 +1,16 @@
 {
     "add": {
-        "new": "Type here to create new"
+        "start": "Add new note to top",
+        "end": "Append note to end",
+        "behind": "Type here to add new note"
+    },
+    "note": {
+        "remove": "Remove all text to delete note"
     },
     "toolbar": {
-        "search": "Search here"
+        "search": "Search",
+        "new": "New",
+        "select": "Open",
+        "save": "Save"
     }
 }

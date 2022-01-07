@@ -5,5 +5,35 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: $color1;
+    font-size: $font-size-default;
+    line-height: $line-height;
+}
+ 
+
+button {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background: none;
+  border: 1px solid $button-background;
+  background: $button-background;
+  color: $button-color;
+  margin: 0px;
+  padding: $spacing-s $spacing-m;
+  border-radius: $border-radius-xl;
+  gap: $spacing-xs;
+  font-size: $font-size-s;
+  transition: 0.2s all;
+
+  &:hover {
+      background: $button-background-hover;
+      border: 1px solid $button-background-hover;
   }
-  
+
+  i {
+      font-size: $font-size-default;
+      cursor: pointer;
+  }
+}
+
+

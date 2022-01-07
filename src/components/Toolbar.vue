@@ -1,8 +1,19 @@
 <template>
   <div class="rmli-toolbar">
     <div class="rmli-tools">
-        <i class="ri-save-line" @click="onSave"></i> <span v-if="isDirty">*</span>
-        <i class="ri-folder-line" @click="onSelect"></i>
+          <button @click="onNew">
+              <i class="ri-file-add-line" ></i> 
+              <span>{{$t('toolbar.new')}}</span>
+          </button>
+          <button @click="onSave">
+              <i class="ri-save-line" ></i> 
+              <span>{{$t('toolbar.save')}}</span>
+              <span v-if="isDirty">*</span>
+          </button>
+          <button @click="onSelect">
+              <i class="ri-folder-line"></i>
+              <span>{{$t('toolbar.select')}}</span>
+          </button>
     </div>
      <div class="rmli-search">
         <input v-model="search" :placeholder="$t('toolbar.search')" @keydown="onSearch">
@@ -18,7 +29,7 @@
 
 export default {
   name: 'Toolbar',
-  emits: ['save', 'select', 'search'],
+  emits: ['save', 'select', 'search', 'new'],
   props: ['file', 'isDirty'],
   data: function () {
     return {
@@ -28,14 +39,17 @@ export default {
   components: {
   },
   methods: {
+    onNew () {
+      this.$emit('new')
+    },
     onSave () {
-        this.$emit('save')
+      this.$emit('save')
     },
     onSelect () {
-        this.$emit('select')
+      this.$emit('select')
     },
     onSearch () {
-        this.$emit('search', this.search)
+      this.$emit('search', this.search)
     }
   },
   mounted () {

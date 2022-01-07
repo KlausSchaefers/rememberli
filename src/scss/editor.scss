@@ -1,8 +1,31 @@
 @import './ds.scss';
 
 .rmli-editor {
+    padding: 0px $spacing-l;
+    
+    .rmli-element-list {
+        display: flex;
+        flex-flow: column;
+     
+
+        .rmli-element{
+            padding: 0px;
+        }
+    }
    
     .rmli-element-add {
    
     }
+
+    .rmli-element-add-behind {
+        opacity: 0;
+        transition: opacity 0.2s;
+        transition-delay: 0.2s;
+
+        &:hover {
+            opacity: 1;
+            transition-delay: 0;
+        }
+    }
+
 }

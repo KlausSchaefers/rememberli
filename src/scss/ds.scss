@@ -1,5 +1,12 @@
+$primary-color: rgb(69, 177, 240);
+$primary-color-hover:rgb(62, 164, 223);
+
 $color1: #2c3e50;
-$color1-hover: rgb(44, 44, 44);
+$color1-hover: $primary-color;
+
+$button-background:$primary-color;
+$button-background-hover: $primary-color-hover;
+$button-color: #fff;
 
 $spacing-xxl:64px;
 $spacing-xl:40px;
@@ -9,15 +16,22 @@ $spacing-m:16px;
 $spacing-s:8px;
 $spacing-xs:4px;
 
-$font-family: Avenir, Helvetica, Arial, sans-serif;
+$font-weight: 400;
+$font-weight-l: 500;
+$font-family: Roboto, Helvetica, Arial, sans-serif;
 $font-size-xxl: 32px;
-$font-size-xl: 22px;
-$font-size-l: 18px;
-$font-size-m: 16px;
-$font-size-s: 14px;
+$font-size-xl: 28px;
+$font-size-l: 24px;
+$font-size-m: 22px;
+$font-size-default: 18px;
+$font-size-s: 16px;
+
+$line-height: 1.5;
 
 $border-color-transparent: tranparent;
-$border-color-focus: red;
+$border-color-hover: rgba(0,0,0, 0.1);
+$border-color-focus: $primary-color;
+$border-radius-xl: 50px;
 $border-radius-m: 8px;
 $border-radius-s: 4px;
 

@@ -1,7 +1,7 @@
 
 <template>
   <div class="rmli-note" @click="$emit('click')">
-      <textarea :value="element.value" @keydown="onKeyDown" @keyup="onKeyPress" ref="input" :placeholder="element.placeholder"/>
+      <textarea :value="element.value" @keydown="onKeyDown" @keyup="onKeyPress" @change="onChange" ref="input" />
   </div>
 </template>
 
@@ -29,9 +29,10 @@ export default {
   components: {
   },
   methods: {
-    onKeyPress (e) {
-      console.debug('onKeyPress', e.target.value)
+    onChange (e) {
       this.$emit('change', e.target.value)
+    },
+    onKeyPress () {   
     },
     onKeyDown () {
       //console.debug('onKeyDown()', this.value, e)

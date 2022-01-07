@@ -1,25 +1,27 @@
 <template>
   <div class="rmli-editor">
     <nav class="rmli-container">
-      <Toolbar @save="onSave" @select="onSelect" :file="file" :isDirty="isDirty" @search="onSearch"/>
+      <Toolbar @save="onSave" @select="onSelect" @new="onNew" :file="file" :isDirty="isDirty" @search="onSearch"/>
     </nav>
-    <main class="rmli-container">
+    <main class="rmli-container rmli-element-list">
       
-      <!-- show only when not editing the new one? -->
-      <div class="rmli-element rmli-element-add" v-if="true">
-         <Add @change="addToTop"/>
+      <div class="rmli-element rmli-element-add-top" v-if="true">
+         <Add @add="addStart" :placeholder="$t('add.start')" />
       </div>
      
 
-      <div v-for="(element,i) in filteredElements" :key="i" class="rmli-element">
-         <component :is="element.type" :element="element" @change="onElementChange(element, $event)" ref="elements"/>
+      <div v-for="(element) in filteredElements" :key="element.id">
+        <div class="rmli-element">
+          <component :is="element.type" :element="element" @change="onElementChange(element, $event)" ref="elements"/>
+        </div>
+
+         <div class="rmli-element rmli-element-add-behind" v-if="hasAddBehind">
+            <Add @add="addAfter(element, $event)" :placeholder="$t('add.behind')" />
+          </div>
       </div>
 
-      <div class="rmli-element rmli-element-add" v-if="true">
-         <Add @change="addToEnd" />
-      </div>
     
-      <pre>{{JSON.stringify(file.content.elements, null, 2)}}</pre>
+      <pre v-if="isDebug">{{JSON.stringify(file.content.elements, null, 2)}}</pre>
     
      
     </main>
@@ -41,6 +43,8 @@ export default {
   name: 'Editor',
   data: function () {
       return {
+        isDebug: false,
+        hasAddBehind: false,
         query: '',
         isDirty: false,
         file: {
@@ -86,37 +90,43 @@ export default {
         type: 'Note',
         value: value
       })
-      this.$nextTick(() => {
-        let ref = this.$refs.elements[this.$refs.elements.length - 1]
-        if (ref) {
-          ref.focus()
-        }
-      })
     },
-    addToTop (value) {
-      Logger.log(-1, 'Editor.addToTop()', value)
-      this.file.content.elements.unshift({
+    addAfter (element, value) {
+      Logger.log(-1, 'Editor.addAfter()', element, value)
+      let index = this.file.content.elements.findIndex(e => e.id === element.id)
+      this.file.content.elements.splice(index + 1, 0, this.createNote(value)); 
+    },
+    addStart (value) {
+      Logger.log(-1, 'Editor.addStart()', value)
+      this.file.content.elements.unshift(this.createNote(value))
+    },
+    createNote (value) {
+      return {
         id: new Date().getTime(),
         created: new Date().getUTCDate(),
         lastUpdate: new Date().getUTCDate(),
+        elements:[],
         type: 'Note',
         value: value
-      })
-      this.$nextTick(() => {
-        console.debug(this.$refs.elements)
-        let ref = this.$refs.elements[0]
-        if (ref) {
-          ref.focus()
-        }
-      })
+      }
     },
     onElementChange (element, value) {
-      Logger.log(1, 'Editor.onElementChange()', element, value)
-      element.value = value
-      this.isDirty = true
+      if (value) {
+        Logger.log(-1, 'Editor.onElementChange() > update element', element.id, value)
+        element.value = value
+        element.lastUpdate = new Date().getUTCDate()
+      } else {
+        Logger.log(1, 'Editor.onElementChange() > Delete element', element.id, value)
+        let index = this.file.content.elements.findIndex(e => e.id === element.id)
+        if (index > -1) {
+          this.file.content.elements.splice(index, 1)
+        }
+      }
+      this.onChange()
     },
     onChange () {
       this.isDirty = true
+      // kick off auto save??
     },
     onSave () {
       Logger.log(2, 'Editor.save()', this.file)
@@ -134,6 +144,20 @@ export default {
     onSelectReply (file) {
       Logger.log(2, 'Editor.onSelectReply()', file)
       this.file = file
+      this.isDirty = false
+    },
+    onNew () {
+      Logger.log(-2, 'Editor.onNew()')
+      this.file = {
+          url: '',
+          content: {
+            created: new Date().getUTCDate(),
+            lastUpdate: new Date().getUTCDate(),
+            name: 'New File',
+            elements: [
+            ]
+          }
+      }
       this.isDirty = false
     }
   },

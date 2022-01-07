@@ -27,7 +27,6 @@ export default class APIService {
         selectListener = await ipcRenderer.receive('select:reply', (e) => {
             this.onSelectReply(e)
         })
-        console.debug('init', this.saveListener, this.loadListener, this.selectListener)
     }
 
     cleanUp () {

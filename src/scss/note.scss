@@ -2,16 +2,30 @@
 
 .rmli-note{
    
+    margin: 0px;
+    padding: 0px;
+    border-top: 1px solid rgba(0,0,0, 0.05);
+
+
     textarea{
         border: none;
         border-left: 3px solid transparent;
-
+        line-height: $line-height;
+        font-weight: $font-weight;
         width: 100%;
         box-sizing: border-box;
+        font-size: $font-size-default;
         font-family: $font-family;
+        padding: $spacing-s $spacing-m;
+        resize: none;
+
+        &:hover {
+            border-left: 3px solid $border-color-hover;
+            outline: none;
+        }
 
         &:focus {
-            border-left: 3px solid blue;
+            border-left: 3px solid $border-color-focus;
             outline: none;
         }
     }

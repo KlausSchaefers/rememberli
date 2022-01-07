@@ -1,7 +1,13 @@
 
 <template>
   <div class="rmli-add rmli-note" @click="$emit('click')">
-      <textarea v-model="value" @keydown="onKeyDown" @keyup="onKeyPress" :placeholder="$t('add.new')"/>
+      <textarea
+        v-model="value" 
+        @keydown="onKeyDown" 
+        @keyup="onKeyPress" 
+        @blur="onBlur" 
+        :placeholder="placeholder"
+    />
   </div>
 </template>
 
@@ -13,9 +19,8 @@
 
 export default {
   name: 'Add',
-  emits: ['change', 'click'],
-  props: {
-  },
+  emits: ['change', 'click', 'add'],
+  props: ['placeholder'],
   data: function () {
     return {
         value: ''
@@ -25,8 +30,13 @@ export default {
   },
   methods: {
     onKeyPress (e) {
-      this.$emit('change', e.target.value)
-      this.value =''
+        this.$emit('change', e.target.value)
+    },
+    onBlur (e) {
+        if (this.value) {
+            this.$emit('add', e.target.value)
+        }
+        this.value =''
     }
   },
   mounted () {
