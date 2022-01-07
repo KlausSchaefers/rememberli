@@ -1,7 +1,16 @@
 
 <template>
-  <div class="rmli-note" @click="$emit('click')">
-      <textarea :value="element.value" @keydown="onKeyDown" @keyup="onKeyPress" @change="onChange" ref="input" />
+  <div :class="['rmli-note', {'rmli-focus': hasFocus}]" @click="$emit('click')">
+    
+      <textarea 
+        :value="element.value" 
+        @keydown="onKeyDown"
+        row=1
+        @keyup="onKeyUp" 
+        @change="onChange"
+        @blur="hasFocus = false"
+        @focus="hasFocus = true"
+        ref="input" />
   </div>
 </template>
 
@@ -23,7 +32,7 @@ export default {
   },
   data: function () {
     return {
-        value: ''
+        hasFocus:false
     }
   },
   components: {
@@ -32,41 +41,42 @@ export default {
     onChange (e) {
       this.$emit('change', e.target.value)
     },
-    onKeyPress () {   
+    onKeyUp () { 
+      this.resize()
     },
-    onKeyDown () {
-      //console.debug('onKeyDown()', this.value, e)
-    
-     
-     /*
+    onKeyDown (e) {
+      //console.debug('onKeyDown()', e)
       if (e.key == 'Tab') {
         e.preventDefault();
-        var start = this.selectionStart;
-        var end = this.selectionEnd;
-
-        // set textarea value to: text before caret + tab + text after caret
-        this.value = this.value.substring(0, start) +
-          "\t" + this.value.substring(end);
-
-        // put caret at right position again
-        this.selectionStart =
-          this.selectionEnd = start + 1;
+        this.addTab()
       }
-
-
-      this.style.height = "auto";
-      this.style.height = (this.scrollHeight) + "px";
-      */
-
+    },
+    addTab() {
+        if (this.$refs.input) {
+            console.debug('addTab')
+            let input = this.$refs.input
+            var start = input.selectionStart
+            var end = input.selectionEnd
+            input.value = input.value.substring(0, start) +  "\t" + input.value.substring(end);
+            input.selectionStart = 
+            input.selectionEnd = start + 1;
+        }
+    },
+    resize () { 
+      if (this.$refs.input) {
+        console.debug('Resize')
+        const input = this.$refs.input
+        //input.style.height = input.scrollHeight - 4 + 'px';
+        // input.style.height = "auto"
+        input.style.height = (input.scrollHeight) + "px"
+      }
     },
     focus () {
       this.$refs.input.focus()
     }
   },
   mounted () {
-    if (this.element) {
-      this.value = this.element.value
-    }
+    this.resize()
   }
 }
 </script>

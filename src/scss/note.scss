@@ -6,10 +6,20 @@
     padding: 0px;
     border-top: 1px solid rgba(0,0,0, 0.05);
 
+    border-left: 3px solid $border-color-transparent;
+
+    &:hover{
+        border-left: 3px solid $border-color-hover;
+    }
+    
+    &.rmli-focus {
+        border-left: 3px solid $border-color-focus;
+    }
 
     textarea{
         border: none;
-        border-left: 3px solid transparent;
+        background: rgba(0,0,0, 0.05);
+  
         line-height: $line-height;
         font-weight: $font-weight;
         width: 100%;
@@ -18,14 +28,13 @@
         font-family: $font-family;
         padding: $spacing-s $spacing-m;
         resize: none;
+        overflow: hidden;
 
         &:hover {
-            border-left: 3px solid $border-color-hover;
             outline: none;
         }
 
         &:focus {
-            border-left: 3px solid $border-color-focus;
             outline: none;
         }
     }

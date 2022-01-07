@@ -1,11 +1,15 @@
 
 <template>
-  <div class="rmli-add rmli-note" @click="$emit('click')">
+  <div :class="['rmli-note rmli-add', {'rmli-focus': hasFocus}]" @click="$emit('click')">
       <textarea
         v-model="value" 
         @keydown="onKeyDown" 
-        @keyup="onKeyPress" 
+        @keyup="onKeyUp" 
+        row=1
         @blur="onBlur" 
+        @change="onChange"
+        @focus="hasFocus = true"
+        ref="input"
         :placeholder="placeholder"
     />
   </div>
@@ -17,19 +21,23 @@
 </style>
 <script>
 
+import Note from './Note.vue'
+
 export default {
   name: 'Add',
+  mixins:[Note],
   emits: ['change', 'click', 'add'],
   props: ['placeholder'],
   data: function () {
     return {
+        hasFocus: false,
         value: ''
     }
   },
   components: {
   },
   methods: {
-    onKeyPress (e) {
+    onChange (e) {
         this.$emit('change', e.target.value)
     },
     onBlur (e) {
@@ -37,6 +45,10 @@ export default {
             this.$emit('add', e.target.value)
         }
         this.value =''
+        this.hasFocus = false
+        const input = this.$refs.input
+        // input.style.height = input.scrollHeight - 4 + 'px';
+        input.style.height = "auto"
     }
   },
   mounted () {
