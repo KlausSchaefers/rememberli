@@ -35,6 +35,7 @@
         padding: $spacing-s $spacing-m;
         resize: none;
         overflow: hidden;
+        white-space: pre;
 
         &:hover {
             outline: none;

@@ -8,6 +8,7 @@
         :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
         contenteditable="true" 
         ref="input"
+        @keydown="onKeyDown"
         @keyup="onKeyUp"
         @focus="hasFocus = true" 
         @blur="onBlur"/>
@@ -22,11 +23,20 @@
 <script>
 
 import Logger from '../util/Logger'
+import dayjs from 'dayjs'
+import * as relativeTime from 'dayjs/plugin/relativeTime'
+dayjs.extend(relativeTime)
+import * as Util from '../util/Util'
+
 
 export default {
   name: 'Note',
   emits: ['change', 'focus', 'click'],
   props: {
+    placeholder: {
+      type: String,
+      default: ''
+    },
     element :{
       type: Object,
       default() {
@@ -44,20 +54,21 @@ export default {
   },
   computed: {
       hasPlaceHolder () {
-          return this.value === this.$t('note.remove')
+          return this.getText() === this.placeholder
       },
       lastUpdate () {
         // hack to make ui update
         this.setValue(this.element.value)
         if (this.element.lastUpdate) {
-          return new Date(this.element.lastUpdate).toLocaleDateString()
+          return dayjs(this.element.lastUpdate).fromNow()
+          //return new Date(this.element.lastUpdate).toLocaleDateString()
         }
         return ''
       }
   },
   methods: {
     onBlur () {
-      Logger.log(3, 'Note.onBlur() ', this.getValue())
+      Logger.log(3, 'Note.onBlur() ', this.getValue().re)
       if (this.hasPlaceHolder) {
         this.$emit('change', '')
       } else {
@@ -67,50 +78,51 @@ export default {
       this.hasFocus = false
     },
     onKeyUp () {
-        this.value = this.getValue()
-        if (this.value === '') {
-          this.setValue(this.$t('note.remove'))
+        let value = this.getValue().trim()
+        if (value === '') {
+          this.setValue(this.placeholder)
         }
     },
     onKeyDown (e) {
-      //console.debug('onKeyDown()', e)
       if (e.key == 'Tab') {
         e.preventDefault();
-        this.addTab()
+        this.insertCharAtCursor("\t")
       }
     },
-    addTab() {
+    insertCharAtCursor(character) {
         if (this.$refs.input) {
-            console.debug('addTab')
-            let input = this.$refs.input
-            var start = input.selectionStart
-            var end = input.selectionEnd
-            input.value = input.value.substring(0, start) +  "\t" + input.value.substring(end);
-            input.selectionStart = 
-            input.selectionEnd = start + 1;
+          var editor = this.$refs.input
+          var doc = editor.ownerDocument.defaultView;
+          var sel = doc.getSelection();
+          var range = sel.getRangeAt(0);
+          var tabNode = document.createTextNode(character);
+          range.insertNode(tabNode);
+          range.setStartAfter(tabNode);
+          range.setEndAfter(tabNode); 
+          sel.removeAllRanges();
+          sel.addRange(range);
         }
     },
     getValue () {
         if (this.$refs.input) {
-           return this.$refs.input.innerText
+            return this.$refs.input.innerHTML
+        }
+        return ''
+    },
+    getText () {
+        if (this.$refs.input) {
+            return this.$refs.input.innerText
         }
         return ''
     },
     setValue (value) {
         if (this.$refs.input) {
-          this.$refs.input.innerText = value;
+          this.$refs.input.innerHTML = Util.replaceAllowedTags(value);
         }
-        this.value = value
     },
     focus () {
       this.$refs.input.focus()
     }
-  },
-  watch: {
-      // whenever question changes, this function will run
-      element(newValue, oldValue) {
-        console.debug('watch', newValue, oldValue)
-      }
   },
   mounted () {
      if (this.element && this.element.value != undefined) {

@@ -1,0 +1,6 @@
+class SearchService {
+
+    index (element) {
+        
+    }
+}

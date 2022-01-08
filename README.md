@@ -34,6 +34,8 @@ https://www.electronjs.org/docs/latest/api/ipc-main
 
 
 ### Links
+https://tiptap.dev/examples/suggestions -> Vue and also @support...
+https://quilljs.com/playground/#autogrow-height -> looks best!!
 
 https://github.com/prosemirror
 https://github.com/outline/outline

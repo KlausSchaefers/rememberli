@@ -7,6 +7,7 @@
         ref="input"
         @click="onClick"
         @input="update"
+        @keydown="onKeyDown"
         @keyup="onKeyUp"
         @focus="hasFocus = true" 
         @blur="onBlur"/>
@@ -34,13 +35,10 @@ export default {
   components: {
   },
   computed: {
-      hasPlaceHolder () {
-          return  this.value === this.$t('add.start')
-      }
   },
   methods: {
     onClick () {
-        if (this.getValue() === this.$t('add.start')) {
+        if (this.getValue() === this.placeholder) {
             this.setValue('')
         }
     },
@@ -58,7 +56,7 @@ export default {
     },
     reset () {
         // make somehow invisible and then popin again...
-        this.setValue(this.$t('add.start'))
+        this.setValue(this.placeholder)
     }
   },
   mounted () {

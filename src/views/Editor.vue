@@ -1,7 +1,14 @@
 <template>
   <div class="rmli-editor">
     <nav class="rmli-container">
-      <Toolbar @save="onSave" @select="onSelect" @new="onNew" :file="file" :isDirty="isDirty" @search="onSearch"/>
+      <Toolbar 
+        @save="onSave" 
+        @select="onSelect" 
+        @new="onNew" 
+        :file="file" 
+        :isDirty="isDirty" 
+        @search="onSearch"
+        :placeholder="$t('add.start')"/>
     </nav>
     <main class="rmli-container rmli-element-list">
       
@@ -12,7 +19,13 @@
 
       <div v-for="(element) in filteredElements" :key="element.id">
         <div class="rmli-element">
-          <component :is="element.type" :element="element" @change="onElementChange(element, $event)" @join="onJoinElement(element)" ref="elements"/>
+          <component 
+            :is="element.type" 
+            :element="element" 
+            @change="onElementChange(element, $event)" 
+            @join="onJoinElement(element)"
+            :placeholder="$t('note.remove')"
+            ref="elements"/>
         </div>
 
          <div class="rmli-element rmli-element-add-behind" v-if="hasAddBehind">
@@ -38,12 +51,13 @@ import Toolbar from '../components/Toolbar'
 import Note from '../components/Note'
 import Add from '../components/Add'
 import Logger from '../util/Logger'
+import * as Util from '../util/Util'
 
 export default {
   name: 'Editor',
   data: function () {
       return {
-        isDebug: true,
+        isDebug: false,
         hasAddBehind: false,
         query: '',
         isDirty: false,
@@ -59,7 +73,7 @@ export default {
                 created: this.getTimestamp(),
                 lastUpdate: this.getTimestamp(),
                 type: 'Note',
-                value: 'Hello'
+                value: 'Hello <b>Klaus</b>'
               }
             ]
           }
@@ -123,7 +137,7 @@ export default {
        */
       if (value) {
      
-        element.lastUpdate = new Date().getUTCDate()
+        element.lastUpdate = this.getTimestamp()
         let parts = value.split('---')
 
         if (parts.length > 1) {
@@ -141,6 +155,7 @@ export default {
         } else {
 
           Logger.log(-1, 'Editor.onElementChange() > update element', element.id, value)
+          Logger.log(-1, 'Editor.onElementChange() > update element', Util.getText(value))
           element.value = value
 
         }
@@ -191,7 +206,7 @@ export default {
                 created: new Date().getUTCDate(),
                 lastUpdate: new Date().getUTCDate(),
                 type: 'Note',
-                value: 'Hello\n world.\n\nPapa was here'
+                value: 'Hello -&gt; world.<br><br>Papa was <b>here</b>'
               }
             ]
           }
