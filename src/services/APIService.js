@@ -48,13 +48,13 @@ export default class APIService {
     }
 
     save (content) {
-        Logger.log(-1, 'APIService.save()', content)
+        Logger.log(2, 'APIService.save()', content)
         let ipcRenderer = window.ipcRenderer
         ipcRenderer.send('save', JSON.stringify(content, null, 2))
     }
 
     onSaveReply (e) {
-        Logger.log(-1, 'APIService.onSaveReply()', e)
+        Logger.log(2, 'APIService.onSaveReply()', e)
         if (this.saveReplyCallback) {
             this.saveReplyCallback(e)
         }
@@ -65,14 +65,14 @@ export default class APIService {
     }
 
     onLoadReply (e) {
-        Logger.log(-1, 'APIService.onLoadReply()', e)
+        Logger.log(2, 'APIService.onLoadReply()', e)
         if (this.loadReplyCallback) {
             this.loadReplyCallback(e)
         }
     }
 
     load (fileName) {
-        Logger.log(-1, 'APIService.load()', fileName)
+        Logger.log(2, 'APIService.load()', fileName)
         let ipcRenderer = window.ipcRenderer
         ipcRenderer.send('load', fileName)
     }
@@ -82,7 +82,7 @@ export default class APIService {
     }
 
     onSelectReply (e) {
-        Logger.log(-1, 'APIService.onSelectReply()', e)
+        Logger.log(2, 'APIService.onSelectReply()', e)
         if (this.selectReplyCallback) {
             this.selectReplyCallback(e)
         }
@@ -93,7 +93,7 @@ export default class APIService {
     }
 
     select () {
-        Logger.log(-1, 'APIService.select()')
+        Logger.log(2, 'APIService.select()')
         let ipcRenderer = window.ipcRenderer
         ipcRenderer.send('select', '')   
     }

@@ -11,8 +11,20 @@
     .rmli-note-status {
         height: $spacing-m;
         font-size: $font-size-xs;
-        text-align: right;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
         color: $color-hint;
+        gap: $spacing-s;
+
+        i {
+            cursor: pointer;
+
+            &:hover {
+                color: $color1-hover;
+            }
+        }
     }
 
 

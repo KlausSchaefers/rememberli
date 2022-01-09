@@ -2,7 +2,9 @@
 <template>
   <div :class="['rmli-note', {'rmli-focus': hasFocus}]" @click="$emit('click')">
       <div class="rmli-note-status">
-          {{created}}
+          {{created}} 
+          <i class="ri-pushpin-2-line" v-if="!isPinned" @click="onPinned(true)"></i>
+          <i class="ri-pushpin-2-fill" v-if="isPinned" @click="onPinned(false)"></i>
       </div>
       <div class="rmli-placeholder-container">
         <span class="rmli-placeholder" v-if="hasPlaceHolder" @click="onPlaceHolderClick"> {{placeholder}} </span> 
@@ -33,7 +35,7 @@ dayjs.extend(relativeTime)
 
 export default {
   name: 'Note',
-  emits: ['change', 'focus', 'click'],
+  emits: ['change', 'focus', 'click', 'pinned'],
   props: {
     placeholder: {
       type: String,
@@ -56,6 +58,9 @@ export default {
   components: {
   },
   computed: {
+      isPinned () {
+        return this.element.pinned
+      },
       created () {
         // hack to make ui update
         this.setValue(this.element.value)
@@ -74,8 +79,12 @@ export default {
       }
   },
   methods: {
+    onPinned (v) {
+      Logger.log(-3, 'Note.onPinned() ', v)
+      this.$emit('pinned', v)
+    },
     onBlur () {
-      Logger.log(-3, 'Note.onBlur() ', this.getValue(), `>${this.getText()}<`)
+      Logger.log(3, 'Note.onBlur() ', this.getValue(), `>${this.getText()}<`)
       if (this.hasPlaceHolder) {
         this.$emit('change', '')
       } else {

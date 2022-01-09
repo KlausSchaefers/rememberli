@@ -1,5 +1,5 @@
 <template>
-  <div class="rmli-splash" v-if="!file">
+  <div class="rmli-splash" v-if="!file" @keyup="onKeyUp">
 
       <div class="rmli-splash-actions ">
           <a @click="onNew">
@@ -35,6 +35,7 @@
           @menu="hasMenu = !hasMenu"
           @save="onSave" 
           @select="onSelect" 
+          ref="toolbar"
           @new="onNew" 
           :file="file" 
           :isDirty="isDirty" 
@@ -43,7 +44,7 @@
         <main class="rmli-container rmli-element-list">
           
           <div class="rmli-element rmli-element-add-top" v-if="true">
-            <Add @add="addStart" :placeholder="$t('add.start')" />
+            <Add @add="addStart" :placeholder="$t('add.start')" ref="add"/>
           </div>
         
 
@@ -52,6 +53,7 @@
               <component 
                 :is="element.type" 
                 :element="element" 
+                @pinned="onPinned(element, $event)"
                 @change="onElementChange(element, $event)" 
                 @join="onJoinElement(element)"
                 :placeholder="$t('note.remove')"
@@ -80,6 +82,7 @@ import Note from '../components/Note'
 import Add from '../components/Add'
 import SideBar from '../components/SideBar'
 import Logger from '../util/Logger'
+import SearchService from '../services/SearchService'
 //import * as Util from '../util/Util'
 
 export default {
@@ -92,6 +95,8 @@ export default {
         query: '',
         isDirty: false,
         file: null,
+        searchResults: {},
+        lastQuery: new Date().getTime(),
         testFile: {
           url: '',
           content: {
@@ -120,6 +125,10 @@ export default {
   },
   computed: {
     filteredElements () {
+      if (this.searchService.isValidQuery(this.query)) {
+        Logger.log(-1, 'Editor.filteredElements()')
+        return this.getFilteredElements()
+      }
       return this.file.content.elements
     }
   },
@@ -127,21 +136,38 @@ export default {
     onSearch (query) {
       Logger.log(-1, 'Editor.onSearch()', query)
       this.query = query
+      this.lastQuery = new Date().getTime()
+      this.searchResults = this.searchService.find(query, this.file)
+      console.debug(JSON.stringify(this.searchResults))
+    },
+    getFilteredElements () {
+        let results = this.file.content.elements.filter(e => {
+          /**
+           * We return all the results from the search engine, and 
+           * all elements that we created after the search, so that they do not disappear
+           */
+          return this.searchResults[e.id] || e.created > this.lastQuery
+        })
+        return results
     },
     addToEnd (value) {
       Logger.log(-1, 'Editor.addToEnd()', value)
-      let note = this.createNote(value)
+      const note = this.createNote(value)
       this.file.content.elements.push(note)
+      this.onChange(note)
     },
     addAfter (element, value) {
       Logger.log(-1, 'Editor.addAfter()', element, value)
       let index = this.file.content.elements.findIndex(e => e.id === element.id)
-      this.file.content.elements.splice(index + 1, 0, this.createNote(value)); 
+      const note = this.createNote(value)
+      this.file.content.elements.splice(index + 1, 0, note); 
+      this.onChange()
     },
     addStart (value) {
       Logger.log(-1, 'Editor.addStart()', value)
-      this.file.content.elements.unshift(this.createNote(value))
-      this.onChange()
+      const note = this.createNote(value)
+      this.file.content.elements.unshift(note)
+      this.onChange(note)
     },
     createNote (value) {
       return {
@@ -149,6 +175,7 @@ export default {
         created: this.getTimestamp(),
         lastUpdate: this.getTimestamp(),
         elements:[],
+        pinned:false,
         type: 'Note',
         value: value
       }
@@ -158,6 +185,11 @@ export default {
     },
     onJoinElement (element) {
       Logger.log(-1, 'Editor.onJoinElement() > split element', element.id) 
+    },
+    onPinned (element, value) {
+      Logger.log(-1, 'Editor.onPinned() >  element', element.id, value)
+      element.pinned = value
+      this.onChange(element)
     },
     onElementChange (element, value) {
       /**
@@ -173,7 +205,7 @@ export default {
         Logger.log(1, 'Editor.onElementChange() > update element', element.id, value)
         if (element.value !== value) {
           element.value = value
-          this.onChange(element)
+          this.onChange(element, true)
         }
       } else {
         Logger.log(1, 'Editor.onElementChange() > Delete element', element.id, value)
@@ -184,8 +216,12 @@ export default {
         }
       }
     },
-    onChange (element) {
+    onChange (element, updateIndex) {
       Logger.log(2, 'Editor.onChange()', element)
+      if (updateIndex) {
+        this.searchService.indexElement(element)
+      }
+      // TODO: parse tags and people
       this.file.content.elements.forEach((e, i) => {
         e.order = i
       })
@@ -209,6 +245,7 @@ export default {
       Logger.log(2, 'Editor.onSelectReply()', file)
       this.file = file
       this.isDirty = false
+      this.searchService.indexAll(this.file)
     },
     onNew () {
       Logger.log(-2, 'Editor.onNew()')
@@ -224,12 +261,30 @@ export default {
       }
       this.isDirty = false
       this.onSave()
+    },
+    onKeyUp (e) {
+      
+      if (e.key === 'f' && e.ctrlKey) {
+        if (this.$refs.toolbar) {
+          Logger.log(-2, 'Editor.onKeyUp() > search')
+          this.$refs.toolbar.focus()
+        }
+        
+      }
     }
   },
   mounted () {
     this.api = new APIService()
     this.api.onSave(this.onSaveReply)
     this.api.onSelect(this.onSelectReply)
+    this.searchService = new SearchService()
+    this.keyUpHandler = (e) => this.onKeyUp(e) 
+    window.addEventListener('keyup', this.keyUpHandler );
+  },
+  beforeUnmount () {
+    if (this.keyUpHandler) {
+      window.removeEventListener('keyup', this.keyUpHandler);
+    }
   }
 }
 </script>

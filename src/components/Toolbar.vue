@@ -11,7 +11,7 @@
                 <div class="rmli-tools">
                 </div>
                 <div class="rmli-search">
-                    <input v-model="search" :placeholder="$t('toolbar.search')" @keydown="onSearch">
+                    <input v-model="search" :placeholder="$t('toolbar.search')" @keyup="onSearch" ref="searchInput">
                     <i class="ri-search-line"></i>
                 </div>
         
@@ -53,10 +53,14 @@ export default {
     },
     onSearch () {
       this.$emit('search', this.search)
+    },
+    focus () {
+      if (this.$refs.searchInput) {
+        this.$refs.searchInput.focus()
+      }
     }
   },
   mounted () {
-      console.debug('Toolbar', this.isDirty)
   }
 }
 </script>
