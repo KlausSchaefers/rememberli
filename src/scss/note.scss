@@ -29,6 +29,7 @@
         line-height: $line-height;
         font-weight: $font-weight;
         width: 100%;
+        min-height: 30px;
         box-sizing: border-box;
         font-size: $font-size-default;
         font-family: $font-family;
@@ -46,7 +47,15 @@
         }
     }
 
-    .rmli-editable-placeholder {
+    .rmli-placeholder {
         color: $color1-placeholder;
+        position: absolute;
+        top:10px;
+        left: $spacing-m;
+        font-style: italic;
+    }
+
+    .rmli-placeholder-container {
+        position: relative;
     }
 }

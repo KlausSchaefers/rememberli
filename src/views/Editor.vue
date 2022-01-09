@@ -1,47 +1,75 @@
 <template>
-  <div class="rmli-editor">
-    <nav class="rmli-container">
-      <Toolbar 
+  <div class="rmli-splash" v-if="!file">
+
+      <div class="rmli-splash-actions ">
+          <a @click="onNew">
+              <i class="ri-file-add-line" ></i> 
+              <span>{{$t('actions.new')}}</span>
+          </a>
+        
+          <a @click="onSelect">
+              <i class="ri-folder-line"></i>
+              <span>{{$t('actions.select')}}</span>
+          </a>
+      </div>
+
+  </div>
+  <div class="rmli-editor" v-if="file">
+
+  
+ 
+    <SideBar
+        :hasMenu="hasMenu"
         @save="onSave" 
         @select="onSelect" 
         @new="onNew" 
+        @exit="file = null"
         :file="file" 
         :isDirty="isDirty" 
         @search="onSearch"
-        :placeholder="$t('add.start')"/>
-    </nav>
-    <main class="rmli-container rmli-element-list">
-      
-      <div class="rmli-element rmli-element-add-top" v-if="true">
-         <Add @add="addStart" :placeholder="$t('add.start')" />
-      </div>
-     
+        />
 
-      <div v-for="(element) in filteredElements" :key="element.id">
-        <div class="rmli-element">
-          <component 
-            :is="element.type" 
-            :element="element" 
-            @change="onElementChange(element, $event)" 
-            @join="onJoinElement(element)"
-            :placeholder="$t('note.remove')"
-            ref="elements"/>
-        </div>
+    <div class="rmli-editor-body">
+        
+        <Toolbar
+          @menu="hasMenu = !hasMenu"
+          @save="onSave" 
+          @select="onSelect" 
+          @new="onNew" 
+          :file="file" 
+          :isDirty="isDirty" 
+          @search="onSearch"/>
 
-         <div class="rmli-element rmli-element-add-behind" v-if="hasAddBehind">
-            <Add @add="addAfter(element, $event)" :placeholder="$t('add.behind')" />
+        <main class="rmli-container rmli-element-list">
+          
+          <div class="rmli-element rmli-element-add-top" v-if="true">
+            <Add @add="addStart" :placeholder="$t('add.start')" />
           </div>
-      </div>
+        
 
-    
-      <pre v-if="isDebug">{{JSON.stringify(file.content.elements, null, 2)}}</pre>
-    
-     
-    </main>
+          <div v-for="(element) in filteredElements" :key="element.id">
+            <div class="rmli-element">
+              <component 
+                :is="element.type" 
+                :element="element" 
+                @change="onElementChange(element, $event)" 
+                @join="onJoinElement(element)"
+                :placeholder="$t('note.remove')"
+                ref="elements"/>
+            </div>
+
+            <div class="rmli-element rmli-element-add-behind" v-if="hasAddBehind">
+                <Add @add="addAfter(element, $event)" :placeholder="$t('add.behind')" />
+            </div>
+          </div>
+              
+        </main>
+    </div>
   </div>
 </template>
 
 <style lang="scss">
+  @import '../scss/splash.scss';
   @import '../scss/editor.scss';
 </style>
 <script>
@@ -50,8 +78,9 @@ import APIService from '../services/APIService'
 import Toolbar from '../components/Toolbar'
 import Note from '../components/Note'
 import Add from '../components/Add'
+import SideBar from '../components/SideBar'
 import Logger from '../util/Logger'
-import * as Util from '../util/Util'
+//import * as Util from '../util/Util'
 
 export default {
   name: 'Editor',
@@ -59,9 +88,11 @@ export default {
       return {
         isDebug: false,
         hasAddBehind: false,
+        hasMenu: true,
         query: '',
         isDirty: false,
-        file: {
+        file: null,
+        testFile: {
           url: '',
           content: {
             created: this.getTimestamp(),
@@ -73,7 +104,8 @@ export default {
                 created: this.getTimestamp(),
                 lastUpdate: this.getTimestamp(),
                 type: 'Note',
-                value: 'Hello <b>Klaus</b>'
+                value: 'Hello <b>Klaus</b>',
+                order:0
               }
             ]
           }
@@ -83,7 +115,8 @@ export default {
   components: {
     Toolbar,
     Note,
-    Add
+    Add,
+    SideBar
   },
   computed: {
     filteredElements () {
@@ -108,6 +141,7 @@ export default {
     addStart (value) {
       Logger.log(-1, 'Editor.addStart()', value)
       this.file.content.elements.unshift(this.createNote(value))
+      this.onChange()
     },
     createNote (value) {
       return {
@@ -131,48 +165,32 @@ export default {
        * 
        * 1) If value === '', we delete the node
        * 
-       * 2) If we have '---' inside we split
+       * 2) Otherwise we set the value
        * 
-       * 3) Otherwise we set the value
+       * TODO: We could have here more, e.g. splitting
        */
       if (value) {
-     
-        element.lastUpdate = this.getTimestamp()
-        let parts = value.split('---')
-
-        if (parts.length > 1) {
-
-          Logger.log(-1, 'Editor.onElementChange() > split element', element.id, parts) 
-          let index = this.file.content.elements.findIndex(e => e.id === element.id)
-          element.value = parts[0]
-          for (let i = 1; i < parts.length; i++) {
-            let part = parts[i].trim()
-            
-            let note = this.createNote(part)
-            this.file.content.elements.splice(index + i, 0, note); 
-          }
-
-        } else {
-
-          Logger.log(-1, 'Editor.onElementChange() > update element', element.id, value)
-          Logger.log(-1, 'Editor.onElementChange() > update element', Util.getText(value))
+        Logger.log(1, 'Editor.onElementChange() > update element', element.id, value)
+        if (element.value !== value) {
           element.value = value
-
+          this.onChange(element)
         }
       } else {
-
         Logger.log(1, 'Editor.onElementChange() > Delete element', element.id, value)
         let index = this.file.content.elements.findIndex(e => e.id === element.id)
         if (index > -1) {
           this.file.content.elements.splice(index, 1)
+          this.onChange(element)
         }
-
       }
-      this.onChange()
     },
-    onChange () {
+    onChange (element) {
+      Logger.log(2, 'Editor.onChange()', element)
+      this.file.content.elements.forEach((e, i) => {
+        e.order = i
+      })
       this.isDirty = true
-      // kick off auto save??
+      this.onSave()
     },
     onSave () {
       Logger.log(2, 'Editor.save()', this.file)
@@ -201,17 +219,11 @@ export default {
             lastUpdate: new Date().getUTCDate(),
             name: 'New File',
             elements: [
-              {
-                id: new Date().getTime(),
-                created: new Date().getUTCDate(),
-                lastUpdate: new Date().getUTCDate(),
-                type: 'Note',
-                value: 'Hello -&gt; world.<br><br>Papa was <b>here</b>'
-              }
             ]
           }
       }
       this.isDirty = false
+      this.onSave()
     }
   },
   mounted () {

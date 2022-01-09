@@ -8,9 +8,12 @@
         "remove": "Remove all text to delete note"
     },
     "toolbar": {
-        "search": "Search",
+        "search": "Search"
+    },
+    "actions": {
         "new": "New",
         "select": "Open",
-        "save": "Save"
+        "save": "Save",
+        "close": "Exit"
     }
 }

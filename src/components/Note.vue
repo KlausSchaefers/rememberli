@@ -2,18 +2,20 @@
 <template>
   <div :class="['rmli-note', {'rmli-focus': hasFocus}]" @click="$emit('click')">
       <div class="rmli-note-status">
-       {{lastUpdate}}
+          {{created}}
       </div>
-      <div 
-        :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
-        contenteditable="true" 
-        ref="input"
-        @keydown="onKeyDown"
-        @keyup="onKeyUp"
-        @focus="hasFocus = true" 
-        @blur="onBlur"/>
+      <div class="rmli-placeholder-container">
+        <span class="rmli-placeholder" v-if="hasPlaceHolder" @click="onPlaceHolderClick"> {{placeholder}} </span> 
+        <div 
+          :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
+          contenteditable="true" 
+          ref="input"
+          @keydown="onKeyDown"
+          @keyup="onKeyUp"
+          @focus="hasFocus = true" 
+          @blur="onBlur"/>
+      </div>
 
- 
   </div>
 </template>
 
@@ -26,7 +28,7 @@ import Logger from '../util/Logger'
 import dayjs from 'dayjs'
 import * as relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
-import * as Util from '../util/Util'
+//import * as Util from '../util/Util'
 
 
 export default {
@@ -47,28 +49,33 @@ export default {
   data: function () {
     return {
         hasFocus:false,
+        hasPlaceHolder: false,
         value: ''
     }
   },
   components: {
   },
   computed: {
-      hasPlaceHolder () {
-          return this.getText() === this.placeholder
+      created () {
+        // hack to make ui update
+        this.setValue(this.element.value)
+        if (this.element.created) {
+          return dayjs(this.element.created).fromNow()
+        }
+        return ''
       },
       lastUpdate () {
         // hack to make ui update
         this.setValue(this.element.value)
         if (this.element.lastUpdate) {
           return dayjs(this.element.lastUpdate).fromNow()
-          //return new Date(this.element.lastUpdate).toLocaleDateString()
         }
         return ''
       }
   },
   methods: {
     onBlur () {
-      Logger.log(3, 'Note.onBlur() ', this.getValue().re)
+      Logger.log(-3, 'Note.onBlur() ', this.getValue(), `>${this.getText()}<`)
       if (this.hasPlaceHolder) {
         this.$emit('change', '')
       } else {
@@ -78,10 +85,9 @@ export default {
       this.hasFocus = false
     },
     onKeyUp () {
-        let value = this.getValue().trim()
-        if (value === '') {
-          this.setValue(this.placeholder)
-        }
+        let value = this.getText()
+        this.value = value
+        this.hasPlaceHolder = value === ''
     },
     onKeyDown (e) {
       if (e.key == 'Tab') {
@@ -111,14 +117,20 @@ export default {
     },
     getText () {
         if (this.$refs.input) {
-            return this.$refs.input.innerText
+            return this.$refs.input.innerText.trim()
         }
         return ''
     },
     setValue (value) {
         if (this.$refs.input) {
-          this.$refs.input.innerHTML = Util.replaceAllowedTags(value);
+          this.$refs.input.innerHTML = value
         }
+        this.$nextTick(() => {
+          this.value = this.getText()
+        })
+    },
+    onPlaceHolderClick () {
+      this.focus()
     },
     focus () {
       this.$refs.input.focus()

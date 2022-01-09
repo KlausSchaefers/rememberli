@@ -1,16 +1,18 @@
 
 <template>
   <div :class="['rmli-note rmli-add', {'rmli-focus': hasFocus}]" @click="$emit('click')">
-      <div 
-        :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
-        contenteditable="true" 
-        ref="input"
-        @click="onClick"
-        @input="update"
-        @keydown="onKeyDown"
-        @keyup="onKeyUp"
-        @focus="hasFocus = true" 
-        @blur="onBlur"/>
+    <div class="rmli-placeholder-container">
+        <span class="rmli-placeholder" v-if="hasPlaceHolder"  @click="onPlaceHolderClick"> {{placeholder}} </span> 
+        <div 
+            :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
+            contenteditable="true" 
+            ref="input"
+            @input="update"
+            @keydown="onKeyDown"
+            @keyup="onKeyUp"
+            @focus="hasFocus = true" 
+            @blur="onBlur"/>
+    </div>
   </div>
 </template>
 
@@ -38,25 +40,24 @@ export default {
   },
   methods: {
     onClick () {
-        if (this.getValue() === this.placeholder) {
-            this.setValue('')
-        }
+       this.focus()
     },
     onChange (e) {
         this.$emit('change', e.target.value)
     },
     onBlur () {
-        Logger.log(-1, 'Add.onBlur()', this.getValue())
-        let value = this.getValue()
+        Logger.log(-1, 'Add.onBlur()', this.getValue(), `>${this.getText()}<`)
+        let text = this.getText()
         this.hasFocus = false
-        if (value) {
-            this.$emit('add', value)
+        if (text) {
+            this.$emit('add', this.getValue())
         }
         this.reset()
     },
     reset () {
         // make somehow invisible and then popin again...
-        this.setValue(this.placeholder)
+        this.setValue('')
+        this.hasPlaceHolder = true
     }
   },
   mounted () {

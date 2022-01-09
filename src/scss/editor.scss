@@ -1,7 +1,16 @@
 @import './ds.scss';
 
 .rmli-editor {
-    padding: 0px $spacing-l;
+    min-height: 100vh;
+    display: flex;
+
+    .rmli-sidebar {
+        align-items: stretch;
+    }
+
+    .rmli-editor-body {
+        flex-grow: 1;
+    }
     
     .rmli-element-list {
         display: flex;

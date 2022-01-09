@@ -1,4 +1,4 @@
-$primary-color: rgb(69, 177, 240);
+$primary-color: rgb(41, 122, 228);
 $primary-color-hover:rgb(62, 164, 223);
 
 $color1: #2c3e50;
@@ -6,6 +6,9 @@ $color1-hover: $primary-color;
 $color1-placeholder:  #2c3e5050;
 
 $color-hint: #2c3e5050;
+
+$background-primary: #fff;
+$background-secondary: rgba(0,0,0, 0.1);
 
 $button-background:$primary-color;
 $button-background-hover: $primary-color-hover;

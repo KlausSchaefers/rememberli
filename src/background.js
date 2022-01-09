@@ -18,6 +18,7 @@ async function createWindow() {
   const win = new BrowserWindow({
     width: 1400,
     height: 1000,
+    backgroundColor: '#fff',
     webPreferences: {
       
       // Required for Spectron testing

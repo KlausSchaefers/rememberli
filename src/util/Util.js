@@ -1,9 +1,55 @@
+export function getTextWithLineBreaks(html) {
+    const node = document.createElement('div')
+    node.innerHTML = html
+    return _getTextWithLineBreaks(node, false)
+}
+
+export function _getTextWithLineBreaks (node, isOnFreshLine) {
+    let result = ''
+    const childNodes = node.childNodes
+    for (let i = 0; i < childNodes.length; i++) {
+        const childNode = childNodes[i];
+    
+        if (childNode.nodeName === 'BR') {
+            // BRs are always line breaks which means the next loop is on a fresh line
+            result += '\n';
+            isOnFreshLine = true;
+            continue;
+        }
+    
+        // We may or may not need to create a new line
+        if (childNode.nodeName === 'DIV' && isOnFreshLine === false) {
+            result += '\n';
+        }
+    
+        isOnFreshLine = false;
+    
+        if (childNode.nodeType === 3 && childNode.textContent) {
+            result += childNode.textContent;
+        }
+    
+        // If this node has children, get into them as well:
+        result += _getTextWithLineBreaks(childNode, isOnFreshLine);
+    }
+    return result
+}
+
 export function getText(html) {
-    // FIXME: we miss white spaces. we could add them as " "
-    const decoder = document.createElement('div')
+
+    // some hack to endure we have white spaces
+    html = html.replaceAll(new RegExp(`<`, 'gi'), ' <')
+
     // make sure we do not get any evil html in here
-    decoder.innerHTML = replaceAllowedTags(html)
-    return decoder.innerText  
+    const decoder = document.createElement('div')
+   
+    // we should somehow check that the content is ok...
+    decoder.innerHTML = `<div contenteditable="true" >${html}</div>`
+
+    // clean up and remove all 
+    return decoder.innerText
+        .split(' ')
+        .filter(s => s !== '')
+        .join(' ')
 }
 
 export function cleanInnerHTML(s) {

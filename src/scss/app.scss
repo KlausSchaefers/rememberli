@@ -1,5 +1,9 @@
 @import './ds.scss';
 
+body, html {
+    margin: 0px;
+}
+
 #app {
     font-family: $font-family;
     -webkit-font-smoothing: antialiased;
@@ -37,3 +41,11 @@ button {
 }
 
 
+.rmli-action-link {
+    cursor: pointer;
+    color: $color1;
+
+    &:hover {
+        color: $color1-hover;
+    }
+}

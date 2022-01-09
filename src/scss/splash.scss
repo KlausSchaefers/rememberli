@@ -1,0 +1,35 @@
+@import './ds.scss';
+
+.rmli-splash {
+    min-height: 100vh;
+    display: flex;
+    display: grid;
+    place-items: center;
+
+
+    .rmli-splash-actions {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-m;
+
+        a {
+            display: flex;
+            align-items: center;
+            gap: $spacing-s;
+            cursor: pointer;
+           
+
+            span {
+                font-size: 14px;
+            }
+
+            &:hover, i{
+                color: $color1-hover;
+            }
+        }
+
+        span {
+            font-size: $font-size-s;
+        }
+    }
+}

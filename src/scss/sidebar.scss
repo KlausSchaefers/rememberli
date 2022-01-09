@@ -1,0 +1,45 @@
+@import './ds.scss';
+
+.rmli-sidebar {
+    border-right: rgba($color: #000000, $alpha: 0.1);
+    background: $background-secondary;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: width 0.2s;
+
+    &.rmli-sidebar-closed  {
+        width: 0px;
+    }
+
+    .rmli-sidebar-content {
+        padding: $spacing-m;
+    }
+
+    .rmli-sidebar-actions {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-m;
+
+        a {
+            display: flex;
+            align-items: center;
+            gap: $spacing-s;
+            cursor: pointer;
+           
+
+            span {
+                font-size: 14px;
+            }
+
+            &:hover, i{
+                color: $color1-hover;
+            }
+        }
+
+        span {
+            font-size: $font-size-s;
+        }
+    }
+}

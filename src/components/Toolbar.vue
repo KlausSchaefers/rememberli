@@ -1,24 +1,22 @@
 <template>
-  <div class="rmli-toolbar">
-    <div class="rmli-tools">
-          <button @click="onNew">
-              <i class="ri-file-add-line" ></i> 
-              <span>{{$t('toolbar.new')}}</span>
-          </button>
-          <button @click="onSave">
-              <i class="ri-save-line" ></i> 
-              <span>{{$t('toolbar.save')}}</span>
-              <span v-if="isDirty">*</span>
-          </button>
-          <button @click="onSelect">
-              <i class="ri-folder-line"></i>
-              <span>{{$t('toolbar.select')}}</span>
-          </button>
-    </div>
-     <div class="rmli-search">
-        <input v-model="search" :placeholder="$t('toolbar.search')" @keydown="onSearch">
-        <i class="ri-search-line"></i>
-    </div>
+
+  <div class="rmli-toolbar-wrapper">
+    <span class="rmli-toolbar-menu rmli-action-link" @click="onMenu">
+      <i class="ri-menu-line" v-if="!hasMenu"></i>
+      <i class="ri-close-line" v-if="hasMenu"></i>
+    </span>
+     <nav class="rmli-container">    
+          <div class="rmli-toolbar">
+          
+                <div class="rmli-tools">
+                </div>
+                <div class="rmli-search">
+                    <input v-model="search" :placeholder="$t('toolbar.search')" @keydown="onSearch">
+                    <i class="ri-search-line"></i>
+                </div>
+        
+          </div>
+       </nav>
   </div>
 </template>
 
@@ -29,16 +27,21 @@
 
 export default {
   name: 'Toolbar',
-  emits: ['save', 'select', 'search', 'new'],
+  emits: ['save', 'select', 'search', 'new', 'menu'],
   props: ['file', 'isDirty'],
   data: function () {
     return {
-        search: ''
+        search: '',
+        hasMenu: false
     }
   },
   components: {
   },
   methods: {
+    onMenu () {
+      this.hasMenu = !this.hasMenu
+      this.$emit('menu', this.hasMenu)
+    },
     onNew () {
       this.$emit('new')
     },

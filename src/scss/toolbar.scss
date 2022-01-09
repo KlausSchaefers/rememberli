@@ -1,5 +1,15 @@
 @import './ds.scss';
 
+.rmli-toolbar-wrapper {
+    position: relative;
+
+    .rmli-toolbar-menu {
+        position: absolute;
+        padding: $spacing-s ;
+        
+    }
+}
+
 .rmli-toolbar {
     display: flex;
     gap: $spacing-m;
@@ -31,7 +41,7 @@
             width: 200px;
             border-radius: $border-radius-xl;
             background: none;
-            background: $border-color-hover;
+            background: $background-secondary;
         
             &:focus {
                 border: 1px solid $border-color-focus;
