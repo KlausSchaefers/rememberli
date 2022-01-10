@@ -12,9 +12,10 @@
           :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
           contenteditable="true" 
           ref="input"
+          @focus="onFocus"
+          @paste="onPaste"
           @keydown="onKeyDown"
           @keyup="onKeyUp"
-          @focus="hasFocus = true" 
           @blur="onBlur"/>
       </div>
 
@@ -30,7 +31,7 @@ import Logger from '../util/Logger'
 import dayjs from 'dayjs'
 import * as relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
-//import * as Util from '../util/Util'
+import * as Highlighter from '../util/Highlighter'
 
 
 export default {
@@ -79,9 +80,21 @@ export default {
       }
   },
   methods: {
+    onPaste (e) {
+      Logger.log(3, 'Note.onPaste() > enter')
+      let text = e.clipboardData.getData('text')
+      if (text) {
+        e.preventDefault()
+        this.insertAtCursor(text)
+      }
+    },
     onPinned (v) {
       Logger.log(-3, 'Note.onPinned() ', v)
       this.$emit('pinned', v)
+    },
+    onFocus () {
+      this.hasFocus = true
+      this.setValue(this.element.value)
     },
     onBlur () {
       Logger.log(3, 'Note.onBlur() ', this.getValue(), `>${this.getText()}<`)
@@ -90,8 +103,8 @@ export default {
       } else {
         this.$emit('change', this.getValue())
       }
-      
       this.hasFocus = false
+      this.setValue(this.element.value)
     },
     onKeyUp () {
         let value = this.getText()
@@ -101,16 +114,16 @@ export default {
     onKeyDown (e) {
       if (e.key == 'Tab') {
         e.preventDefault();
-        this.insertCharAtCursor("\t")
+        this.insertAtCursor("\t")
       }
     },
-    insertCharAtCursor(character) {
+    insertAtCursor(text) {
         if (this.$refs.input) {
           var editor = this.$refs.input
           var doc = editor.ownerDocument.defaultView;
           var sel = doc.getSelection();
           var range = sel.getRangeAt(0);
-          var tabNode = document.createTextNode(character);
+          var tabNode = document.createTextNode(text);
           range.insertNode(tabNode);
           range.setStartAfter(tabNode);
           range.setEndAfter(tabNode); 
@@ -132,7 +145,11 @@ export default {
     },
     setValue (value) {
         if (this.$refs.input) {
-          this.$refs.input.innerHTML = value
+          if (!this.hasFocus) {
+            this.$refs.input.innerHTML = Highlighter.highlight(value)
+          } else {
+            this.$refs.input.innerHTML = value
+          }
         }
         this.$nextTick(() => {
           this.value = this.getText()

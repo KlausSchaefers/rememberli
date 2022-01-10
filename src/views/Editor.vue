@@ -1,6 +1,6 @@
 <template>
   <div class="rmli-splash" v-if="!file" @keyup="onKeyUp">
-
+      
       <div class="rmli-splash-actions ">
           <a @click="onNew">
               <i class="ri-file-add-line" ></i> 
@@ -16,8 +16,7 @@
   </div>
   <div class="rmli-editor" v-if="file">
 
-  
- 
+    
     <SideBar
         :hasMenu="hasMenu"
         @save="onSave" 
@@ -29,44 +28,45 @@
         @search="onSearch"
         />
 
-    <div class="rmli-editor-body">
-        
-        <Toolbar
-          @menu="hasMenu = !hasMenu"
-          @save="onSave" 
-          @select="onSelect" 
-          ref="toolbar"
-          @new="onNew" 
-          :file="file" 
-          :isDirty="isDirty" 
-          @search="onSearch"/>
+    <main class="rmli-editor-body rmli-drag-bar-below">
 
-        <main class="rmli-container rmli-element-list">
+
+    
+          <Toolbar
+            @menu="hasMenu = !hasMenu"
+            @save="onSave" 
+            @select="onSelect" 
+            ref="toolbar"
+            @new="onNew" 
+            :file="file" 
+            :isDirty="isDirty" 
+            @search="onSearch"/>
+
+        <div class="rmli-element-list">
+          <div class="rmli-container">
           
-          <div class="rmli-element rmli-element-add-top" v-if="true">
-            <Add @add="addStart" :placeholder="$t('add.start')" ref="add"/>
-          </div>
-        
+              
+              <div class="rmli-element rmli-element-add-top" v-if="true">
+                <Add @add="addStart" :placeholder="$t('add.start')" ref="add"/>
+              </div>
+            
 
-          <div v-for="(element) in filteredElements" :key="element.id">
-            <div class="rmli-element">
-              <component 
-                :is="element.type" 
-                :element="element" 
-                @pinned="onPinned(element, $event)"
-                @change="onElementChange(element, $event)" 
-                @join="onJoinElement(element)"
-                :placeholder="$t('note.remove')"
-                ref="elements"/>
-            </div>
-
-            <div class="rmli-element rmli-element-add-behind" v-if="hasAddBehind">
-                <Add @add="addAfter(element, $event)" :placeholder="$t('add.behind')" />
-            </div>
+              <div v-for="(element) in filteredElements" :key="element.id">
+                <div class="rmli-element">
+                  <component 
+                    :is="element.type" 
+                    :element="element" 
+                    @pinned="onPinned(element, $event)"
+                    @change="onElementChange(element, $event)" 
+                    @join="onJoinElement(element)"
+                    :placeholder="$t('note.remove')"
+                    ref="elements"/>
+                </div>
+              </div>
           </div>
               
-        </main>
-    </div>
+        </div>
+    </main>
   </div>
 </template>
 
@@ -95,7 +95,8 @@ export default {
         query: '',
         isDirty: false,
         file: null,
-        searchResults: {},
+        searchResultsScores: {},
+        selectedFolder:'',
         lastQuery: new Date().getTime(),
         testFile: {
           url: '',
@@ -125,6 +126,9 @@ export default {
   },
   computed: {
     filteredElements () {
+      /** 
+       * FIXME: add pinned stuff here
+       */
       if (this.searchService.isValidQuery(this.query)) {
         Logger.log(-1, 'Editor.filteredElements()')
         return this.getFilteredElements()
@@ -137,8 +141,7 @@ export default {
       Logger.log(-1, 'Editor.onSearch()', query)
       this.query = query
       this.lastQuery = new Date().getTime()
-      this.searchResults = this.searchService.find(query, this.file)
-      console.debug(JSON.stringify(this.searchResults))
+      this.searchResultsScores = this.searchService.find(query, this.file)
     },
     getFilteredElements () {
         let results = this.file.content.elements.filter(e => {
@@ -146,7 +149,7 @@ export default {
            * We return all the results from the search engine, and 
            * all elements that we created after the search, so that they do not disappear
            */
-          return this.searchResults[e.id] || e.created > this.lastQuery
+          return this.searchResultsScores[e.id] || e.created > this.lastQuery
         })
         return results
     },
@@ -177,7 +180,8 @@ export default {
         elements:[],
         pinned:false,
         type: 'Note',
-        value: value
+        value: value,
+        folder: this.selectedFolder
       }
     },
     getTimestamp () {
@@ -255,8 +259,8 @@ export default {
             created: new Date().getUTCDate(),
             lastUpdate: new Date().getUTCDate(),
             name: 'New File',
-            elements: [
-            ]
+            folders: [],
+            elements: []
           }
       }
       this.isDirty = false

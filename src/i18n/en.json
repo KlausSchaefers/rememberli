@@ -1,6 +1,6 @@
 {
     "add": {
-        "start": "Add new note to top",
+        "start": "Add new note",
         "end": "Append note to end",
         "behind": "Type here to add new note"
     },

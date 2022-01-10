@@ -1,7 +1,7 @@
 @import './ds.scss';
 
 .rmli-editor {
-    min-height: 100vh;
+    min-height: calc(100vh);
     display: flex;
 
     .rmli-sidebar {
@@ -15,8 +15,9 @@
     .rmli-element-list {
         display: flex;
         flex-flow: column;
-     
-
+        height: calc(100vh - 128px);
+        overflow: auto;
+  
         .rmli-element{
             padding: 0px;
         }

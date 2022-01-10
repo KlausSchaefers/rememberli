@@ -1,5 +1,8 @@
 <template>
-  <router-view/>
+  <div class="rmli-drag-bar" style=""/>
+
+    <router-view/>
+
 </template>
 
 

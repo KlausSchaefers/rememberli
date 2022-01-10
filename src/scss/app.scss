@@ -40,6 +40,20 @@ button {
   }
 }
 
+.rmli-drag-bar {
+    height: 32px;
+    position: fixed;
+    top:0px;
+    left: 0px;
+    width: 100%;
+    -webkit-app-region: drag;
+    z-index: 10000;
+}
+
+.rmli-drag-bar-below {
+    padding-top: 32px;
+}
+
 
 .rmli-action-link {
     cursor: pointer;

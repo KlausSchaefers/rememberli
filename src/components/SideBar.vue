@@ -1,5 +1,5 @@
 <template>
-  <div :class="'rmli-sidebar rmli-sidebar-' + (hasMenu ? 'closed' : 'open') ">
+  <div :class="'rmli-drag-bar-below rmli-sidebar rmli-sidebar-' + (hasMenu ? 'closed' : 'open') ">
 
     <div class="rmli-sidebar-content">
         <div class="rmli-sidebar-actions">
