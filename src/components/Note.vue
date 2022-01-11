@@ -2,12 +2,12 @@
 <template>
   <div :class="['rmli-note', {'rmli-focus': hasFocus}]" @click="$emit('click')">
       <div class="rmli-note-status">
-          {{created}} 
+          {{created}}
           <i class="ri-pushpin-2-line" v-if="!isPinned && !hasMore" @click="onPinned(true)"></i>
-          <i class="ri-pushpin-2-fill" v-if="isPinned" @click="onPinned(false)"></i>
+          <i class="ri-pushpin-2-fill rmli-note-icon-active" v-if="isPinned" @click="onPinned(false)"></i>
 
           <i class="ri-alarm-line" v-if="!isAlarmSet && !hasMore" @click="onAlarm(true)"></i>
-          <i class="ri-alarm-fill" v-if="isAlarmSet" @click="onAlarm(false)"></i>
+          <i class="ri-alarm-fill rmli-note-icon-active" v-if="isAlarmSet" @click="onAlarm(false)"></i>
 
           <i class="ri-more-line rmli-note-more" v-if="hasMore"></i>
       </div>
@@ -43,6 +43,10 @@ export default {
   name: 'Note',
   emits: ['change', 'focus', 'click', 'pinned', 'alarm'],
   props: {
+    query: {
+      type: String,
+      default: ''
+    },
     placeholder: {
       type: String,
       default: ''
@@ -56,7 +60,7 @@ export default {
   },
   data: function () {
     return {
-        hasMore: true,
+        hasMore: false,
         hasFocus:false,
         hasPlaceHolder: false,
         value: ''
@@ -159,7 +163,7 @@ export default {
     setValue (value) {
         if (this.$refs.input) {
           if (!this.hasFocus) {
-            this.$refs.input.innerHTML = Highlighter.highlight(value)
+            this.$refs.input.innerHTML = Highlighter.highlight(value, this.query)
           } else {
             this.$refs.input.innerHTML = value
           }

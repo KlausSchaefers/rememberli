@@ -15,12 +15,13 @@ export default class SearchService {
             const elements = Object.values(this.elements)
             elements.forEach(e => {
                 parts.forEach(part => {
-                  
-                    if (e.value.indexOf(part) >= 0) {
-                        if (!result[e.id]) {
-                            result[e.id] = {score:0}
+                    if (this.isValidQuery(part)) {
+                        if (e.value.indexOf(part) >= 0) {
+                            if (!result[e.id]) {
+                                result[e.id] = {score:0}
+                            }
+                            result[e.id].score++
                         }
-                        result[e.id].score++
                     }
                 })
             })

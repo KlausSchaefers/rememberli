@@ -3,15 +3,16 @@
 .rmli-note{
    
     margin: 0px;
-    padding: $spacing-m 0px;
+    padding: $spacing-l 0px;
     padding-top: 0px;
-    border-top: 1px solid rgba(0,0,0, 0.05);
+ 
     border-left: 3px solid $border-color-transparent;
 
     .rmli-note-status {
         height: $spacing-m;
         font-size: $font-size-xs;
-        padding: $spacing-s $spacing-m;;
+        padding: 0px $spacing-m;
+        padding-top: $spacing-s;
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
@@ -21,7 +22,7 @@
 
         i {
             cursor: pointer;
-            font-size: $font-size-default;
+            font-size: $font-size-s;
             width: 24px;
             height: 24px;
             border-radius: 50px;
@@ -29,6 +30,14 @@
 
             &:hover {
                 color: $color1-hover;
+            }
+
+            &.rmli-note-icon-active{
+                background: $background-secondary;
+                color: $color1-hover;
+
+                // background: $color2;
+                // color: #fff;
             }
         }
 
@@ -68,12 +77,20 @@
         &:focus {
             outline: none;
         }
+
+        .rmi-highlight-tag {
+            background: rgba($color: $color2, $alpha: 0.3);
+        }
+
+        .rmi-highlight-person {
+            background: rgba($color: $color3, $alpha: 0.3);
+        }
     }
 
     .rmli-placeholder {
         color: $color1-placeholder;
         position: absolute;
-        top:10px;
+        top:16px;
         left: $spacing-m;
         font-style: italic;
     }

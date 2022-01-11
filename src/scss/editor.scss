@@ -4,6 +4,13 @@
     min-height: calc(100vh);
     display: flex;
 
+
+    h1 {
+        padding: 0px $spacing-m;
+        margin-bottom: $spacing-m;
+        font-size: $font-size-l;
+    }
+
     .rmli-sidebar {
         align-items: stretch;
     }
@@ -19,12 +26,22 @@
         overflow: auto;
         padding: 0px $spacing-m;
         align-items: center;
-  
+ 
         .rmli-element{
             padding: 0px;
+            border-top: 1px solid rgba(0,0,0, 0.05);
         }
+
+        .rmli-element-no-border {
+            border-top: 1px solid rgba(0,0,0, 0);
+        }
+        
+    
     }
-   
+
+  
+ 
+
     .rmli-element-add {
    
     }
@@ -58,3 +75,4 @@
         opacity: 0;
     }
 }
+

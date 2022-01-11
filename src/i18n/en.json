@@ -20,5 +20,9 @@
         "save": "Save",
         "close": "Exit",
         "home": "Home"
+    },
+    "list": {
+        "pinned": "Pinned",
+        "rest": "Notes"
     }
 }

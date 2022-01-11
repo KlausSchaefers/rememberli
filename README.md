@@ -47,10 +47,16 @@ https://github.com/Laverna/laverna
 
 # TODO:
 
-- Undo
-- Pinned in UI
-- Folder
+- REM font size
+- Folder / dnd to sides
 - highLight & colors
 - last opened?
 - file extension
-- noti
+- dark scheme
+- tasks
+- alarms
+- '...' button?
+- trash?
+- notes as documents?
+- animation
+- Fix focus bug when clicking on highlights

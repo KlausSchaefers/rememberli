@@ -30,9 +30,7 @@
 
     <main class="rmli-editor-body rmli-drag-bar-below">
 
-
-    
-          <Toolbar
+         <Toolbar
             @menu="hasMenu = !hasMenu"
             @save="onSave" 
             @select="onSelect" 
@@ -42,21 +40,44 @@
             :isDirty="isDirty" 
             @search="onSearch"/>
 
-        <div class="rmli-element-list">
-          <div class="rmli-container">
+        <div :class="'rmli-element-list ' + (hasListAnimation ? 'rmli-is-animated ': '')">
+          <div class="rmli-container" ref="elementCntr">
           
-              
-              <div class="rmli-element rmli-element-add-top" v-if="true">
+              <div class="rmli-element rmli-element-no-border rmli-element-add-top" v-if="!settings.isPinnedTopLayout">
                 <Add @add="addStart" :placeholder="$t('add.start')" ref="add"/>
               </div>
-
               
+              <h1 v-if="filteredElements.pinned.length > 0 && settings.isPinnedTopLayout">{{$t('list.pinned')}}</h1>
+        
+              <transition-group name="list" tag="div">
+                <div :class="'rmli-element' + (i === 0 && settings.isPinnedTopLayout ? 'rmli-element-no-border' : '')" v-for="(element,i) in filteredElements.pinned" :key="element.id" :data-element-id="element.id">
+                    <component 
+                      :is="element.type" 
+                      :element="element" 
+                      :query="query"
+                      @alarm="onAlarm(element, $event)"
+                      @pinned="onPinned(element, $event)"
+                      @change="onElementChange(element, $event)" 
+                      @join="onJoinElement(element)"
+                      :placeholder="$t('note.remove')"
+                      ref="elements"/>
+                </div>
+              </transition-group>
+          
+           
 
-              <div v-for="(element) in filteredElements" :key="element.id">
-                <div class="rmli-element">
+              <h1 v-if="settings.isPinnedTopLayout" :class="{'rmli-margin-top-xxxl': filteredElements.pinned.length > 0 }">{{$t('list.rest')}}</h1>
+        
+               <div class="rmli-element rmli-element-no-border rmli-element-add-top" v-if="settings.isPinnedTopLayout">
+                <Add @add="addStart" :placeholder="$t('add.start')" ref="add"/>
+              </div>
+          
+              <transition-group name="list" tag="div">
+                <div class="rmli-element" v-for="(element) in filteredElements.rest" :key="element.id" :data-element-id="element.id">
                   <component 
                     :is="element.type" 
                     :element="element" 
+                    :query="query"
                     @alarm="onAlarm(element, $event)"
                     @pinned="onPinned(element, $event)"
                     @change="onElementChange(element, $event)" 
@@ -64,8 +85,8 @@
                     :placeholder="$t('note.remove')"
                     ref="elements"/>
                 </div>
-              </div>
-
+              </transition-group>
+            
 
           </div>
               
@@ -80,6 +101,7 @@
 <style lang="scss">
   @import '../scss/splash.scss';
   @import '../scss/editor.scss';
+  @import '../scss/animation.scss';
 </style>
 <script>
 
@@ -97,37 +119,22 @@ export default {
   name: 'Editor',
   data: function () {
       return {
+        settings: {
+          isPinnedTopLayout: true,
+          isSearchPinned: true
+        },
         status: {
           message: '',
           visible: false
         },
-        isDebug: false,
-        hasAddBehind: false,
+        hasListAnimation: false,
         hasMenu: true,
         query: '',
         isDirty: false,
         file: null,
         searchResultsScores: {},
         selectedFolder:'',
-        lastQuery: new Date().getTime(),
-        testFile: {
-          url: '',
-          content: {
-            created: this.getTimestamp(),
-            lastUpdate: this.getTimestamp(),
-            name: 'My File.json',
-            elements: [
-              {
-                id: new Date().getTime(),
-                created: this.getTimestamp(),
-                lastUpdate: this.getTimestamp(),
-                type: 'Note',
-                value: 'Hello <b>Klaus</b>',
-                order:0
-              }
-            ]
-          }
-        }
+        lastQuery: new Date().getTime()
     }
   },
   components: {
@@ -143,13 +150,18 @@ export default {
        */
       if (this.searchService.isValidQuery(this.query)) {
         Logger.log(-1, 'Editor.filteredElements()')
-        return this.getSortedElements(this.getFilteredElements())
+        if (this.settings.isSearchPinned) {
+          return this.getSplittedElements(this.getFilteredElements())
+        } else {
+          return this.getConcatedElements(this.getFilteredElements())
+        }
+        
       }
-      return this.getSortedElements(this.file.content.elements)
+      return this.getSplittedElements(this.file.content.elements)
     }
   },
   methods: {
-    getSortedElements (elements) {
+     getConcatedElements (elements) {
 
       let pinned = []
       let rest = []
@@ -162,7 +174,25 @@ export default {
         }
       })
 
-      return pinned.concat(rest)
+      return {
+          rest: pinned.concat(rest),
+          pinned:[]
+      }
+    },
+    getSplittedElements (elements) {
+
+      let pinned = []
+      let rest = []
+
+      elements.forEach(e => {
+        if (e.pinned) {
+          pinned.push(e)
+        } else {
+          rest.push(e)
+        }
+      })
+
+      return {pinned, rest}
     },
     onSearch (query) {
       Logger.log(-1, 'Editor.onSearch()', query)
@@ -215,7 +245,26 @@ export default {
     onPinned (element, value) {
       Logger.log(-1, 'Editor.onPinned() >  element', element.id, value)
       element.pinned = value
+      this.hasListAnimation = true
       this.onChange(element, true)
+      setTimeout(() => this.hasListAnimation = false, 1000)
+      //this.scrollToElement(element.id)
+      // make a small scrol to?
+    },
+    scrollToElement (id, smooth = true) {
+        Logger.log(1, 'scrollToElement.scrollToElement() >  element', id)
+        this.$nextTick(() => {
+          let div = document.querySelector(`div[data-element-id='${id}']`)
+          if (div) {
+            div.scrollIntoView({
+              behavior: smooth ? 'smooth' : '', 
+              block: "start", 
+              inline: "nearest"
+            })
+          } else {
+            Logger.warn('scrollToElement.scrollToElement() >  cound not find', id)
+          }
+        })
     },
     onElementChange (element, value) {
       /**
@@ -312,7 +361,7 @@ export default {
         Logger.log(-2, 'Editor.onKeyUp() > search')
         this.$refs.toolbar.focus()
       }
-      if (e.key === 'z' && e.ctrlKey) {
+      if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
         Logger.log(-2, 'Editor.onKeyUp() > undo')
         this.historyService.undo(this.file)
         this.onChange()
@@ -336,11 +385,11 @@ export default {
     this.searchService = new SearchService()
     this.historyService = new HistoryService()
     this.keyUpHandler = (e) => this.onKeyUp(e) 
-    window.addEventListener('keyup', this.keyUpHandler );
+    window.addEventListener('keydown', this.keyUpHandler );
   },
   beforeUnmount () {
     if (this.keyUpHandler) {
-      window.removeEventListener('keyup', this.keyUpHandler);
+      window.removeEventListener('keydown', this.keyUpHandler);
     }
   }
 }
