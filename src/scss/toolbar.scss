@@ -2,11 +2,14 @@
 
 .rmli-toolbar-wrapper {
     position: relative;
+    display: flex;
+    justify-content: center;
  
     .rmli-toolbar-menu {
         position: absolute;
         padding: $spacing-s ;
-        
+        left: 0px;
+        top:0px;
     }
 }
 

@@ -1,9 +1,9 @@
 <template>
-  <div :class="'rmli-drag-bar-below rmli-sidebar rmli-sidebar-' + (hasMenu ? 'closed' : 'open') ">
+  <div :class="'rmli-sidebar rmli-sidebar-' + (hasMenu ? 'closed' : 'open') ">
 
-    <div class="rmli-sidebar-content">
+    <div class="rmli-sidebar-content rmli-drag-bar-below">
         <div class="rmli-sidebar-actions">
-              <a @click="onNew">
+              <a @click="onNew"  v-if="false">
                   <i class="ri-file-add-line" ></i> 
                   <span>{{$t('actions.new')}}</span>
               </a>
@@ -12,14 +12,18 @@
                   <span>{{$t('actions.save')}}</span>
                   <span v-if="isDirty">*</span>
               </a>
-              <a @click="onSelect">
+              <a @click="onSelect" v-if="false">
                   <i class="ri-folder-line"></i>
                   <span>{{$t('actions.select')}}</span>
               </a>
               <a @click="onExit">
-                  <i class="ri-folder-line"></i>
-                  <span>{{$t('actions.close')}}</span>
+                  <i class="ri-home-line"></i>
+                  <span>{{$t('actions.home')}}</span>
               </a>
+        </div>
+
+        <div class="rmli-sidebar-folders">
+        
         </div>
 
         <div class="rmli-sidebar-tags">

@@ -49,13 +49,15 @@
               <div class="rmli-element rmli-element-add-top" v-if="true">
                 <Add @add="addStart" :placeholder="$t('add.start')" ref="add"/>
               </div>
-            
+
+              
 
               <div v-for="(element) in filteredElements" :key="element.id">
                 <div class="rmli-element">
                   <component 
                     :is="element.type" 
                     :element="element" 
+                    @alarm="onAlarm(element, $event)"
                     @pinned="onPinned(element, $event)"
                     @change="onElementChange(element, $event)" 
                     @join="onJoinElement(element)"
@@ -63,10 +65,15 @@
                     ref="elements"/>
                 </div>
               </div>
+
+
           </div>
               
         </div>
     </main>
+  </div>
+  <div :class="'rmli-status rmli-status-' + (status.visible ? 'visibale' : 'hidden')"> 
+    {{status.message}}
   </div>
 </template>
 
@@ -83,12 +90,17 @@ import Add from '../components/Add'
 import SideBar from '../components/SideBar'
 import Logger from '../util/Logger'
 import SearchService from '../services/SearchService'
+import HistoryService from '../services/HistoryService'
 //import * as Util from '../util/Util'
 
 export default {
   name: 'Editor',
   data: function () {
       return {
+        status: {
+          message: '',
+          visible: false
+        },
         isDebug: false,
         hasAddBehind: false,
         hasMenu: true,
@@ -131,12 +143,27 @@ export default {
        */
       if (this.searchService.isValidQuery(this.query)) {
         Logger.log(-1, 'Editor.filteredElements()')
-        return this.getFilteredElements()
+        return this.getSortedElements(this.getFilteredElements())
       }
-      return this.file.content.elements
+      return this.getSortedElements(this.file.content.elements)
     }
   },
   methods: {
+    getSortedElements (elements) {
+
+      let pinned = []
+      let rest = []
+
+      elements.forEach(e => {
+        if (e.pinned) {
+          pinned.push(e)
+        } else {
+          rest.push(e)
+        }
+      })
+
+      return pinned.concat(rest)
+    },
     onSearch (query) {
       Logger.log(-1, 'Editor.onSearch()', query)
       this.query = query
@@ -156,33 +183,23 @@ export default {
     addToEnd (value) {
       Logger.log(-1, 'Editor.addToEnd()', value)
       const note = this.createNote(value)
+      this.historyService.add(note, 'end', this.file)
       this.file.content.elements.push(note)
-      this.onChange(note)
+      this.onChange(note, true)
     },
     addAfter (element, value) {
       Logger.log(-1, 'Editor.addAfter()', element, value)
       let index = this.file.content.elements.findIndex(e => e.id === element.id)
       const note = this.createNote(value)
       this.file.content.elements.splice(index + 1, 0, note); 
-      this.onChange()
+      this.onChange(note, true)
     },
     addStart (value) {
       Logger.log(-1, 'Editor.addStart()', value)
       const note = this.createNote(value)
+      this.historyService.add(note, 'start', this.file)
       this.file.content.elements.unshift(note)
-      this.onChange(note)
-    },
-    createNote (value) {
-      return {
-        id: new Date().getTime(),
-        created: this.getTimestamp(),
-        lastUpdate: this.getTimestamp(),
-        elements:[],
-        pinned:false,
-        type: 'Note',
-        value: value,
-        folder: this.selectedFolder
-      }
+      this.onChange(note, true)
     },
     getTimestamp () {
       return new Date().getTime()
@@ -190,10 +207,15 @@ export default {
     onJoinElement (element) {
       Logger.log(-1, 'Editor.onJoinElement() > split element', element.id) 
     },
+    onAlarm (element, value) {
+      Logger.log(-1, 'Editor.onAlarm() >  element', element.id, value)
+      element.due = value ? 1 : 0
+      this.onChange(element, true)
+    },
     onPinned (element, value) {
       Logger.log(-1, 'Editor.onPinned() >  element', element.id, value)
       element.pinned = value
-      this.onChange(element)
+      this.onChange(element, true)
     },
     onElementChange (element, value) {
       /**
@@ -208,6 +230,7 @@ export default {
       if (value) {
         Logger.log(1, 'Editor.onElementChange() > update element', element.id, value)
         if (element.value !== value) {
+          this.historyService.change(element, value, this.file)
           element.value = value
           this.onChange(element, true)
         }
@@ -215,6 +238,7 @@ export default {
         Logger.log(1, 'Editor.onElementChange() > Delete element', element.id, value)
         let index = this.file.content.elements.findIndex(e => e.id === element.id)
         if (index > -1) {
+          this.historyService.delete(element, this.file)
           this.file.content.elements.splice(index, 1)
           this.onChange(element)
         }
@@ -240,6 +264,7 @@ export default {
       Logger.log(2, 'Editor.onSaveReply()', file)
       this.file = file
       this.isDirty = false
+      this.showStatusMessage('status.saved')
     },
     onSelect () {
       Logger.log(2, 'Editor.onSelect()')
@@ -250,10 +275,16 @@ export default {
       this.file = file
       this.isDirty = false
       this.searchService.indexAll(this.file)
+      this.showStatusMessage('status.welcome')
     },
     onNew () {
       Logger.log(-2, 'Editor.onNew()')
-      this.file = {
+      this.file = this.createFile()
+      this.isDirty = false
+      this.onSave()
+    },
+    createFile () {
+      return {
           url: '',
           content: {
             created: new Date().getUTCDate(),
@@ -263,18 +294,39 @@ export default {
             elements: []
           }
       }
-      this.isDirty = false
-      this.onSave()
+    },
+    createNote (value) {
+      return {
+        id: new Date().getTime(),
+        created: this.getTimestamp(),
+        lastUpdate: this.getTimestamp(),
+        elements:[],
+        pinned:false,
+        type: 'Note',
+        value: value,
+        folder: this.selectedFolder
+      }
     },
     onKeyUp (e) {
-      
-      if (e.key === 'f' && e.ctrlKey) {
-        if (this.$refs.toolbar) {
-          Logger.log(-2, 'Editor.onKeyUp() > search')
-          this.$refs.toolbar.focus()
-        }
-        
+      if (e.key === 'f' && e.ctrlKey && this.$refs.toolbar) {
+        Logger.log(-2, 'Editor.onKeyUp() > search')
+        this.$refs.toolbar.focus()
       }
+      if (e.key === 'z' && e.ctrlKey) {
+        Logger.log(-2, 'Editor.onKeyUp() > undo')
+        this.historyService.undo(this.file)
+        this.onChange()
+      }
+    },
+    showStatusMessage (msgKey, type = 'success') {
+      if (this.$t instanceof Function) {
+        const msg = this.$t(msgKey)
+        this.status.message = msg
+        this.status.visible = true
+        this.status.type = type
+        setTimeout(() => this.status.visible = false, 1000)
+      }
+
     }
   },
   mounted () {
@@ -282,6 +334,7 @@ export default {
     this.api.onSave(this.onSaveReply)
     this.api.onSelect(this.onSelectReply)
     this.searchService = new SearchService()
+    this.historyService = new HistoryService()
     this.keyUpHandler = (e) => this.onKeyUp(e) 
     window.addEventListener('keyup', this.keyUpHandler );
   },

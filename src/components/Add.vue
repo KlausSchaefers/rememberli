@@ -7,6 +7,7 @@
             :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
             contenteditable="true" 
             ref="input"
+            @paste="onPaste"
             @input="update"
             @keydown="onKeyDown"
             @keyup="onKeyUp"

@@ -44,3 +44,13 @@ https://github.com/ianstormtaylor/slate
 https://github.com/ianstormtaylor/slate/blob/main/site/examples/check-lists.tsx
 https://draftjs.org/
 https://github.com/Laverna/laverna
+
+# TODO:
+
+- Undo
+- Pinned in UI
+- Folder
+- highLight & colors
+- last opened?
+- file extension
+- noti

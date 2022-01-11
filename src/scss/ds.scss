@@ -3,12 +3,13 @@ $primary-color-hover:rgb(62, 164, 223);
 
 $color1: #2c3e50;
 $color1-hover: $primary-color;
-$color1-placeholder:  #2c3e5050;
+$color1-placeholder:  hsla(210, 29%, 24%, 0.314);
 
-$color-hint: #2c3e5050;
+$color-hint: #2c3e5099;
+
 
 $background-primary: #fff;
-$background-secondary: rgba(0,0,0, 0.1);
+$background-secondary: #2c3e5022; // rgba(0,0,0, 0.1);
 
 $button-background:$primary-color;
 $button-background-hover: $primary-color-hover;
@@ -24,7 +25,7 @@ $spacing-xs:4px;
 
 $font-weight: 400;
 $font-weight-l: 500;
-$font-family: Roboto, Helvetica, Arial, sans-serif;
+$font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
 $font-size-xxl: 32px;
 $font-size-xl: 28px;
 $font-size-l: 24px;

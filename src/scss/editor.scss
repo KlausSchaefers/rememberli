@@ -17,6 +17,8 @@
         flex-flow: column;
         height: calc(100vh - 128px);
         overflow: auto;
+        padding: 0px $spacing-m;
+        align-items: center;
   
         .rmli-element{
             padding: 0px;
@@ -38,4 +40,21 @@
         }
     }
 
+   
+
+}
+
+.rmli-status{
+    background: $color1-hover;
+    color: #fff;
+    position: fixed;
+    font-size: $font-size-xs;
+    bottom: $spacing-xs;
+    right: $spacing-xs;
+    border-radius: $border-radius-m;
+    padding: $spacing-xs $spacing-s;
+
+    &.rmli-status-hidden {
+        opacity: 0;
+    }
 }

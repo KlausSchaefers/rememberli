@@ -3,8 +3,13 @@
   <div :class="['rmli-note', {'rmli-focus': hasFocus}]" @click="$emit('click')">
       <div class="rmli-note-status">
           {{created}} 
-          <i class="ri-pushpin-2-line" v-if="!isPinned" @click="onPinned(true)"></i>
+          <i class="ri-pushpin-2-line" v-if="!isPinned && !hasMore" @click="onPinned(true)"></i>
           <i class="ri-pushpin-2-fill" v-if="isPinned" @click="onPinned(false)"></i>
+
+          <i class="ri-alarm-line" v-if="!isAlarmSet && !hasMore" @click="onAlarm(true)"></i>
+          <i class="ri-alarm-fill" v-if="isAlarmSet" @click="onAlarm(false)"></i>
+
+          <i class="ri-more-line rmli-note-more" v-if="hasMore"></i>
       </div>
       <div class="rmli-placeholder-container">
         <span class="rmli-placeholder" v-if="hasPlaceHolder" @click="onPlaceHolderClick"> {{placeholder}} </span> 
@@ -36,7 +41,7 @@ import * as Highlighter from '../util/Highlighter'
 
 export default {
   name: 'Note',
-  emits: ['change', 'focus', 'click', 'pinned'],
+  emits: ['change', 'focus', 'click', 'pinned', 'alarm'],
   props: {
     placeholder: {
       type: String,
@@ -51,6 +56,7 @@ export default {
   },
   data: function () {
     return {
+        hasMore: true,
         hasFocus:false,
         hasPlaceHolder: false,
         value: ''
@@ -59,6 +65,9 @@ export default {
   components: {
   },
   computed: {
+      isAlarmSet () {
+        return this.element.due > 0
+      },
       isPinned () {
         return this.element.pinned
       },
@@ -87,6 +96,10 @@ export default {
         e.preventDefault()
         this.insertAtCursor(text)
       }
+    },
+    onAlarm (v) {
+      Logger.log(-3, 'Note.onAlarm() ', v)
+      this.$emit('alarm', v)
     },
     onPinned (v) {
       Logger.log(-3, 'Note.onPinned() ', v)

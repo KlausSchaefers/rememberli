@@ -11,6 +11,7 @@
     .rmli-note-status {
         height: $spacing-m;
         font-size: $font-size-xs;
+        padding: $spacing-s $spacing-m;;
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
@@ -20,10 +21,20 @@
 
         i {
             cursor: pointer;
+            font-size: $font-size-default;
+            width: 24px;
+            height: 24px;
+            border-radius: 50px;
+            text-align: center;
 
             &:hover {
                 color: $color1-hover;
             }
+        }
+
+        .rmli-note-more:hover {
+            background: $background-secondary;
+            color: $color1-hover;
         }
     }
 
@@ -45,10 +56,10 @@
         box-sizing: border-box;
         font-size: $font-size-default;
         font-family: $font-family;
-        padding: $spacing-s $spacing-m;
+        padding: $spacing-m $spacing-m;
         resize: none;
         overflow: hidden;
-        white-space: pre;
+        white-space: pre-wrap;
 
         &:hover {
             outline: none;

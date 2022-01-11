@@ -11,7 +11,7 @@ export function init() {
 }
 
 async function save (event, data) {
-    Logger.log(-1,'APIBackend.save() > enter', data)
+    Logger.log(3,'APIBackend.save() > enter', data)
     let file = JSON.parse(data)
     /**
      * Create a new file of not present
@@ -30,17 +30,18 @@ async function save (event, data) {
     if (file.url) {
         Logger.log(-1,'APIBackend.save() > write', file)
         fs.writeFileSync(file.url, JSON.stringify(file.content, null, 2))
+        // TODO: just send the URL
         event.reply('save:reply', file)
     }
 }
 
 function load (event, arg) {
-    Logger.log(-1,'APIBackend.load() > enter', arg) 
+    Logger.log(3,'APIBackend.load() > enter', arg) 
     event.reply('load:reply', {data:1})
 }
 
 async function select (event, arg) {
-    Logger.log(-1,'APIBackend.select() > select', arg) 
+    Logger.log(3,'APIBackend.select() > select', arg) 
     let result = await dialog.showOpenDialog({ properties: ['openFile'] })
     if (!result.canceled && result.filePaths.length === 1) {
         let path = result.filePaths[0]

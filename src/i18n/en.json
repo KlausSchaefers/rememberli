@@ -10,10 +10,15 @@
     "toolbar": {
         "search": "Search"
     },
+    "status": {
+        "saved": "Changes saved...",
+        "welcome": "Welcome..."
+    },
     "actions": {
         "new": "New",
         "select": "Open",
         "save": "Save",
-        "close": "Exit"
+        "close": "Exit",
+        "home": "Home"
     }
 }
