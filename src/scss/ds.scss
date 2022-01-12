@@ -1,5 +1,5 @@
 $primary-color: rgb(41, 122, 228);
-$primary-color-hover:rgb(62, 164, 223);
+$primary-color-hover:rgb(15, 106, 224);
 
 $color1: #2c3e50;
 $color1-hover: $primary-color;
@@ -7,7 +7,8 @@ $color1-placeholder:  hsla(210, 29%, 24%, 0.314);
 $color-hint: #2c3e5099;
 
 $background-primary: #fff;
-$background-secondary: #2c3e5022; // rgba(0,0,0, 0.1);
+$background-secondary: #2c3e5022; 
+$background-secondary-hover: #2c3e5033;
 
 $color2: #fdc433;
 $color3: #75cf39;
@@ -19,6 +20,8 @@ $color6: #bd3dd6;
 $button-background:$primary-color;
 $button-background-hover: $primary-color-hover;
 $button-color: #fff;
+
+$color-due: rgba($color4, 0.9);
 
 $spacing-xxxl:96px;
 $spacing-xxl:64px;
@@ -52,3 +55,6 @@ $border-radius-s: 4px;
 
 $shadow-s: 0 2px 10px rgba(0,0,0, 0.15);
 $shadow-m: 0 5px 20px rgba(0,0,0, 0.15);
+
+
+$dialog-background: #fff;

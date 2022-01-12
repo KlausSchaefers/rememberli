@@ -1,0 +1,24 @@
+@import './ds.scss';
+
+.rmli-tooltip {
+    position: relative;
+    display: inline-block;
+
+    .rmli-tooltip-message {
+        display: none;
+    }
+
+    &:hover .rmli-tooltip-message{
+        display: block;
+        width: 100px;
+        position: absolute;
+        top:100%;
+        padding: $spacing-s;
+        background: $color1;
+        color: #fff;
+        font-family: $font-family;
+        font-size: $font-size-xs;
+        border-radius: $border-radius-m;
+        text-align: left;
+    }
+}

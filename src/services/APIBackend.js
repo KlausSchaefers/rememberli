@@ -20,7 +20,7 @@ async function save (event, data) {
         let result = await dialog.showSaveDialog({ properties: ['createDirectory'] })
         Logger.log(-1,'APIBackend.save() > new', result)
         if (!result.canceled) {
-            file.url = result.filePath
+            file.url = result.filePath + '.rmli'
             Logger.log(-1,'APIBackend.save() > new', file.url)
         }
     }
@@ -42,7 +42,12 @@ function load (event, arg) {
 
 async function select (event, arg) {
     Logger.log(3,'APIBackend.select() > select', arg) 
-    let result = await dialog.showOpenDialog({ properties: ['openFile'] })
+    let result = await dialog.showOpenDialog({ 
+        properties: ['openFile'],
+        filters: [
+            { name: 'RMLI', extensions: ['rmli'] }
+        ]
+    })
     if (!result.canceled && result.filePaths.length === 1) {
         let path = result.filePaths[0]
         let data = fs.readFileSync(path, 'utf8')

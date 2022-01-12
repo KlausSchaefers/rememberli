@@ -1,14 +1,17 @@
 
 <template>
-  <div :class="['rmli-note', {'rmli-focus': hasFocus}]" @click="$emit('click')">
+  <div :class="['rmli-note', {'rmli-focus': hasFocus}, {'rmli-due': isDue}]" @click="$emit('click')">
       <div class="rmli-note-status">
           {{created}}
           <i class="ri-pushpin-2-line" v-if="!isPinned && !hasMore" @click="onPinned(true)"></i>
           <i class="ri-pushpin-2-fill rmli-note-icon-active" v-if="isPinned" @click="onPinned(false)"></i>
 
           <i class="ri-alarm-line" v-if="!isAlarmSet && !hasMore" @click="onAlarm(true)"></i>
-          <i class="ri-alarm-fill rmli-note-icon-active" v-if="isAlarmSet" @click="onAlarm(false)"></i>
-
+          
+            <i :class="['ri-alarm-fill rmli-tooltip rmli-note-icon-active', {'rmli-due': isDue}]"  v-if="isAlarmSet" @click="onAlarm(false)">
+              <span class="rmli-tooltip-message"> {{$t('note.due')}} {{printDate(element.due)}}</span>
+            </i>
+      
           <i class="ri-more-line rmli-note-more" v-if="hasMore"></i>
       </div>
       <div class="rmli-placeholder-container">
@@ -29,6 +32,7 @@
 
 <style lang="scss">
   @import '../scss/note.scss';
+  @import '../scss/tooltip.scss';
 </style>
 <script>
 
@@ -69,6 +73,9 @@ export default {
   components: {
   },
   computed: {
+      isDue () {
+        return this.element.due > 0 && this.element.due < new Date().getTime()
+      },
       isAlarmSet () {
         return this.element.due > 0
       },
@@ -177,6 +184,9 @@ export default {
     },
     focus () {
       this.$refs.input.focus()
+    },
+    printDate (ts) {
+      return new Date(ts).toLocaleDateString()
     }
   },
   mounted () {

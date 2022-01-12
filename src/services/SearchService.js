@@ -16,6 +16,7 @@ export default class SearchService {
             elements.forEach(e => {
                 parts.forEach(part => {
                     if (this.isValidQuery(part)) {
+                        console.debug(' search for', part, e.value)
                         if (e.value.indexOf(part) >= 0) {
                             if (!result[e.id]) {
                                 result[e.id] = {score:0}
@@ -25,6 +26,8 @@ export default class SearchService {
                     }
                 })
             })
+        } else {
+            Logger.log(-1, "SearchService.find() > not valid" , query)
         }
         return result
     }
@@ -43,6 +46,7 @@ export default class SearchService {
 
     indexAll (file) {
         Logger.log(3, "SearchService.indexAll()")
+        this.elements = {}
         if (file.content && file.content.elements) {
             file.content.elements.forEach(e => {
                 this.indexElement(e)
@@ -53,6 +57,11 @@ export default class SearchService {
     indexElement (element) {
         Logger.log(3, "SearchService.indexElement() > ", element.id)
         let text = Util.getText(element.value).toLowerCase()
+
+        if (element.due && element.due < new Date().getTime()) {
+            text += ' due'
+        }
+       
         this.elements[element.id] = {
             value : text,
             id: element.id

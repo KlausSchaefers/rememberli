@@ -44,10 +44,10 @@ https://github.com/ianstormtaylor/slate
 https://github.com/ianstormtaylor/slate/blob/main/site/examples/check-lists.tsx
 https://draftjs.org/
 https://github.com/Laverna/laverna
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll
 
 # TODO:
 
-- REM font size
 - Folder / dnd to sides
 - highLight & colors
 - last opened?
@@ -58,5 +58,10 @@ https://github.com/Laverna/laverna
 - '...' button?
 - trash?
 - notes as documents?
-- animation
 - Fix focus bug when clicking on highlights
+- Todos
+- Reminder
+- Lines?
+- search by types
+- "[ ]" should work interactive?
+- speed ap highlighther?

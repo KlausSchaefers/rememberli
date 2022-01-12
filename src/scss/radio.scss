@@ -1,0 +1,66 @@
+@import './design-system.scss';
+
+.luisa-radio {
+  display: block;
+  position: relative;
+
+  margin-bottom: $spacing-m;
+  cursor: pointer;
+  font-size: $font-size-m;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: $spacing-s;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .luisa-radio-icon {
+    position: relative;
+    height: $spacing-m;
+    width: $spacing-m;
+    background-color: $border-color;
+    border-radius: 50%;
+  }
+
+  label {
+    cursor: pointer;
+    font-weight: 400;
+  }
+
+  &:hover input ~ .luisa-radio-icon {
+    background-color: $border-color;
+  }
+
+  input:checked ~ .luisa-radio-icon {
+    background: $primary-background;
+  }
+
+  .luisa-radio-icon:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  input:checked ~ .luisa-radio-icon:after {
+    display: block;
+  }
+
+  /* Style the indicator (dot/circle) */
+  .luisa-radio-icon:after {
+    top: 5px;
+    left: 5px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+  }
+}

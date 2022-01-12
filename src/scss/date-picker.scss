@@ -1,0 +1,66 @@
+@import './ds.scss';
+
+.rmli-date {
+    overflow: hidden;
+    height: 250px;
+    font-size: $font-size-default;
+
+    .rmli-date-header {
+        display: flex;
+        width: 100%;
+        height: 15%;
+  
+
+        .rmli-date-header-btn {
+            position: relative;
+            width: 5%;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .rmli-date-header-label {
+            position: relative;
+            text-align: center;
+            flex-grow: 1;
+        }
+    }
+
+    .rmli-date-header-label .rmli-common-valign-center{
+        width: 100%;
+    }
+
+    .rmli-date-body {
+        width: 100%;
+        height: 85%;
+    
+        table {
+            width: 100%;
+            height: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        
+        th, td {
+            padding: 5px;
+            width: 14.3%;
+        }
+
+        td {
+            cursor: pointer;
+        }
+
+        .rmli-date-selected,
+        .rmli-date-range-start,
+        .rmli-date-range-end {
+            background: rgba($color: $color2, $alpha: 0.3);
+        }
+        .rmli-date-range-middle {
+            background: rgba($color: $color2, $alpha: 0.3);
+        }
+    }
+
+
+
+    
+}

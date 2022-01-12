@@ -66,7 +66,7 @@
           
            
 
-              <h1 v-if="settings.isPinnedTopLayout" :class="{'rmli-margin-top-xxxl': filteredElements.pinned.length > 0 }">{{$t('list.rest')}}</h1>
+              <h1 v-if="settings.isPinnedTopLayout" :class="{'rmli-margin-top-xxl': filteredElements.pinned.length > 0 }">{{$t('list.rest')}}</h1>
         
                <div class="rmli-element rmli-element-no-border rmli-element-add-top" v-if="settings.isPinnedTopLayout">
                 <Add @add="addStart" :placeholder="$t('add.start')" ref="add"/>
@@ -92,6 +92,9 @@
               
         </div>
     </main>
+    <AlarmDialog ref="alarmDialog">
+      When is it due?
+    </AlarmDialog>
   </div>
   <div :class="'rmli-status rmli-status-' + (status.visible ? 'visibale' : 'hidden')"> 
     {{status.message}}
@@ -106,6 +109,7 @@
 <script>
 
 import APIService from '../services/APIService'
+import AlarmDialog from '../components/AlarmDialog.vue'
 import Toolbar from '../components/Toolbar'
 import Note from '../components/Note'
 import Add from '../components/Add'
@@ -141,7 +145,8 @@ export default {
     Toolbar,
     Note,
     Add,
-    SideBar
+    SideBar,
+    AlarmDialog
   },
   computed: {
     filteredElements () {
@@ -198,7 +203,7 @@ export default {
       Logger.log(-1, 'Editor.onSearch()', query)
       this.query = query
       this.lastQuery = new Date().getTime()
-      this.searchResultsScores = this.searchService.find(query, this.file)
+      this.searchResultsScores = this.searchService.find(query, this.file, this.selectedFolder)
     },
     getFilteredElements () {
         let results = this.file.content.elements.filter(e => {
@@ -237,10 +242,16 @@ export default {
     onJoinElement (element) {
       Logger.log(-1, 'Editor.onJoinElement() > split element', element.id) 
     },
-    onAlarm (element, value) {
-      Logger.log(-1, 'Editor.onAlarm() >  element', element.id, value)
-      element.due = value ? 1 : 0
-      this.onChange(element, true)
+    onAlarm (element) {
+      Logger.log(-1, 'Editor.onAlarm() >  element', element.id)
+     
+      this.$refs.alarmDialog.show(element.due, (dueDate) => {
+        Logger.log(-1, 'Editor.onAlarm() >  element', element.id, dueDate)
+        element.due = dueDate
+        this.onChange(element, true)
+      })
+      
+      
     },
     onPinned (element, value) {
       Logger.log(-1, 'Editor.onPinned() >  element', element.id, value)

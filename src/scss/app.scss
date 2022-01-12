@@ -13,9 +13,14 @@ body, html {
     font-size: $font-size-default;
     line-height: $line-height;
 }
- 
 
-button {
+.rmli-button-bar {
+    display: flex;
+    gap: $spacing-m;
+    padding-top: $spacing-xl;
+}
+ 
+.rmli-button {
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -38,6 +43,18 @@ button {
   i {
       font-size: $font-size-default;
       cursor: pointer;
+  }
+
+  &.rmli-button-secondary {
+    border: 1px solid $border-color-transparent;
+    background: $background-secondary;
+    color: $color1;
+
+
+    &:hover {
+        background: $background-secondary-hover;
+        border: 1px solid $border-color-transparent;
+    }
   }
 }
 

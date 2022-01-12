@@ -25,13 +25,8 @@ async function createWindow() {
       symbolColor: '#74b1be'
     },
     webPreferences: {
-      
-      // Required for Spectron testing
       enableRemoteModule: !!process.env.IS_TEST,
       preload: path.join(__dirname, 'preload.js'),
-      
-      // Use pluginOptions.nodeIntegration, leave this alone
-      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
