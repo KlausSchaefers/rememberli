@@ -22,6 +22,16 @@
         "close": "Exit",
         "home": "Home"
     },
+    "sidebar": {
+        "folders": "Folders",
+        "tags": "Tags",
+        "persons": "Persons",
+        "all": "All notes",
+        "new": "Create new folder",
+        "newplaceholder": "Enter the name",
+        "delete": "Remove",
+        "due": "Due notes"
+    },
     "list": {
         "pinned": "Pinned",
         "rest": "Notes"

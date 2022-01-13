@@ -15,6 +15,30 @@
     &.rmli-sidebar-closed  {
         width: 0px;
     }
+    
+
+
+    .rmli-sidebar-section-header {
+        font-size: $font-size-xs;
+        font-weight: 600;
+        color: rgba($color1, $alpha: 0.5);
+        display: flex;
+        justify-content: space-between;
+
+        i{
+            cursor: pointer;
+            font-weight: 400;
+            opacity: 0;
+            transition: 0.2s;
+
+            &:hover {
+                color: $color1-hover;
+                font-weight: 400;
+            }
+        }
+       
+
+    }
 
     .rmli-sidebar-content {
         display: flex;
@@ -23,10 +47,19 @@
         flex-grow: 1;
     }
 
-    .rmli-sidebar-folders {
+    .rmli-sidebar-folder-list {
+        display: flex;
         flex-grow: 1;
+        flex-direction: column;
         padding: $spacing-s $spacing-m;
-        border-top: 1px solid rgba($color: #000000, $alpha: 0.1);
+        gap: $spacing-s;
+        overflow: auto;
+
+        &:hover {
+            i.rmli-folder-add {
+                opacity: 1;
+            }
+        }
     }
 
     .rmli-sidebar-actions {
@@ -34,25 +67,53 @@
         flex-direction: column;
         padding: $spacing-s $spacing-m;
         gap: $spacing-m;
+        border-top: 1px solid rgba($color: #000000, $alpha: 0.1);
+    }
 
-        a {
-            display: flex;
-            align-items: center;
-            gap: $spacing-s;
-            cursor: pointer;
-           
-
-            span {
-                font-size: 14px;
-            }
-
-            &:hover, i{
-                color: $color1-hover;
-            }
-        }
+    a {
+        display: flex;
+        align-items: center;
+        gap: $spacing-s;
+        cursor: pointer;
+        width: 160px;
+       
 
         span {
             font-size: $font-size-s;
         }
+
+        input {
+            background: none;
+            border: none;
+            font-size: $font-size-s;
+            width: 130px;
+            flex-grow: 1;
+            outline: none;
+            padding: 0px;
+
+        }
+
+        &:hover{
+            color: $color1-hover;
+        }
     }
+
+    .rmli-sidebar-folder-selected {
+        span ,i {
+            color: $color1-hover;
+        }
+    }
+
+    .rmli-sidebar-folder-add {
+        span, i {
+            color: rgba($color: #000000, $alpha: 0.3);
+        }
+
+        &:hover {
+            span, i {
+                color: $color1-hover;
+            }
+        }
+    }
+
 }

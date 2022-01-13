@@ -1,10 +1,17 @@
 @import './ds.scss';
 
 .rmli-container {
-   
     width: 100%;
     max-width: 800px;
+}
 
+.rmli-margin-top-s {
+    margin-top: $spacing-s;
+}
+
+
+.rmli-margin-top-m {
+    margin-top: $spacing-m;
 }
 
 .rmli-margin-top-xl {

@@ -23,6 +23,10 @@
         @select="onSelect" 
         @new="onNew" 
         @exit="file = null"
+        @setFolder="setFolder"
+        @createFolder="createFolder"
+        @changeFolder="changeFolder"
+        @deleteFolder="deleteFolder"
         :file="file" 
         :isDirty="isDirty" 
         @search="onSearch"
@@ -149,20 +153,28 @@ export default {
     AlarmDialog
   },
   computed: {
+    folderElements () {
+      if (this.selectedFolder) {
+        console.debug(this.selectedFolder)
+        return this.file.content.elements.filter(f => f.folder === this.selectedFolder.id)
+      }
+      return this.file.content.elements
+    },
     filteredElements () {
       /** 
        * FIXME: add pinned stuff here
        */
+      let elements = this.folderElements
       if (this.searchService.isValidQuery(this.query)) {
         Logger.log(-1, 'Editor.filteredElements()')
         if (this.settings.isSearchPinned) {
-          return this.getSplittedElements(this.getFilteredElements())
+          return this.getSplittedElements(this.getFilteredElements(elements))
         } else {
-          return this.getConcatedElements(this.getFilteredElements())
+          return this.getConcatedElements(this.getFilteredElements(elements))
         }
         
       }
-      return this.getSplittedElements(this.file.content.elements)
+      return this.getSplittedElements(elements)
     }
   },
   methods: {
@@ -205,8 +217,8 @@ export default {
       this.lastQuery = new Date().getTime()
       this.searchResultsScores = this.searchService.find(query, this.file, this.selectedFolder)
     },
-    getFilteredElements () {
-        let results = this.file.content.elements.filter(e => {
+    getFilteredElements (elements) {
+        let results = elements.filter(e => {
           /**
            * We return all the results from the search engine, and 
            * all elements that we created after the search, so that they do not disappear
@@ -357,14 +369,14 @@ export default {
     },
     createNote (value) {
       return {
-        id: new Date().getTime(),
+        id: 'n' + new Date().getTime(),
         created: this.getTimestamp(),
         lastUpdate: this.getTimestamp(),
         elements:[],
         pinned:false,
         type: 'Note',
         value: value,
-        folder: this.selectedFolder
+        folder: this.selectedFolder ? this.selectedFolder.id : ''
       }
     },
     onKeyUp (e) {
@@ -386,8 +398,36 @@ export default {
         this.status.type = type
         setTimeout(() => this.status.visible = false, 1000)
       }
-
-    }
+    },
+    setFolder (folder) {
+      Logger.log(-2, 'Editor.setFolder() > ', folder)
+      this.selectedFolder = folder
+    },
+    changeFolder (folderId, newLabel) {
+      Logger.log(-2, 'Editor.changeFolder() > ', folderId, newLabel)
+      this.hasListAnimation = false
+      let found = this.file.content.folders.find(f => f.id === folderId)
+      if (found) {
+        found.label = newLabel
+        this.onSave()
+      }
+    },
+    deleteFolder (folderId) {
+      Logger.log(-2, 'Editor.deleteFolder() > ', folderId)
+      this.file.content.folders = this.file.content.folders.filter(f => f.id !== folderId)
+      this.onSave()
+    },
+    createFolder (folderName) {
+      Logger.log(-2, 'Editor.createFolder() > ', folderName)
+      if (!this.file.content.folders) {
+        this.file.content.folders = []
+      }
+      this.file.content.folders.push({
+         id: 'f' + new Date().getTime(),
+         label: folderName
+      })
+      this.onSave()
+    } 
   },
   mounted () {
     this.api = new APIService()

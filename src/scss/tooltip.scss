@@ -13,12 +13,14 @@
         width: 100px;
         position: absolute;
         top:100%;
-        padding: $spacing-s;
-        background: $color1;
+        right: 0px;
+        padding: $spacing-xs $spacing-s;
+        background: rgba($color1, 0.8);
         color: #fff;
         font-family: $font-family;
-        font-size: $font-size-xs;
+        font-size: $font-size-xxs;
         border-radius: $border-radius-m;
         text-align: left;
+        text-align: center;
     }
 }
