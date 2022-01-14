@@ -10,18 +10,20 @@ $background-primary: #fff;
 $background-secondary: #2c3e5022; 
 $background-secondary-hover: #2c3e5033;
 
-$color2: #fdc433;
-$color3: #75cf39;
+$color2: #ffe44b;
+$color3: #84d84d;
 $color4: #ff4d06;
 $color5: #ff8b06;
 $color6: #bd3dd6;
+$color7: #333;
 
 
 $button-background:$primary-color;
 $button-background-hover: $primary-color-hover;
 $button-color: #fff;
 
-$color-due: rgba($color4, 0.9);
+$color-due: rgba($color4, 1);
+$color-due-border: rgba($color4, 1);
 
 $spacing-xxxl:96px;
 $spacing-xxl:64px;
@@ -38,19 +40,19 @@ $font-family: Source Sans Pro, Helvetica, Arial, sans-serif;
 
 $font-size-xxl: 1.8rem;
 $font-size-xl: 1.6rem;
-$font-size-l: 1.4rem;
-$font-size-m: 1.4rem;;
+$font-size-l: 24px;
+$font-size-m: 24px;
 $font-size-default: 18px;
-$font-size-s: 0.9rem;
-$font-size-xs: 0.8rem;
-$font-size-xxs: 0.625rem;
+$font-size-s: 16px;
+$font-size-xs: 14px;
+$font-size-xxs: 12px;
 
 $line-height: 1.5;
 
 $border-color-transparent: transparent;
 $border-color-hover: rgba(0,0,0, 0.1);
 $border-color-focus: $primary-color;
-$border-radius-xl: 50px;
+$border-radius-xl: 30px;
 $border-radius-m: 8px;
 $border-radius-s: 4px;
 

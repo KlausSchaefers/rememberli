@@ -3,8 +3,10 @@
 
     <div class="rmli-sidebar-content rmli-drag-bar-below">
         
+   
+       
 
-        <div class="rmli-sidebar-folder-list">
+        <div class="rmli-sidebar-folder-list rmli-sidebar-list">
 
           <div class="rmli-sidebar-section-header">
                <span>{{$t('sidebar.folders')}}</span>
@@ -14,7 +16,8 @@
           </div>
 
            <a @click="setFolder(null)" :class="['rmli-sidebar-folder', {'rmli-sidebar-folder-selected': selectedFolder === null }]">
-                  <i class="ri-folder-line" ></i> 
+                  <i :class="iconFolderSelected" v-if="selectedFolder === null"></i>
+                  <i class="ri-folder-line" v-else ></i> 
                   <span>{{$t('sidebar.all')}}</span>
             </a>
 
@@ -27,7 +30,9 @@
                 :class="['rmli-sidebar-folder', {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder.id === folder.id }]" 
                 v-for="folder in file.content.folders" 
                 :key="folder.id">
-                  <i class="ri-folder-line" ></i> 
+                  <i :class="iconFolderSelected" v-if="selectedFolder && selectedFolder.id === folder.id"></i>
+                  <i class="ri-folder-line" v-else></i> 
+                  
                   <span v-if="!editFolder || editFolder.id !== folder.id">{{folder.label}}</span>
                   <input 
                     v-else
@@ -41,7 +46,7 @@
 
              <a class="rmli-sidebar-folder rmli-sidebar-folder-add" v-if="hasNewFolderInput" >
                  
-                  <i class="ri-folder-add-line" ></i> 
+                  <i class="ri-folder-line" ></i> 
                   <input 
                     
                     :placeholder="$t('sidebar.newplaceholder')"
@@ -55,14 +60,32 @@
         
         </div>
 
+
+        <div class="rmli-sidebar-list rmli-sidebar-menu">
+            <div class="rmli-sidebar-section-header">
+               <span>{{$t('sidebar.menu')}}</span>   
+             </div>
+
+              <div class="rmli-sidebar-actions">
+          
+                <a @click="onExit">
+                    <i class="ri-home-line"></i>
+                    <span>{{$t('actions.home')}}</span>
+                </a>
+
+                <a @click="onSettings">
+                    <i class="ri-sound-module-line"></i>
+                    <span>{{$t('actions.settings')}}</span>
+                </a>
+
+                <a @click="onHelp">
+                    <i class="ri-question-line"></i>
+                    <span>{{$t('actions.help')}}</span>
+                </a>
+              </div>
+        </div>
        
 
-        <div class="rmli-sidebar-actions">
-              <a @click="onExit">
-                  <i class="ri-home-line"></i>
-                  <span>{{$t('actions.home')}}</span>
-              </a>
-        </div>
     </div>
   
     
@@ -77,10 +100,11 @@ import Logger from '../util/Logger'
 
 export default {
   name: 'SideBar',
-  emits: ['save', 'select', 'search', 'new', 'exit', 'setFolder', 'deleteFolder', 'createFolder', 'changeFolder', 'deleteFolder'],
+  emits: ['save', 'select', 'search', 'new', 'exit', 'setFolder', 'deleteFolder', 'createFolder', 'changeFolder', 'deleteFolder', 'settings'],
   props: ['file', 'isDirty', 'hasMenu'],
   data: function () {
     return {
+        iconFolderSelected: 'ri-folder-4-line',
         hasNewFolderInput: false,
         newFolderName: '',
         selectedFolder: null,
@@ -145,6 +169,16 @@ export default {
     },
     onExit () {
       this.$emit('exit')
+    },
+    onSettings () {
+      Logger.log(-3, 'SideBar.onSettings()')
+      this.$emit('settings')
+    },
+    onHelp () {
+      Logger.log(-3, 'SideBar.onHelp()')
+    },
+    onAbout () {
+      Logger.log(-3, 'SideBar.onAbout()')
     }
   },
   mounted () {

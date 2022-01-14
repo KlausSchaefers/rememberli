@@ -1,5 +1,8 @@
 @import './ds.scss';
 
+$color-action-hover: $color1;
+$spacing-action: 12px;
+
 .rmli-sidebar {
     border-right: rgba($color: #000000, $alpha: 0.1);
     background: $background-secondary;
@@ -11,6 +14,8 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow: scroll;
+
 
     &.rmli-sidebar-closed  {
         width: 0px;
@@ -19,41 +24,30 @@
 
 
     .rmli-sidebar-section-header {
-        font-size: $font-size-xs;
+        font-size: $font-size-xxs;
         font-weight: 600;
         color: rgba($color1, $alpha: 0.5);
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        padding: 0px $spacing-action;
+    }
 
-        i{
+    .rmli-sidebar-folder-list {
+        flex-grow: 1;
+        overflow: auto;
+
+        i.rmli-folder-add {
             cursor: pointer;
             font-weight: 400;
             opacity: 0;
-            transition: 0.2s;
-
+            font-size: $font-size-default;
+            transition: all 0.2s;
             &:hover {
                 color: $color1-hover;
                 font-weight: 400;
             }
         }
-       
-
-    }
-
-    .rmli-sidebar-content {
-        display: flex;
-        flex-direction: column;
-        box-sizing: border-box;
-        flex-grow: 1;
-    }
-
-    .rmli-sidebar-folder-list {
-        display: flex;
-        flex-grow: 1;
-        flex-direction: column;
-        padding: $spacing-s $spacing-m;
-        gap: $spacing-s;
-        overflow: auto;
 
         &:hover {
             i.rmli-folder-add {
@@ -62,13 +56,34 @@
         }
     }
 
-    .rmli-sidebar-actions {
+    .rmli-sidebar-content {
         display: flex;
         flex-direction: column;
-        padding: $spacing-s $spacing-m;
-        gap: $spacing-m;
-        border-top: 1px solid rgba($color: #000000, $alpha: 0.1);
+        box-sizing: border-box;
+        flex-grow: 1;
+        gap: $spacing-l;
     }
+
+    .rmli-sidebar-list {
+        padding: $spacing-s $spacing-s;
+        gap: $spacing-xs;
+        display: flex;
+        flex-direction: column;
+    }
+
+  
+
+    .rmli-sidebar-menu {
+        padding-top: $spacing-m;
+        border-top: 1px solid rgba($color: #000000, $alpha: 0.1);
+        .rmli-sidebar-actions {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing-s;
+        }
+    }
+
+
 
     a {
         display: flex;
@@ -76,16 +91,18 @@
         gap: $spacing-s;
         cursor: pointer;
         width: 160px;
+        padding: $spacing-xs $spacing-action;
+        border-radius: $border-radius-xl;
        
 
         span {
-            font-size: $font-size-s;
+            font-size: $font-size-xs;
         }
 
         input {
             background: none;
             border: none;
-            font-size: $font-size-s;
+            font-size: $font-size-xs;
             width: 130px;
             flex-grow: 1;
             outline: none;
@@ -99,8 +116,12 @@
     }
 
     .rmli-sidebar-folder-selected {
+        background: $primary-color;
         span ,i {
-            color: $color1-hover;
+            color: #fff;
+        }
+        &:hover{
+           background-color: $primary-color-hover;
         }
     }
 
@@ -108,12 +129,13 @@
         span, i {
             color: rgba($color: #000000, $alpha: 0.3);
         }
-
         &:hover {
             span, i {
-                color: $color1-hover;
+                color: $color-action-hover;
             }
         }
     }
+
+    
 
 }

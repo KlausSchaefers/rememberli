@@ -1,5 +1,5 @@
 <template>
-  <div class="rmli-splash" v-if="!file" @keyup="onKeyUp">
+  <div :class="'rmli-splash rmli-theme-' + settings.theme " v-if="!file" @keyup="onKeyUp">
       
       <div class="rmli-splash-actions ">
           <a @click="onNew">
@@ -14,7 +14,7 @@
       </div>
 
   </div>
-  <div class="rmli-editor" v-if="file">
+  <div :class="'rmli-editor rmli-theme-' + settings.theme + ' rmli-font-size-' + settings.fontSize" v-if="file">
 
     
     <SideBar
@@ -23,6 +23,7 @@
         @select="onSelect" 
         @new="onNew" 
         @exit="file = null"
+        @settings="showSettings"
         @setFolder="setFolder"
         @createFolder="createFolder"
         @changeFolder="changeFolder"
@@ -96,9 +97,8 @@
               
         </div>
     </main>
-    <AlarmDialog ref="alarmDialog">
-      When is it due?
-    </AlarmDialog>
+    <AlarmDialog ref="alarmDialog"/>
+    <SettingsDialog ref="settingsDialog"/>
   </div>
   <div :class="'rmli-status rmli-status-' + (status.visible ? 'visibale' : 'hidden')"> 
     {{status.message}}
@@ -109,11 +109,13 @@
   @import '../scss/splash.scss';
   @import '../scss/editor.scss';
   @import '../scss/animation.scss';
+  @import '../scss/theme-soft.scss';
 </style>
 <script>
 
 import APIService from '../services/APIService'
 import AlarmDialog from '../components/AlarmDialog.vue'
+import SettingsDialog from '../components/SettingsDialog.vue'
 import Toolbar from '../components/Toolbar'
 import Note from '../components/Note'
 import Add from '../components/Add'
@@ -128,6 +130,8 @@ export default {
   data: function () {
       return {
         settings: {
+          theme: 'soft',
+          fontSize: 's',
           isPinnedTopLayout: true,
           isSearchPinned: true
         },
@@ -150,7 +154,8 @@ export default {
     Note,
     Add,
     SideBar,
-    AlarmDialog
+    AlarmDialog,
+    SettingsDialog
   },
   computed: {
     folderElements () {
@@ -427,7 +432,13 @@ export default {
          label: folderName
       })
       this.onSave()
-    } 
+    },
+    showSettings () {
+      Logger.log(-2, 'Editor.showSettings() > ')
+      this.$refs.settingsDialog.show(this.settings, () => {
+        this.onSave()
+      })
+    }
   },
   mounted () {
     this.api = new APIService()

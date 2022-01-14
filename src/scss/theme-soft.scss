@@ -1,0 +1,45 @@
+@import './ds.scss';
+
+$color-action-hover: $color1;
+
+.rmli-theme-soft {
+
+    .rmli-sidebar {
+
+    
+        .rmli-sidebar-folder-selected {
+            background: rgba($color: #000000, $alpha: 0.05);
+            span ,i {
+                color: $color-action-hover;
+            }
+            &:hover{
+                span ,i {
+                    color: $color1-hover;
+                }
+            }
+        }
+    }
+
+
+    .rmli-note{
+
+        &.rmli-due {
+            border-left: 3px solid rgba($color-due-border, 0.4); ;
+        }
+        
+        &.rmli-focus {
+            border-left: 3px solid rgba($border-color-focus, 0.4);
+        }
+   
+        textarea, .rmli-editable{
+            .rmi-highlight-tag {
+                background: rgba($color: $color2, $alpha: 0.3);
+            }
+
+            .rmi-highlight-person {
+                background: rgba($color: $color3, $alpha: 0.3);
+            }
+        }
+    }
+
+}

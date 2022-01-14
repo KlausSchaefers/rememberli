@@ -26,7 +26,7 @@
         overflow: auto;
         padding: 0px $spacing-m;
         align-items: center;
- 
+
         .rmli-element{
             padding: 0px;
             border-top: 1px solid rgba(0,0,0, 0.05);
@@ -35,15 +35,6 @@
         .rmli-element-no-border {
             border-top: 1px solid rgba(0,0,0, 0);
         }
-        
-    
-    }
-
-  
- 
-
-    .rmli-element-add {
-   
     }
 
     .rmli-element-add-behind {
@@ -57,12 +48,10 @@
         }
     }
 
-   
-
 }
 
 .rmli-status{
-    background: $color1-hover;
+    background: rgba($color1, 0.8);
     color: #fff;
     position: fixed;
     font-size: $font-size-xxs;

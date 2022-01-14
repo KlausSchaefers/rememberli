@@ -1,10 +1,6 @@
-@import './design-system.scss';
+@import './ds.scss';
 
-.luisa-radio {
-  display: block;
-  position: relative;
-
-  margin-bottom: $spacing-m;
+.rmli-radio {
   cursor: pointer;
   font-size: $font-size-m;
   -webkit-user-select: none;
@@ -15,6 +11,7 @@
   align-items: center;
   gap: $spacing-s;
 
+
   input {
     position: absolute;
     opacity: 0;
@@ -23,44 +20,50 @@
     width: 0;
   }
 
-  .luisa-radio-icon {
-    position: relative;
-    height: $spacing-m;
-    width: $spacing-m;
-    background-color: $border-color;
+  .rmli-radio-icon {
+    background-color: #fff;
     border-radius: 50%;
+    height: $font-size-s;
+    width: $font-size-s;
+    display: inline-block;
+    border: 1px solid $color1;
+    padding: $spacing-xs;
+    box-sizing: border-box;
   }
 
   label {
     cursor: pointer;
     font-weight: 400;
+    font-size: $font-size-default;
   }
 
-  &:hover input ~ .luisa-radio-icon {
-    background-color: $border-color;
+  &:hover input ~ .rmli-radio-icon {
+    background: #fff;
   }
 
-  input:checked ~ .luisa-radio-icon {
-    background: $primary-background;
+  input:checked ~ .rmli-radio-icon {
+    background: #fff;
   }
 
-  .luisa-radio-icon:after {
-    content: "";
-    position: absolute;
+  .rmli-radio-icon:after {
+    content: '';
+    height: 100%;
+    width: 100%;
+    border-radius: 50px;
+    background: $color1;
     display: none;
   }
 
-  input:checked ~ .luisa-radio-icon:after {
+  input:checked ~ .rmli-radio-icon:after {
     display: block;
   }
 
-  /* Style the indicator (dot/circle) */
-  .luisa-radio-icon:after {
-    top: 5px;
-    left: 5px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: white;
-  }
+ 
+}
+
+.rmli-radio-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-s;
+  padding: $spacing-s 0px;
 }

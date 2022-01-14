@@ -56,11 +56,11 @@
     }
 
     &.rmli-due {
-        border-left: 3px solid $color-due;
+        border-left: 3px solid $color-due-border;
     }
     
     &.rmli-focus {
-        border-left: 3px solid $border-color-focus;
+        border-left: 3px solid rgba($border-color-focus, 1);
     }
 
     textarea, .rmli-editable{
@@ -70,7 +70,7 @@
         width: 100%;
         min-height: 30px;
         box-sizing: border-box;
-        font-size: $font-size-default;
+        font-size: $font-size-s;
         font-family: $font-family;
         padding: $spacing-m $spacing-m;
         resize: none;
@@ -86,11 +86,11 @@
         }
 
         .rmi-highlight-tag {
-            background: rgba($color: $color2, $alpha: 0.3);
+            background: rgba($color: $color2, $alpha: 1);
         }
 
         .rmi-highlight-person {
-            background: rgba($color: $color3, $alpha: 0.3);
+            background: rgba($color: $color3, $alpha: 1);
         }
 
     }
@@ -130,4 +130,15 @@
     .rmi-highlight-icon {
         vertical-align: middle;
     }
+}
+
+.rmli-font-size-m {
+
+    .rmli-note {
+
+        textarea, .rmli-editable{
+            font-size: $font-size-default;
+        }
+    }
+
 }

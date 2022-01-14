@@ -1,8 +1,16 @@
 {
+    "common": {
+        "cancel": "Cancel",
+        "save": "Save"
+    },
     "add": {
         "start": "Add new note",
         "end": "Append note to end",
         "behind": "Type here to add new note"
+    },
+    "settings": {
+        "theme": "Theme",
+        "fontSize": "Font Size"
     },
     "note": {
         "remove": "Remove all text to delete note",
@@ -20,9 +28,13 @@
         "select": "Open",
         "save": "Save",
         "close": "Exit",
-        "home": "Home"
+        "home": "Home",
+        "help": "Help",
+        "about": "About",
+        "settings": "Settings"
     },
     "sidebar": {
+        "menu": "Links",
         "folders": "Folders",
         "tags": "Tags",
         "persons": "Persons",
