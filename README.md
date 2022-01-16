@@ -48,21 +48,18 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 
 # TODO:
 
-- Folder / dnd to sides
-- highLight & colors
 - last opened?
-- file extension
 - dark scheme
+- "Due" folder as query?
 - tasks
-- alarms
-- '...' button?
 - trash?
 - notes as documents?
 - Fix focus bug when clicking on highlights
-- Todos
-- Reminder
-- Lines?
+- Markup:
+    Lines
+    Bold
+    lili
+    smily
 - search by types
 - "[ ]" should work interactive?
 - speed ap highlighther?
--save settings

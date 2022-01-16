@@ -22,7 +22,7 @@
                 @drop="onDrop(allFolder, $event)"
                 >
                   <i :class="iconFolderSelected" v-if="selectedFolder === null"></i>
-                  <i class="ri-folder-line" v-else ></i> 
+                  <i class="ri-folders-line" v-else ></i> 
                   <span>{{$t('sidebar.all')}}</span>
             </a>
 
@@ -118,7 +118,7 @@ export default {
   props: ['file', 'isDirty', 'hasMenu'],
   data: function () {
     return {
-        iconFolderSelected: 'ri-folder-4-line',
+        iconFolderSelected: 'ri-folder-open-line', //'ri-folder-4-line',
         hasNewFolderInput: false,
         newFolderName: '',
         selectedFolder: null,
