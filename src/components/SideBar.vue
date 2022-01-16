@@ -1,11 +1,8 @@
 <template>
-  <div :class="'rmli-sidebar rmli-sidebar-' + (hasMenu ? 'closed' : 'open') ">
+  <div :class="'rmli-sidebar rmli-sidebar-' + (hasMenu ? 'open' : 'closed') ">
 
     <div class="rmli-sidebar-content rmli-drag-bar-below">
         
-   
-       
-
         <div class="rmli-sidebar-folder-list rmli-sidebar-list">
 
           <div class="rmli-sidebar-section-header">
@@ -15,7 +12,15 @@
                 </i> 
           </div>
 
-           <a @click="setFolder(null)" :class="['rmli-sidebar-folder', {'rmli-sidebar-folder-selected': selectedFolder === null }]">
+           <a @click="setFolder(null)" 
+            :class="[
+                'rmli-sidebar-folder', 
+                {'rmli-sidebar-folder-selected': selectedFolder === null },
+                {'rmli-sidebar-folder-dnd': dropFolder && dropFolder.id === allFolder.id }]"
+                @dragover="onDragOver(allFolder, $event)"
+                @dragleave="onDragLeave(allFolder, $event)"
+                @drop="onDrop(allFolder, $event)"
+                >
                   <i :class="iconFolderSelected" v-if="selectedFolder === null"></i>
                   <i class="ri-folder-line" v-else ></i> 
                   <span>{{$t('sidebar.all')}}</span>
@@ -27,13 +32,22 @@
             </a>
 
             <a @click="setFolder(folder)" @dblclick="showEditFolder(folder)"
-                :class="['rmli-sidebar-folder', {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder.id === folder.id }]" 
+                :class="[
+                  'rmli-sidebar-folder', 
+                  {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder.id === folder.id }, 
+                  {'rmli-sidebar-folder-dnd': dropFolder && dropFolder.id === folder.id }
+                ]" 
                 v-for="folder in file.content.folders" 
+                @dragover="onDragOver(folder, $event)"
+                @dragleave="onDragLeave(folder, $event)"
+                @drop="onDrop(folder, $event)"
                 :key="folder.id">
                   <i :class="iconFolderSelected" v-if="selectedFolder && selectedFolder.id === folder.id"></i>
                   <i class="ri-folder-line" v-else></i> 
                   
-                  <span v-if="!editFolder || editFolder.id !== folder.id">{{folder.label}}</span>
+                  <span v-if="!editFolder || editFolder.id !== folder.id">
+                      {{folder.label}}
+                  </span>
                   <input 
                     v-else
                     :placeholder="$t('sidebar.delete')"
@@ -100,7 +114,7 @@ import Logger from '../util/Logger'
 
 export default {
   name: 'SideBar',
-  emits: ['save', 'select', 'search', 'new', 'exit', 'setFolder', 'deleteFolder', 'createFolder', 'changeFolder', 'deleteFolder', 'settings'],
+  emits: ['save', 'select', 'search', 'new', 'exit', 'setFolder', 'deleteFolder', 'createFolder', 'changeFolder', 'deleteFolder', 'settings', 'moveElementToFolder'],
   props: ['file', 'isDirty', 'hasMenu'],
   data: function () {
     return {
@@ -109,14 +123,48 @@ export default {
         newFolderName: '',
         selectedFolder: null,
         editFolder: null,
-        editFolderName: null
+        dropFolder: null,
+        editFolderName: null,
+        allFolder: {
+          id:'',
+          label:'All'
+        }
     }
   },
   components: {
   },
+  computed: {
+    folderDueCount () {
+      Logger.log(3, 'SideBar.folderDueCount()')
+      let result = {}
+      if (this.file) {
+        this.file.content.elemenents.forEach(e => {
+           e //
+        })
+      }
+      return result
+    }
+  },
   methods: {
+    onDragOver (folder, e) {
+      Logger.log(3, 'SideBar.onDragOver()', folder.label, e)
+      e.preventDefault()
+      this.dropFolder = folder
+    },
+    onDragLeave () {
+      this.dropFolder = null
+    },
+    onDrop (folder, e) {
+      Logger.log(3, 'SideBar.onDrop()', folder, e)
+      this.dropFolder = null
+      if (e && e.dataTransfer) {
+        e.preventDefault();
+        var elementId = e.dataTransfer.getData("text");
+        this.$emit('moveElementToFolder', folder, elementId)
+      }
+    },
     showEditFolder (folder) {
-      Logger.log(-3, 'SideBar.showEditFolder()', folder)
+      Logger.log(3, 'SideBar.showEditFolder()', folder)
       this.editFolder = folder
       this.editFolderName = folder.label
       this.$nextTick(() => {
@@ -125,7 +173,7 @@ export default {
       })
     },
     changeFolder () {
-      Logger.log(-3, 'SideBar.changeFolder()', this.editFolderName)
+      Logger.log(3, 'SideBar.changeFolder()', this.editFolderName)
       if (this.editFolderName.trim()) {
         this.$emit('changeFolder', this.editFolder.id, this.editFolderName)
       } else {
@@ -135,23 +183,23 @@ export default {
       this.editFolderName = ''
     },
     setSearch (query) {
-      Logger.log(-3, 'SideBar.setSearch()', query)
+      Logger.log(3, 'SideBar.setSearch()', query)
       this.$emit('search', query)
     },
     setFolder (folder) {
-      Logger.log(-3, 'SideBar.setFolder()', folder)
+      Logger.log(3, 'SideBar.setFolder()', folder)
       this.selectedFolder = folder
       this.$emit('setFolder', folder)
     },
     showNewFolder () {
-      Logger.log(-3, 'SideBar.createNewFolder()')
+      Logger.log(3, 'SideBar.createNewFolder()')
       this.hasNewFolderInput = true
       this.$nextTick(() => {
         this.$refs.newFolderInput.focus()
       })
     },
     createNewFolder () {
-      Logger.log(-3, 'SideBar.createNewFolder() > ', this.newFolderName)
+      Logger.log(3, 'SideBar.createNewFolder() > ', this.newFolderName)
       this.hasNewFolderInput = false
       if (this.newFolderName) {
         this.$emit('createFolder', this.newFolderName)
@@ -171,14 +219,14 @@ export default {
       this.$emit('exit')
     },
     onSettings () {
-      Logger.log(-3, 'SideBar.onSettings()')
+      Logger.log(3, 'SideBar.onSettings()')
       this.$emit('settings')
     },
     onHelp () {
-      Logger.log(-3, 'SideBar.onHelp()')
+      Logger.log(3, 'SideBar.onHelp()')
     },
     onAbout () {
-      Logger.log(-3, 'SideBar.onAbout()')
+      Logger.log(3, 'SideBar.onAbout()')
     }
   },
   mounted () {

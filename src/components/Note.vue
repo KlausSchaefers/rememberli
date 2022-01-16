@@ -1,6 +1,12 @@
 
 <template>
-  <div :class="['rmli-note', {'rmli-focus': hasFocus}, {'rmli-due': isDue}]" @click="$emit('click')">
+  <div 
+    :class="['rmli-note', {'rmli-focus': hasFocus}, {'rmli-due': isDue}]" 
+    @click="$emit('click')" 
+    :data-element-id="element.id"  
+    @dragstart="onDragStart"
+    :draggable="isDragable"
+    >
       <div class="rmli-note-status">
           {{created}}
           <i class="ri-pushpin-2-line" v-if="!isPinned && !hasMore" @click="onPinned(true)"></i>
@@ -47,6 +53,10 @@ export default {
   name: 'Note',
   emits: ['change', 'focus', 'click', 'pinned', 'alarm'],
   props: {
+    hasMenu: {
+      type: Boolean,
+      default: false
+    },
     query: {
       type: String,
       default: ''
@@ -73,6 +83,9 @@ export default {
   components: {
   },
   computed: {
+      isDragable () {
+        return true // FIMXE: this.hasMenu
+      },
       isDue () {
         return this.element.due > 0 && this.element.due < new Date().getTime()
       },
@@ -100,6 +113,11 @@ export default {
       }
   },
   methods: {
+    onDragStart (e) {
+        Logger.log(-3, 'Note.onDragStart() > enter', e)
+        e.dataTransfer.setData("text/plain", this.element.id);
+        this.isDnd = true
+    },
     onPaste (e) {
       Logger.log(3, 'Note.onPaste() > enter')
       let text = e.clipboardData.getData('text')
@@ -118,10 +136,15 @@ export default {
     },
     onFocus () {
       this.hasFocus = true
+      this.isDnd = false
       this.setValue(this.element.value)
     },
     onBlur () {
       Logger.log(3, 'Note.onBlur() ', this.getValue(), `>${this.getText()}<`)
+      if (this.isDnd) {
+        Logger.log(3, 'Note.onBlur() > blue after DNN')
+        return
+      }
       if (this.hasPlaceHolder) {
         this.$emit('change', '')
       } else {

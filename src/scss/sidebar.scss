@@ -125,6 +125,10 @@ $spacing-action: 12px;
         }
     }
 
+    .rmli-sidebar-folder-dnd {
+        color: $color1-hover;
+    }
+
     .rmli-sidebar-folder-add {
         span, i {
             color: rgba($color: #000000, $alpha: 0.3);

@@ -28,6 +28,7 @@
         @createFolder="createFolder"
         @changeFolder="changeFolder"
         @deleteFolder="deleteFolder"
+        @moveElementToFolder="moveElementToFolder"
         :file="file" 
         :isDirty="isDirty" 
         @search="onSearch"
@@ -45,6 +46,7 @@
             :isDirty="isDirty" 
             @search="onSearch"/>
 
+
         <div :class="'rmli-element-list ' + (hasListAnimation ? 'rmli-is-animated ': '')">
           <div class="rmli-container" ref="elementCntr">
           
@@ -60,6 +62,7 @@
                       :is="element.type" 
                       :element="element" 
                       :query="query"
+                      :hasMenu="hasMenu"
                       @alarm="onAlarm(element, $event)"
                       @pinned="onPinned(element, $event)"
                       @change="onElementChange(element, $event)" 
@@ -140,7 +143,7 @@ export default {
           visible: false
         },
         hasListAnimation: false,
-        hasMenu: true,
+        hasMenu: false,
         query: '',
         isDirty: false,
         file: null,
@@ -160,7 +163,7 @@ export default {
   computed: {
     folderElements () {
       if (this.selectedFolder) {
-        console.debug(this.selectedFolder)
+        Logger.log(2, 'Editor.folderElements()', this.selectedFolder)
         return this.file.content.elements.filter(f => f.folder === this.selectedFolder.id)
       }
       return this.file.content.elements
@@ -305,14 +308,14 @@ export default {
        * TODO: We could have here more, e.g. splitting
        */
       if (value) {
-        Logger.log(1, 'Editor.onElementChange() > update element', element.id, value)
+        Logger.log(-1, 'Editor.onElementChange() > update element', element.id, value)
         if (element.value !== value) {
           this.historyService.change(element, value, this.file)
           element.value = value
           this.onChange(element, true)
         }
       } else {
-        Logger.log(1, 'Editor.onElementChange() > Delete element', element.id, value)
+        Logger.log(-1, 'Editor.onElementChange() > Delete element', element.id, value)
         let index = this.file.content.elements.findIndex(e => e.id === element.id)
         if (index > -1) {
           this.historyService.delete(element, this.file)
@@ -322,7 +325,7 @@ export default {
       }
     },
     onChange (element, updateIndex) {
-      Logger.log(2, 'Editor.onChange()', element)
+      Logger.log(-1, 'Editor.onChange()', element)
       if (updateIndex) {
         this.searchService.indexElement(element)
       }
@@ -405,7 +408,7 @@ export default {
       }
     },
     setFolder (folder) {
-      Logger.log(-2, 'Editor.setFolder() > ', folder)
+      Logger.log(2, 'Editor.setFolder() > ', folder)
       this.selectedFolder = folder
     },
     changeFolder (folderId, newLabel) {
@@ -418,29 +421,49 @@ export default {
       }
     },
     deleteFolder (folderId) {
-      Logger.log(-2, 'Editor.deleteFolder() > ', folderId)
+      Logger.log(2, 'Editor.deleteFolder() > ', folderId)
       this.file.content.folders = this.file.content.folders.filter(f => f.id !== folderId)
       this.onSave()
     },
     createFolder (folderName) {
-      Logger.log(-2, 'Editor.createFolder() > ', folderName)
+      Logger.log(2, 'Editor.createFolder() > ', folderName)
       if (!this.file.content.folders) {
         this.file.content.folders = []
       }
       this.file.content.folders.push({
-         id: 'f' + new Date().getTime(),
+         id: 'f' + new Date().getTime() + '_' + folderName,
          label: folderName
       })
       this.onSave()
     },
-    showSettings () {
-      Logger.log(-2, 'Editor.showSettings() > ')
-      this.$refs.settingsDialog.show(this.settings, () => {
+    moveElementToFolder (folder, elementId) {
+      Logger.log(2, 'Editor.moveElementToFolder() > ', folder, elementId)
+      let element = this.file.content.elements.find(e => e.id === elementId)
+      if (element) {
+        this.historyService.move(element, element.folder, folder.id)
+        element.folder = folder.id
         this.onSave()
+      } else {
+        Logger.log(-2, 'Editor.moveElementToFolder() > Could not find element', elementId)
+      }
+    },
+    showSettings () {
+      Logger.log(2, 'Editor.showSettings()')
+      this.$refs.settingsDialog.show(this.settings, (settings) => {
+          localStorage.setItem('rmli-settings', JSON.stringify(settings))
       })
+    },
+    initSettings () {
+      Logger.log(-2, 'Editor.initSettings()')
+      let value = localStorage.getItem('rmli-settings')
+      if (value) {
+        this.settings = JSON.parse(value)
+      }
     }
+
   },
   mounted () {
+    this.initSettings()
     this.api = new APIService()
     this.api.onSave(this.onSaveReply)
     this.api.onSelect(this.onSelectReply)

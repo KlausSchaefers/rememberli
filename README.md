@@ -65,3 +65,4 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 - search by types
 - "[ ]" should work interactive?
 - speed ap highlighther?
+-save settings

@@ -5,7 +5,7 @@
         <h1>{{$t('settings.theme')}}</h1>
         <RadioList :options="themes" v-model="settings.theme"/>
 
-        <h1 class="rmli-margin-top-m">{{$t('settings.fontSize')}}</h1>
+        <h1 class="rmli-margin-top-l">{{$t('settings.fontSize')}}</h1>
         <RadioList :options="sizes" v-model="settings.fontSize"/>
 
         <div class="rmli-button-bar">
@@ -40,7 +40,8 @@ export default {
         ],
         sizes: [
             {label: "Small", value: "s"},
-            {label: "Large", value: "m"}
+            {label: "Medium", value: "m"},
+            {label: "Large", value: "l"}
         ],
         settings: null
     }
@@ -62,7 +63,7 @@ export default {
     save () {
       Logger.log(-1, 'SettingsDialog.save()')
       if (this.callback && this.settings) {
-        this.callback(true)
+        this.callback(this.settings)
       }
       this.close()
     },

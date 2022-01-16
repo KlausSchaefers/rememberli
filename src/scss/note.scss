@@ -142,3 +142,15 @@
     }
 
 }
+
+
+.rmli-font-size-l {
+
+    .rmli-note {
+
+        textarea, .rmli-editable{
+            font-size: $font-size-l;
+        }
+    }
+
+}

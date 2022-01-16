@@ -12,7 +12,8 @@
                 </div>
                 <div class="rmli-search">
                     <input v-model="search" :placeholder="$t('toolbar.search')" @keyup="onSearch" ref="searchInput">
-                    <i class="ri-search-line"></i>
+                    <i class="ri-close-line rmli-toolbar-reset" v-if="search !== ''" @click="reset"></i>
+                    <i class="ri-search-line rmli-toolbar-search" v-else></i>
                 </div>
         
           </div>
@@ -52,6 +53,10 @@ export default {
       this.$emit('select')
     },
     onSearch () {
+      this.$emit('search', this.search)
+    },
+    reset () {
+      this.search = ''
       this.$emit('search', this.search)
     },
     focus () {

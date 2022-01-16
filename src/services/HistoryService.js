@@ -39,6 +39,15 @@ export default class HistoryService {
         })
     }
 
+    move (element, oldFolder, newFolder) {
+        this.undos.push({
+            type: 'Move',
+            id: element.id,
+            oldFolder: oldFolder,
+            newFolder:newFolder 
+        })
+    }
+
     undo (file) {
         Logger.log(-1, 'HistoryService.undo()')
 
@@ -53,6 +62,9 @@ export default class HistoryService {
                     break
                 case 'Delete':
                     this.undoDelete(delta, file)
+                    break
+                case 'Move':
+                    this.undoMove(delta, file)
                     break
                 default:
                     Logger.warn('HistroyService.undo() > Unsuported Type', delta.type)
@@ -91,6 +103,17 @@ export default class HistoryService {
         let element = delta.deletedElement
         file.content.elements.splice(index, 0, element); 
         Logger.log(-1, 'HistoryService.undoDelete() > exit ', file.content.elements.length, file) 
+    }
+
+    undoMove (delta, file) {
+        Logger.log(-1, 'HistoryService.undoMove()', delta.id, delta.oldValue)
+        let element = file.content.elements.find(e => e.id === delta.id)
+        if (element) {
+            element.folder = delta.oldFolder
+            this.redos.push(delta)
+        } else {
+            Logger.log(-1, 'HistoryService.undoMove() > cannot find element')
+        }
     }
 
 }
