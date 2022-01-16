@@ -1,3 +1,47 @@
+@import './ds.scss';
+
+$border-color-bw: rgba($color: #000000, $alpha: 0.2);
+$color1-bw: #000;
+
 .rmli-theme-bw {
 
+
+    .rmli-sidebar {
+        border-right: 1px solid $border-color-bw;
+        background: #fff;
+    }
+
+    .rmli-sidebar .rmli-sidebar-folder-selected {
+        background: $color1-bw;
+    }
+
+    .rmli-sidebar-menu {
+        border-top: 1px solid $border-color-bw;
+    }
+
+    .rmli-editor-body, .rmli-note textarea, .rmli-note .rmli-editable {
+        color: $color1-bw;
+    }
+
+    a {
+        &:hover{ 
+            color: $color1-bw;
+        }
+    }
+
+    .rmli-search {
+     
+
+        input {
+            background: #fff;
+            border: 1px solid $border-color-bw;
+            &:focus {
+                border-color: $color1-bw;
+            }
+        }
+    }
+
+    .rmli-note .rmli-note-status i.rmli-note-icon-active {
+        background: #fff;
+    }
 }

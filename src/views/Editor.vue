@@ -113,6 +113,8 @@
   @import '../scss/editor.scss';
   @import '../scss/animation.scss';
   @import '../scss/theme-soft.scss';
+  @import '../scss/theme-bw.scss';
+  @import '../scss/theme-dark.scss';
 </style>
 <script>
 

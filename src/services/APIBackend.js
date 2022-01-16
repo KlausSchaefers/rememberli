@@ -52,7 +52,7 @@ async function select (event, arg) {
         let path = result.filePaths[0]
         let data = fs.readFileSync(path, 'utf8')
         let content = JSON.parse(data)
-        Logger.log(-1,'APIBackend.select() > select', content) 
+        Logger.log(3,'APIBackend.select() > select', content) 
         event.reply('select:reply', {
             url: path,
             content: content
