@@ -5,6 +5,8 @@ export default class SearchService {
 
     constructor () {
         this.elements = {}
+        this.tags = new Set()
+        this.persons = new Set()
     }
 
     find(query) {
@@ -16,7 +18,6 @@ export default class SearchService {
             elements.forEach(e => {
                 parts.forEach(part => {
                     if (this.isValidQuery(part)) {
-                        console.debug(' search for', part, e.value)
                         if (e.value.indexOf(part) >= 0) {
                             if (!result[e.id]) {
                                 result[e.id] = {score:0}
@@ -66,5 +67,36 @@ export default class SearchService {
             value : text,
             id: element.id
         }
+
+        this.indexTags(text)
+        this.indexPersons(text)
+    }
+
+    indexTags (text) {
+        let tags = text.match(/(#[a-zA-Z0-9\-_]+)/g)
+        if (tags) {
+            tags.forEach(t => this.tags.add(t))
+        }
+    }
+
+    indexPersons (text) {
+        let persons = text.match(/(@[a-zA-Z0-9\-_]+)/g)
+        if (persons) {
+            persons.forEach(p => this.persons.add(p))
+        }
+    }
+
+    updateTagsAndPersons (list) {
+        Logger.log(-1, 'SearchService.getTagsAndPersons() > enter')
+        this.tags.forEach(t => {
+            if (!list.includes(t)) {
+                list.push(t)
+            }
+        })
+        this.persons.forEach(p => {
+            if (!list.includes(p)) {
+                list.push(p)
+            }
+        })
     }
 }

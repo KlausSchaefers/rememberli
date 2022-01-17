@@ -46,6 +46,8 @@ https://draftjs.org/
 https://github.com/Laverna/laverna
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll
 
+https://discuss.huggingface.co/t/javascript-example-for-inference-api/5975/4
+
 # TODO:
 
 - last opened?
@@ -63,3 +65,6 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 - search by types
 - "[ ]" should work interactive?
 - speed ap highlighther?
+- cache highlights -> with DB??
+- default file type
+- clean up editor headlines

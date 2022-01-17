@@ -10,7 +10,8 @@
     },
     "settings": {
         "theme": "Theme",
-        "fontSize": "Font Size"
+        "fontSize": "Font Size",
+        "pinned": "Show pinned notes at top"
     },
     "note": {
         "remove": "Remove all text to delete note",
@@ -46,7 +47,7 @@
     },
     "list": {
         "pinned": "Pinned",
-        "rest": "Notes"
+        "rest": "All notes"
     },
     "month": {
         "0": "January",

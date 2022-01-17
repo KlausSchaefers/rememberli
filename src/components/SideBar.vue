@@ -26,7 +26,12 @@
                   <span>{{$t('sidebar.all')}}</span>
             </a>
 
-            <a @click="setSearch('due')" class="rmli-sidebar-folder" v-if="false">
+            <a @click="setDue()" v-if="hasDueFilter"
+              :class="[
+                'rmli-sidebar-folder', 
+                {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder.id === dueFolder.id }
+                ]"
+                >
                   <i class="ri-alarm-line" ></i> 
                   <span>{{$t('sidebar.due')}}</span>
             </a>
@@ -125,10 +130,18 @@ export default {
         editFolder: null,
         dropFolder: null,
         editFolderName: null,
+        isDue: false,
         allFolder: {
+          isAll: true,
           id:'',
           label:'All'
-        }
+        },
+        dueFolder: {
+          isDue: true,
+          id:'',
+          label:'Due'
+        },
+        hasDueFilter: false
     }
   },
   components: {
@@ -177,10 +190,16 @@ export default {
       if (this.editFolderName.trim()) {
         this.$emit('changeFolder', this.editFolder.id, this.editFolderName)
       } else {
-        this.$emit('deleteFolder', this.editFolder.id)
+        this.$emit('deleteFolder', this.editFolder.id, '')
       }
       this.editFolder = null
       this.editFolderName = ''
+    },
+    setDue () {
+      this.isDue = true
+      this.$emit('search', 'due')
+      this.selectedFolder = this.dueFolder
+      this.$emit('setFolder', this.dueFolder)
     },
     setSearch (query) {
       Logger.log(3, 'SideBar.setSearch()', query)
@@ -189,6 +208,10 @@ export default {
     setFolder (folder) {
       Logger.log(3, 'SideBar.setFolder()', folder)
       this.selectedFolder = folder
+      if (this.isDue) {
+        this.$emit('search', '')
+      }
+      this.isDue = false
       this.$emit('setFolder', folder)
     },
     showNewFolder () {

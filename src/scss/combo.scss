@@ -1,0 +1,52 @@
+@import './ds.scss';
+
+.rlmi-combo{
+    border:none;
+    position: relative;
+    transition: all 0.2s;
+
+    .rlmi-combo-input{
+        width: 100%;
+        height: 100%;
+    }
+
+    .rlmi-combo-input:focus{
+        outline: none;
+    }
+
+    .rlmi-combo-popup{
+        position: absolute;
+        top: calc(100% + 1px);
+        left: 0px;
+        display: none;
+        border:1px solid $border-color-hover;
+        box-shadow: $shadow-m;
+        width: 100%;
+        z-index: 1000;
+        max-height: 300px;
+        overflow: auto;
+        background: #fff;
+        border-radius: $border-radius-m;
+        font-size: $font-size-s;
+        padding: $spacing-xs;
+        box-sizing: border-box;
+    }
+
+    .rlmi-combo-item {
+        display: block;
+        cursor: pointer;
+        padding: $spacing-xs;
+
+        &:hover {
+            color: $color1-hover;
+        }
+
+        &.rlmi-combo-item-selected {
+            color: $color1-hover;
+        }
+    }
+
+    &.rlmi-combo-open .rlmi-combo-popup{
+        display: block;
+    }
+}

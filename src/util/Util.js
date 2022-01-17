@@ -71,3 +71,25 @@ export function replaceAllowedTags (sanitized, allowedTags = ['b', 'i', 'div', '
     })
     return sanitized
 }
+
+
+export function on (node, event, callback) {
+    if (node && node.toLowerCase) {
+        node = document.getElementById(node)
+    }
+    if (node && node.addEventListener) {
+        node.addEventListener(event, callback)
+        return {
+            'callback': callback,
+            'node': node,
+            'event': event,
+            'remove': function () {
+                this.node.removeEventListener(this.event, this.callback)
+            }
+        }
+    }
+}
+
+export function body () {
+    return document.getElementsByTagName("BODY")[0]
+}

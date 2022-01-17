@@ -7,11 +7,11 @@
     </span>
      <nav class="rmli-container">    
           <div class="rmli-toolbar">
-          
                 <div class="rmli-tools">
                 </div>
                 <div class="rmli-search">
-                    <input v-model="search" :placeholder="$t('toolbar.search')" @keyup="onSearch" ref="searchInput">
+                    <Combo :options="tagsAndPersons" :placeholder="$t('toolbar.search')" v-model="search" @change="onSearch" v-if="hasCombo" ref="searchInput" />
+                    <input v-model="search" :placeholder="$t('toolbar.search')" @keyup="onSearch" ref="searchInput" v-else>
                     <i class="ri-close-line rmli-toolbar-reset" v-if="search !== ''" @click="reset"></i>
                     <i class="ri-search-line rmli-toolbar-search" v-else></i>
                 </div>
@@ -25,6 +25,7 @@
   @import '../scss/toolbar.scss';
 </style>
 <script>
+import Combo from '../common/Combo.vue'
 
 export default {
   name: 'Toolbar',
@@ -33,10 +34,15 @@ export default {
   data: function () {
     return {
         search: '',
-        hasMenu: false
+        hasMenu: false,
+        hasCombo: true
     }
   },
   components: {
+    Combo
+  },
+  inject: ['tagsAndPersons'],
+  computed: {
   },
   methods: {
     onMenu () {

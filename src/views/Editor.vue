@@ -49,12 +49,19 @@
 
         <div :class="'rmli-element-list ' + (hasListAnimation ? 'rmli-is-animated ': '')">
           <div class="rmli-container" ref="elementCntr">
-          
+
+              <!-- clean this up -->
+              <h1 v-if="!settings.isPinnedTopLayout">
+                  {{selectedFolder ? selectedFolder.label : $t('list.rest')}}
+              </h1>
+
               <div class="rmli-element rmli-element-no-border rmli-element-add-top" v-if="!settings.isPinnedTopLayout">
                 <Add @add="addStart" :placeholder="$t('add.start')" ref="add"/>
               </div>
               
-              <h1 v-if="filteredElements.pinned.length > 0 && settings.isPinnedTopLayout">{{$t('list.pinned')}}</h1>
+              <h1 v-if="filteredElements.pinned.length > 0 && settings.isPinnedTopLayout">
+                {{selectedFolder ? selectedFolder.label : $t('list.rest')}} - {{$t('list.pinned')}}
+              </h1>
         
               <transition-group name="list" tag="div">
                 <div :class="'rmli-element' + (i === 0 && settings.isPinnedTopLayout ? 'rmli-element-no-border' : '')" v-for="(element,i) in filteredElements.pinned" :key="element.id" :data-element-id="element.id">
@@ -74,7 +81,9 @@
           
            
 
-              <h1 v-if="settings.isPinnedTopLayout" :class="{'rmli-margin-top-xxl': filteredElements.pinned.length > 0 }">{{$t('list.rest')}}</h1>
+              <h1 v-if="settings.isPinnedTopLayout" :class="{'rmli-margin-top-xxl': filteredElements.pinned.length > 0 }">
+                  {{selectedFolder ? selectedFolder.label : $t('list.rest')}}
+              </h1>
         
                <div class="rmli-element rmli-element-no-border rmli-element-add-top" v-if="settings.isPinnedTopLayout">
                 <Add @add="addStart" :placeholder="$t('add.start')" ref="add"/>
@@ -137,8 +146,7 @@ export default {
         settings: {
           theme: 'soft',
           fontSize: 's',
-          isPinnedTopLayout: true,
-          isSearchPinned: true
+          isPinnedTopLayout: true
         },
         status: {
           message: '',
@@ -151,7 +159,9 @@ export default {
         file: null,
         searchResultsScores: {},
         selectedFolder:'',
-        lastQuery: new Date().getTime()
+        selectedFolderName: '',
+        lastQuery: new Date().getTime(),
+        tagsAndPersons: []
     }
   },
   components: {
@@ -161,6 +171,11 @@ export default {
     SideBar,
     AlarmDialog,
     SettingsDialog
+  },
+  provide() {
+    return {
+      tagsAndPersons: this.tagsAndPersons
+    }
   },
   computed: {
     folderElements () {
@@ -177,7 +192,7 @@ export default {
       let elements = this.folderElements
       if (this.searchService.isValidQuery(this.query)) {
         Logger.log(-1, 'Editor.filteredElements()')
-        if (this.settings.isSearchPinned) {
+        if (this.settings.isPinnedTopLayout) {
           return this.getSplittedElements(this.getFilteredElements(elements))
         } else {
           return this.getConcatedElements(this.getFilteredElements(elements))
@@ -330,13 +345,18 @@ export default {
       Logger.log(-1, 'Editor.onChange()', element)
       if (updateIndex) {
         this.searchService.indexElement(element)
+        this.updateTagsAndPersons()
       }
       // TODO: parse tags and people
       this.file.content.elements.forEach((e, i) => {
         e.order = i
       })
+      
       this.isDirty = true
       this.onSave()
+    },
+    updateTagsAndPersons () {
+      this.searchService.updateTagsAndPersons(this.tagsAndPersons)
     },
     onSave () {
       Logger.log(2, 'Editor.save()', this.file)
@@ -357,6 +377,7 @@ export default {
       this.file = file
       this.isDirty = false
       this.searchService.indexAll(this.file)
+      this.updateTagsAndPersons()
       this.showStatusMessage('status.welcome')
     },
     onNew () {
@@ -410,7 +431,7 @@ export default {
       }
     },
     setFolder (folder) {
-      Logger.log(2, 'Editor.setFolder() > ', folder)
+      Logger.log(-2, 'Editor.setFolder() > ', folder)
       this.selectedFolder = folder
     },
     changeFolder (folderId, newLabel) {
