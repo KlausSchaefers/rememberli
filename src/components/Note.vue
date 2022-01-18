@@ -1,16 +1,16 @@
 
 <template>
   <div 
-    :class="['rmli-note', {'rmli-focus': hasFocus}, {'rmli-due': isDue}]" 
+    :class="['rmli-note ', {'rmli-focus': hasFocus}, {'rmli-due': isDue}, {'rmli-pinned': isPinned}]" 
     @click="$emit('click')" 
     :data-element-id="element.id"  
     @dragstart="onDragStart"
     :draggable="isDragable"
     >
-      <div class="rmli-note-status">
+      <div class="rmli-note-status rmli-element-border">
           {{created}}
-          <i class="ri-pushpin-2-line" v-if="!isPinned && !hasMore" @click="onPinned(true)"></i>
-          <i class="ri-pushpin-2-fill rmli-note-icon-active" v-if="isPinned" @click="onPinned(false)"></i>
+          <i class="ri-pushpin-2-line rmli-pinned" v-if="hasPinning && (!isPinned && !hasMore)" @click="onPinned(true)"></i>
+          <i class="ri-pushpin-2-fill rmli-pinned rmli-note-icon-active" v-if="isPinned" @click="onPinned(false)"></i>
 
           <i class="ri-alarm-line" v-if="!isAlarmSet && !hasMore" @click="onAlarm(true)"></i>
           
@@ -32,7 +32,6 @@
           @keyup="onKeyUp"
           @blur="onBlur"/>
       </div>
-
   </div>
 </template>
 
@@ -74,6 +73,7 @@ export default {
   },
   data: function () {
     return {
+        hasPinning: false, // make part of settings?
         hasMore: false,
         hasFocus:false,
         hasPlaceHolder: false,

@@ -28,7 +28,7 @@ async function save (event, data) {
      * Save file if we have an URL (might be canceled)
      */
     if (file.url) {
-        Logger.log(-1,'APIBackend.save() > write', file)
+        Logger.log(1,'APIBackend.save() > write', file)
         fs.writeFileSync(file.url, JSON.stringify(file.content, null, 2))
         // TODO: just send the URL
         event.reply('save:reply', file)

@@ -68,3 +68,4 @@ https://discuss.huggingface.co/t/javascript-example-for-inference-api/5975/4
 - cache highlights -> with DB??
 - default file type
 - clean up editor headlines
+- stars with color and special view?

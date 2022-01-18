@@ -2,7 +2,12 @@
 
 $color-action-hover: $color1;
 
+
 .rmli-theme-soft {
+
+    .rmli-pinned {
+        border-color: rgba($color-pinned-border, 0.4);
+    }
 
     .rmli-sidebar {
 

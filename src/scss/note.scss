@@ -36,12 +36,14 @@
                 background: $background-secondary;
                 color: $color1-hover;
 
+                &.rmli-pinned {
+                    color: $color-pinned;
+                }
+
                 &.rmli-due {
                     color: $color-due;
                 }
             }
-
-           
         }
 
         .rmli-note-more:hover {
@@ -53,6 +55,11 @@
 
     &:hover{
         border-left: 3px solid $border-color-hover;
+    }
+
+    &.rmli-pinned {
+        border-left: 3px solid $color-pinned-border;
+        //background: rgba($color3, .05);
     }
 
     &.rmli-due {

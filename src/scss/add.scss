@@ -3,4 +3,28 @@
 .rmli-add.rmli-note{
     border-top: 1px solid rgba(0,0,0, 0.00);
     padding: $spacing-m 0px;  
+
+
+  
+}
+
+.rmli-add-pop {
+
+    .rmli-add.rmli-note {
+
+        textarea, .rmli-editable{ 
+            background: $background-secondary;
+            border-radius: $border-radius-xl;
+            
+      
+            &:focus {
+              background: none;
+              border-radius: 0px;
+            }
+          }
+      
+          &:hover {
+              border-left: 3px solid rgba(0,0,0, 0.00);
+          }
+    }
 }

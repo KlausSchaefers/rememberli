@@ -48,15 +48,16 @@
 
         td {
             cursor: pointer;
+            border-radius: $border-radius-xl;
         }
 
         .rmli-date-selected,
         .rmli-date-range-start,
         .rmli-date-range-end {
-            background: rgba($color: $color2, $alpha: 0.3);
+            background: rgba($color: $color2, $alpha: 1);
         }
         .rmli-date-range-middle {
-            background: rgba($color: $color2, $alpha: 0.3);
+            background: rgba($color: $color2, $alpha: 1);
         }
     }
 
