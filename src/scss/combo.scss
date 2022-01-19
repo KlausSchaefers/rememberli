@@ -1,20 +1,20 @@
 @import './ds.scss';
 
-.rlmi-combo{
+.rmli-combo{
     border:none;
     position: relative;
     transition: all 0.2s;
 
-    .rlmi-combo-input{
+    .rmli-combo-input{
         width: 100%;
         height: 100%;
     }
 
-    .rlmi-combo-input:focus{
+    .rmli-combo-input:focus{
         outline: none;
     }
 
-    .rlmi-combo-popup{
+    .rmli-combo-popup{
         position: absolute;
         top: calc(100% + 1px);
         left: 0px;
@@ -32,7 +32,7 @@
         box-sizing: border-box;
     }
 
-    .rlmi-combo-item {
+    .rmli-combo-item {
         display: block;
         cursor: pointer;
         padding: $spacing-xs;
@@ -41,12 +41,12 @@
             color: $color1-hover;
         }
 
-        &.rlmi-combo-item-selected {
+        &.rmli-combo-item-selected {
             color: $color1-hover;
         }
     }
 
-    &.rlmi-combo-open .rlmi-combo-popup{
+    &.rmli-combo-open .rmli-combo-popup{
         display: block;
     }
 }

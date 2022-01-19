@@ -1,6 +1,6 @@
 <template>
-  <div :class="['rlmi-combo', { 'rlmi-combo-open': isOpen }]">
-    <input class="rlmi-combo-input" 
+  <div :class="['rmli-combo rmli-dropdown', { 'rmli-dropdown-open': isOpen }]">
+    <input class="rmli-combo-input" 
         @keyup="onKeyPress" 
         @change="onInputChange" 
         @blur="onBlur" 
@@ -8,12 +8,12 @@
         :placeholder="placeholder" 
         ref="comboInput"
     />
-    <div class="rlmi-combo-popup">
-        
+    <div class="rmli-dropdown-popup">
+      
       <span
         v-for="(o, i) in matches"
         :key="o.label"
-        :class="['rlmi-combo-item', {'rlmi-combo-item-selected': i === selectedIndex}]"
+        :class="['rmli-combo-item', {'rmli-combo-item-selected': i === selectedIndex}]"
         @mousedown.stop="select(o, true)"
       >
         {{ o.label }}
@@ -23,6 +23,7 @@
 </template>
 <style lang="scss">
 @import "../scss/combo.scss";
+@import "../scss/dropdown.scss";
 </style>
 <script>
 //import * as Util from "../util/Util"

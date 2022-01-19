@@ -18,7 +18,18 @@
         justify-content: flex-end;
         align-items: center;
         color: $color-hint;
-        gap: $spacing-xs;
+        gap: $spacing-s;
+
+        .rmli-note-status-due-message {
+            display: flex;
+            align-items: center;
+            border-radius: $border-radius-xl;
+            padding: $spacing-xs;
+            font-size: $font-size-xs;
+            &.rmli-due {
+                color: $color-due;
+            }
+        } 
 
         i {
             cursor: pointer;
@@ -27,26 +38,37 @@
             height: 24px;
             border-radius: 50px;
             text-align: center;
+        }
 
-            &:hover {
-                color: $color1-hover;
+        .rmli-dropdown {
+      
+            cursor: pointer;
+            font-size: $font-size-s;
+            width: 24px;
+            height: 24px;
+            border-radius: 50px;
+            text-align: center;
+            color:$color1;
+
+            .rmli-dropdown-item {
+                font-size: $font-size-xs;
             }
 
-            &.rmli-note-icon-active{
-                background: $background-secondary;
-                color: $color1-hover;
 
-                &.rmli-pinned {
-                    color: $color-pinned;
-                }
-
-                &.rmli-due {
-                    color: $color-due;
-                }
+            .rmli-dropdown-popup {
+                width: 200px;
+                left:auto;
+                right:0px;
+                text-align: left;
             }
         }
 
-        .rmli-note-more:hover {
+        .rmli-drowpdown-icon {
+            padding: $spacing-xs
+        }
+
+        .rmli-note-more:hover .rmli-drowpdown-icon, 
+        .rmli-dropdown-open .rmli-drowpdown-icon{
             background: $background-secondary;
             color: $color1-hover;
         }

@@ -8,17 +8,33 @@
     :draggable="isDragable"
     >
       <div class="rmli-note-status rmli-element-border">
-          {{created}}
-          <i class="ri-pushpin-2-line rmli-pinned" v-if="settings.hasPinning && (!isPinned && !hasMore)" @click="onPinned(true)"></i>
-          <i class="ri-pushpin-2-fill rmli-pinned rmli-note-icon-active" v-if="isPinned" @click="onPinned(false)"></i>
+       
+            
+            <div :class="['rmli-note-status-due-message',{'rmli-due': isDue}]" v-if="isAlarmSet" >
+              <i class="ri-alarm-line"  v-if="isAlarmSet" @click="onAlarm(false)"></i>
+              {{printDate(element.due)}}
+            </div>
 
-          <i class="ri-alarm-line" v-if="!isAlarmSet && !hasMore" @click="onAlarm(true)"></i>
-          
-            <i :class="['ri-alarm-fill rmli-tooltip rmli-note-icon-active', {'rmli-due': isDue}]"  v-if="isAlarmSet" @click="onAlarm(false)">
-              <span class="rmli-tooltip-message"> {{$t('note.due')}} {{printDate(element.due)}}</span>
-            </i>
+            {{created}}
+        
       
-          <i class="ri-more-line rmli-note-more" v-if="hasMore"></i>
+            <DropDown icon="ri-more-line"  class="rmli-note-more">
+              <div class="rmli-dropdown-item" v-if="!isPinned" @mousedown="onPinned(true)">
+                <i class="ri-pushpin-2-line rmli-pinned" ></i> Pinn to top
+              </div>
+              <div class="rmli-dropdown-item" v-if="isPinned" @mousedown="onPinned(false)">
+                <i class="ri-pushpin-2-fill rmli-pinned"  ></i> Remove pin
+              </div>
+
+              <div class="rmli-dropdown-item" v-if="!isAlarmSet" @mousedown="onAlarm(true)">
+                  <i class="ri-alarm-line"></i> Set reminder
+              </div>
+
+              <div class="rmli-dropdown-item" v-if="isAlarmSet" @mousedown="onAlarm(false)">
+                  <i class="ri-alarm-fill"></i> Change reminder
+              </div>             
+            </DropDown>
+           
       </div>
       <div class="rmli-placeholder-container">
         <span class="rmli-placeholder" v-if="hasPlaceHolder" @click="onPlaceHolderClick"> {{placeholder}} </span> 
@@ -46,6 +62,7 @@ import dayjs from 'dayjs'
 import * as relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import * as Highlighter from '../util/Highlighter'
+import DropDown from '../common/DropDown.vue'
 
 
 export default {
@@ -79,13 +96,14 @@ export default {
   },
   data: function () {
     return {
-        hasMore: false,
+        hasMore: true,
         hasFocus:false,
         hasPlaceHolder: false,
         value: ''
     }
   },
   components: {
+    DropDown
   },
   computed: {
       isDragable () {

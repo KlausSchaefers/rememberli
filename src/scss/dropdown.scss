@@ -1,0 +1,42 @@
+.rmli-dropdown {
+    position: relative;
+
+    .rmli-dropdown-popup {
+        position: absolute;
+        top: calc(100% + 1px);
+        left: 0px;
+        display: none;
+        border:1px solid $border-color-hover;
+        box-shadow: $shadow-m;
+        width: 100%;
+        z-index: 1000;
+        max-height: 300px;
+        overflow: auto;
+        background: #fff;
+        border-radius: $border-radius-m;
+        font-size: $font-size-s;
+        padding: $spacing-xs;
+        box-sizing: border-box;
+
+        .rmli-dropdown-item {
+            display: block;
+            cursor: pointer;
+            padding: $spacing-xs;
+            display: flex;
+            align-items: center;
+            gap: $spacing-s;
+    
+            &:hover {
+                color: $color1-hover;
+            }
+        }
+    }
+
+    &.rmli-dropdown-open .rmli-dropdown-popup,
+    &:focus .rmli-dropdown-popup{
+        display: block;
+    }
+   
+}
+
+
