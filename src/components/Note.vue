@@ -9,7 +9,7 @@
     >
       <div class="rmli-note-status rmli-element-border">
           {{created}}
-          <i class="ri-pushpin-2-line rmli-pinned" v-if="hasPinning && (!isPinned && !hasMore)" @click="onPinned(true)"></i>
+          <i class="ri-pushpin-2-line rmli-pinned" v-if="settings.hasPinning && (!isPinned && !hasMore)" @click="onPinned(true)"></i>
           <i class="ri-pushpin-2-fill rmli-pinned rmli-note-icon-active" v-if="isPinned" @click="onPinned(false)"></i>
 
           <i class="ri-alarm-line" v-if="!isAlarmSet && !hasMore" @click="onAlarm(true)"></i>
@@ -64,6 +64,12 @@ export default {
       type: String,
       default: ''
     },
+    settings: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
     element :{
       type: Object,
       default() {
@@ -73,7 +79,6 @@ export default {
   },
   data: function () {
     return {
-        hasPinning: false, // make part of settings?
         hasMore: false,
         hasFocus:false,
         hasPlaceHolder: false,

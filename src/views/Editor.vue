@@ -51,20 +51,13 @@
           <div class="rmli-container" ref="elementCntr">
 
               <!-- clean this up -->
-              <h1 v-if="!settings.isPinnedTopLayout">
-                  {{selectedFolder ? selectedFolder.label : $t('list.rest')}}
-              </h1>
-
-              <div class="rmli-element rmli-element-add rmli-element-no-border rmli-element-add-top" v-if="!settings.isPinnedTopLayout">
-                <Add @add="addStart" :placeholder="$t('add.start')" ref="add"/>
-              </div>
-              
-              <h1 class="rmli-pinned" v-if="filteredElements.pinned.length > 0 && settings.isPinnedTopLayout">
+             
+              <h1 class="rmli-pinned" v-if="filteredElements.pinned.length > 0">
                 {{selectedFolder ? selectedFolder.label : $t('list.rest')}} - {{$t('list.pinned')}}
               </h1>
         
               <transition-group name="list" tag="div">
-                <div :class="'rmli-element ' + (i === 0 && settings.isPinnedTopLayout ? 'rmli-element-no-border' : '')" v-for="(element,i) in filteredElements.pinned" :key="element.id" :data-element-id="element.id">
+                <div :class="'rmli-element ' + (i === 0 ? 'rmli-element-no-border' : '')" v-for="(element,i) in filteredElements.pinned" :key="element.id" :data-element-id="element.id">
                     <component 
                       :is="element.type" 
                       :element="element" 
@@ -81,7 +74,7 @@
           
            
 
-              <h1 v-if="settings.isPinnedTopLayout" :class="{'rmli-margin-top-xxl': filteredElements.pinned.length > 0 }">
+              <h1 :class="{'rmli-margin-top-xxl': filteredElements.pinned.length > 0 }">
                   {{selectedFolder ? selectedFolder.label : $t('list.rest')}}
               </h1>
         
@@ -92,7 +85,8 @@
               <transition-group name="list" tag="div">
                 <div class="rmli-element" v-for="(element) in filteredElements.rest" :key="element.id" :data-element-id="element.id">
                   <component 
-                    :is="element.type" 
+                    :is="element.type"
+                    :settings="settings"
                     :element="element" 
                     :query="query"
                     @alarm="onAlarm(element, $event)"
@@ -146,7 +140,8 @@ export default {
         settings: {
           theme: 'soft',
           fontSize: 's',
-          isPinnedTopLayout: true
+          isPinnedTopLayout: true,
+          hasPinning: true,
         },
         status: {
           message: '',

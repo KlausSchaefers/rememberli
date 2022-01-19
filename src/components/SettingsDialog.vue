@@ -9,7 +9,7 @@
         <RadioList :options="sizes" v-model="settings.fontSize"/>
 
         <h1 class="rmli-margin-top-l">{{$t('settings.pinned')}}</h1>
-        <RadioList :options="pinned" v-model="settings.isPinnedTopLayout"/>
+        <RadioList :options="hasPinning" v-model="settings.hasPinning"/>
 
         <div class="rmli-button-bar">
             <button class="rmli-button" @click="save">{{$t('common.save')}}</button>
@@ -46,9 +46,9 @@ export default {
             {label: "Medium", value: "m"},
             {label: "Large", value: "l"}
         ],
-        pinned: [
-            {label: "Pinend in section", value: true},
-            {label: "Pinned in top of list", value: false},
+        hasPinning: [
+            {label: "Notes can be pinned to top", value: true},
+            {label: "No", value: false},
         ],
         settings: null
     }

@@ -53,8 +53,6 @@ https://discuss.huggingface.co/t/javascript-example-for-inference-api/5975/4
 - last opened?
 - dark scheme
 - "Due" folder as query?
-- tasks
-- trash?
 - notes as documents?
 - Fix focus bug when clicking on highlights
 - Markup:
@@ -68,4 +66,8 @@ https://discuss.huggingface.co/t/javascript-example-for-inference-api/5975/4
 - cache highlights -> with DB??
 - default file type
 - clean up editor headlines
+- clickable tasks
 - stars with color and special view?
+
+-> Landing: https://www.framer.com/sites/integrations/
+-> https://www.framer.com/sites/, https://www.framer.com/sites/

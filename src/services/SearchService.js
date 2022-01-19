@@ -87,7 +87,7 @@ export default class SearchService {
     }
 
     updateTagsAndPersons (list) {
-        Logger.log(-1, 'SearchService.getTagsAndPersons() > enter')
+        Logger.log(1, 'SearchService.getTagsAndPersons() > enter')
         this.tags.forEach(t => {
             if (!list.includes(t)) {
                 list.push(t)
