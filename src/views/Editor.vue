@@ -1,16 +1,20 @@
 <template>
   <div :class="'rmli-splash rmli-theme-' + settings.theme " v-if="!file" @keyup="onKeyUp">
       
-      <div class="rmli-splash-actions ">
-          <a @click="onNew">
-              <i class="ri-file-add-line" ></i> 
-              <span>{{$t('actions.new')}}</span>
-          </a>
-        
-          <a @click="onSelect">
-              <i class="ri-folder-line"></i>
-              <span>{{$t('actions.select')}}</span>
-          </a>
+      <div class="rmli-splash-cntr">
+        <Logo />
+        <div class="rmli-splash-actions ">
+          
+            <a @click="onNew">
+                <i class="ri-file-add-line" ></i> 
+                <span>{{$t('actions.new')}}</span>
+            </a>
+          
+            <a @click="onSelect">
+                <i class="ri-folder-line"></i>
+                <span>{{$t('actions.select')}}</span>
+            </a>
+        </div>
       </div>
 
   </div>
@@ -127,6 +131,7 @@ import SettingsDialog from '../components/SettingsDialog.vue'
 import Toolbar from '../components/Toolbar'
 import Note from '../components/Note'
 import Add from '../components/Add'
+import Logo from '../components/Logo'
 import SideBar from '../components/SideBar'
 import Logger from '../util/Logger'
 import SearchService from '../services/SearchService'
@@ -135,6 +140,7 @@ import HistoryService from '../services/HistoryService'
 
 export default {
   name: 'Editor',
+  props:['value'],
   data: function () {
       return {
         settings: {
@@ -165,7 +171,8 @@ export default {
     Add,
     SideBar,
     AlarmDialog,
-    SettingsDialog
+    SettingsDialog,
+    Logo
   },
   provide() {
     return {
@@ -489,6 +496,9 @@ export default {
     this.historyService = new HistoryService()
     this.keyUpHandler = (e) => this.onKeyUp(e) 
     window.addEventListener('keydown', this.keyUpHandler );
+    if (this.value) {
+      this.file = this.value
+    }
   },
   beforeUnmount () {
     if (this.keyUpHandler) {
