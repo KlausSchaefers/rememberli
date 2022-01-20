@@ -1,7 +1,16 @@
-$primary-color: rgb(41, 122, 228);
+$color1: #2c3e50;
+$color2: #ffe44b;
+$color3: #84d84d;
+$color4: #ff4d06;
+$color5: #ee7752;
+$color6: #d63db5;
+$color7: #333;
+$color8: rgb(41, 122, 228);
+
+
+$primary-color: $color8;
 $primary-color-hover:rgb(15, 106, 224);
 
-$color1: #2c3e50;
 $color1-hover: $primary-color;
 $color1-placeholder:  hsla(210, 29%, 24%, 0.314);
 $color-hint: #2c3e5099;
@@ -9,14 +18,6 @@ $color-hint: #2c3e5099;
 $background-primary: #fff;
 $background-secondary: #2c3e5022; 
 $background-secondary-hover: #2c3e5033;
-
-$color2: #ffe44b;
-$color3: #84d84d;
-$color4: #ff4d06;
-$color5: #ff8b06;
-$color6: #d63db5;
-$color7: #333;
-
 
 $button-background:$primary-color;
 $button-background-hover: $primary-color-hover;

@@ -52,6 +52,10 @@
 
             .rmli-dropdown-item {
                 font-size: $font-size-xs;
+
+                &.rmli-note-delete:hover{
+                    color: $color5;
+                }
             }
 
 
@@ -113,17 +117,6 @@
         &:focus {
             outline: none;
         }
-
-        .rmi-highlight-tag {
-            background: rgba($color: $color2, $alpha: 1);
-        }
-
-        .rmi-highlight-person {
-            background: rgba($color: $color3, $alpha: 1);
-        }
-
-
-
     }
 
     .rmli-placeholder {
@@ -185,4 +178,12 @@
         }
     }
 
+}
+
+.rmi-highlight-tag {
+    background: rgba($color: $color2, $alpha: 1);
+}
+
+.rmi-highlight-person {
+    background: rgba($color: $color3, $alpha: 1);
 }

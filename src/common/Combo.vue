@@ -8,7 +8,7 @@
         :placeholder="placeholder" 
         ref="comboInput"
     />
-    <div class="rmli-dropdown-popup">
+    <div class="rmli-dropdown-popup" v-if="matches.length > 0">
       
       <span
         v-for="(o, i) in matches"
@@ -67,6 +67,14 @@ export default {
       let inputValue = e.target.value
       if (inputValue.length > 0) {
         let search = inputValue.toLowerCase()
+        let parts = search.split(' ')
+        if (parts.length > 1) {
+          let last = parts.pop()
+          if (last) {
+            search = last
+          }
+        }
+
         this.matches = this.hints.filter(hint => {
           return hint.label.toLowerCase().indexOf(search) >= 0
         })
@@ -141,11 +149,9 @@ export default {
         this.$emit("update:modelValue", this.selected)
         this.$emit("change", this.selected)
     },
-    select(option, isClick) {
-        if (isClick) {
-            console.debug('+++++++++++++++++++++')
-        }
+    select(option) {
         Logger.log(-5, "Combo.select()", option.value)
+        // FIXME: make this better to append multi part queries
         this.selected = option.value
         this.$refs.comboInput.value = option.value
         this.$emit("update:modelValue", this.selected)

@@ -1,12 +1,18 @@
 {
     "common": {
         "cancel": "Cancel",
-        "save": "Save"
+        "save": "Save",
+        "close": "Close"
     },
     "add": {
         "start": "Add new note",
         "end": "Append note to end",
         "behind": "Type here to add new note"
+    },
+    "help": {
+        "help": "Help",
+        "about": "About",
+        "tos": "Terms of service"
     },
     "settings": {
         "theme": "Theme",
@@ -15,7 +21,12 @@
     },
     "note": {
         "remove": "Remove all text to delete note",
-        "due": "Due at "
+        "delete": "Delete",
+        "due": "Due at ",
+        "pin": "Pin to top",
+        "unpin": "Remove pin",
+        "setreminder": "Set reminder",
+        "changereminder": "Change reminder"
     },
     "toolbar": {
         "search": "Search"

@@ -1,0 +1,22 @@
+@import './ds.scss';
+
+.rmli-help {
+
+    font-size: $font-size-s ;
+
+    i {
+        font-size: $font-size-xs ;
+        color: $color1-hover;
+    }
+
+    b {
+        color: $color1-hover;
+        display: inline-block;
+        width: 64px;
+    }
+    
+    h3 {
+        font-size: $font-size-s ;
+        margin: $spacing-m 0px;
+    }
+}

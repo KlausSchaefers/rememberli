@@ -8,9 +8,6 @@
         <h1 class="rmli-margin-top-l">{{$t('settings.fontSize')}}</h1>
         <RadioList :options="sizes" v-model="settings.fontSize"/>
 
-        <h1 class="rmli-margin-top-l">{{$t('settings.pinned')}}</h1>
-        <RadioList :options="hasPinning" v-model="settings.hasPinning"/>
-
         <div class="rmli-button-bar">
             <button class="rmli-button" @click="save">{{$t('common.save')}}</button>
             <button class="rmli-button rmli-button-secondary " @click="cancel">{{$t('common.cancel')}}</button>

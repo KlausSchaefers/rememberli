@@ -119,7 +119,10 @@ import Logger from '../util/Logger'
 
 export default {
   name: 'SideBar',
-  emits: ['save', 'select', 'search', 'new', 'exit', 'setFolder', 'deleteFolder', 'createFolder', 'changeFolder', 'deleteFolder', 'settings', 'moveElementToFolder'],
+  emits: [
+      'save', 'select', 'search', 'new', 'exit', 'setFolder', 'deleteFolder', 
+      'createFolder', 'changeFolder', 'deleteFolder', 'settings', 'moveElementToFolder', 'help'
+  ],
   props: ['file', 'isDirty', 'hasMenu'],
   data: function () {
     return {
@@ -247,6 +250,7 @@ export default {
     },
     onHelp () {
       Logger.log(3, 'SideBar.onHelp()')
+      this.$emit('help')
     },
     onAbout () {
       Logger.log(3, 'SideBar.onAbout()')

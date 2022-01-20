@@ -1,0 +1,24 @@
+@import './ds.scss';
+
+.rmli-tab-bar {
+    display: flex;
+    margin-bottom: $spacing-m;
+
+    a{
+        cursor: pointer;
+        font-size: $font-size-s;
+        padding: $spacing-s $spacing-m;
+        border-bottom: 3px solid $border-color-hover;
+    }
+
+    .rmli-tab-active{
+        border-bottom: 3px solid $color1-hover;
+    }
+
+  
+}
+
+.rmli-tab-content {
+    height: 400px;
+    overflow: hidden;
+}

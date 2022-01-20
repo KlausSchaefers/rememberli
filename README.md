@@ -48,6 +48,8 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 
 https://discuss.huggingface.co/t/javascript-example-for-inference-api/5975/4
 
+https://codepen.io/P1N2O/pen/pyBNzX
+
 # TODO:
 
 - last opened?
@@ -68,6 +70,7 @@ https://discuss.huggingface.co/t/javascript-example-for-inference-api/5975/4
 - clean up editor headlines
 - clickable tasks
 - stars with color and special view?
+- placeholder color
 
 -> Landing: https://www.framer.com/sites/integrations/
 -> https://www.framer.com/sites/, https://www.framer.com/sites/

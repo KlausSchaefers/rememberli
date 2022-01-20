@@ -13,11 +13,23 @@ export default class SearchService {
         Logger.log(-1, "SearchService.find() > " , query)
         const result  = {}
         if (this.isValidQuery(query)) {
+            let now = new Date().getTime()
             const parts = query.toLowerCase().split(' ')
             const elements = Object.values(this.elements)
             elements.forEach(e => {
                 parts.forEach(part => {
                     if (this.isValidQuery(part)) {
+                      
+                        if (part === 'due') {
+                            console.debug(part, e.due, now)
+                            if (e.due && e.due < now) {
+                                if (!result[e.id]) {
+                                    result[e.id] = {score:0}
+                                }
+                                result[e.id].score++
+                            }
+                        }
+
                         if (e.value.indexOf(part) >= 0) {
                             if (!result[e.id]) {
                                 result[e.id] = {score:0}
@@ -59,12 +71,13 @@ export default class SearchService {
         Logger.log(3, "SearchService.indexElement() > ", element.id)
         let text = Util.getText(element.value).toLowerCase()
 
-        if (element.due && element.due < new Date().getTime()) {
-            text += ' due'
-        }
+        //if (element.due && element.due < new Date().getTime()) {
+        //    text += ' due'
+        //}
        
         this.elements[element.id] = {
             value : text,
+            due: element.due,
             id: element.id
         }
 

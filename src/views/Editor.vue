@@ -27,6 +27,7 @@
         @select="onSelect" 
         @new="onNew" 
         @exit="file = null"
+        @help="showHelp"
         @settings="showSettings"
         @setFolder="setFolder"
         @createFolder="createFolder"
@@ -109,6 +110,7 @@
     </main>
     <AlarmDialog ref="alarmDialog"/>
     <SettingsDialog ref="settingsDialog"/>
+    <HelpDialog ref="helpDialog" />
   </div>
   <div :class="'rmli-status rmli-status-' + (status.visible ? 'visibale' : 'hidden')"> 
     {{status.message}}
@@ -132,6 +134,7 @@ import Toolbar from '../components/Toolbar'
 import Note from '../components/Note'
 import Add from '../components/Add'
 import Logo from '../components/Logo'
+import HelpDialog from '../components/HelpDialog'
 import SideBar from '../components/SideBar'
 import Logger from '../util/Logger'
 import SearchService from '../services/SearchService'
@@ -172,7 +175,8 @@ export default {
     SideBar,
     AlarmDialog,
     SettingsDialog,
-    Logo
+    Logo,
+    HelpDialog
   },
   provide() {
     return {
@@ -378,6 +382,7 @@ export default {
       Logger.log(2, 'Editor.onSelectReply()', file)
       this.file = file
       this.isDirty = false
+      this.query = ''
       this.searchService.indexAll(this.file)
       this.updateTagsAndPersons()
       this.showStatusMessage('status.welcome')
@@ -396,7 +401,17 @@ export default {
             lastUpdate: new Date().getUTCDate(),
             name: 'New File',
             folders: [],
-            elements: []
+            elements: [{
+              id: 'n' + new Date().getTime(),
+              created: this.getTimestamp(),
+              lastUpdate: this.getTimestamp(),
+              elements:[],
+              pinned:false,
+              type: 'Note',
+              value: `This is an example. Click in this note to see the markup. \n\nUse @person and #tag markup to highlight elements and get suggestion in the search.\n\n Use [], [x] and -> to create symbols.\n\nRemove the content to delete the note
+                      `,
+              folder: ''
+            }]
           }
       }
     },
@@ -484,8 +499,11 @@ export default {
       if (value) {
         this.settings = JSON.parse(value)
       }
-    }
-
+    },
+    showHelp () {
+      Logger.log(-2, 'Editor.showHelp()')
+      this.$refs.helpDialog.show()
+    },
   },
   mounted () {
     this.initSettings()
