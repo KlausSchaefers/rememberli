@@ -17,7 +17,9 @@
     "settings": {
         "theme": "Theme",
         "fontSize": "Font Size",
-        "pinned": "Allow pinning"
+        "pinned": "Allow pinning",
+        "other": "Other",
+        "beta": "Allow Beta features"
     },
     "note": {
         "remove": "Remove all text to delete note",

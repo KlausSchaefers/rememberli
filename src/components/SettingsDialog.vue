@@ -8,6 +8,9 @@
         <h1 class="rmli-margin-top-l">{{$t('settings.fontSize')}}</h1>
         <RadioList :options="sizes" v-model="settings.fontSize"/>
 
+        <h1 class="rmli-margin-top-l">{{$t('settings.other')}}</h1>
+        <CheckBox v-model="settings.allowBeta" :label="$t('settings.beta')"/>
+
         <div class="rmli-button-bar">
             <button class="rmli-button" @click="save">{{$t('common.save')}}</button>
             <button class="rmli-button rmli-button-secondary " @click="cancel">{{$t('common.cancel')}}</button>
@@ -23,6 +26,7 @@
 
 import RDialog from '../common/Dialog.vue'
 import RadioList from '../common/RadioList.vue'
+import CheckBox from '../common/CheckBox.vue'
 import Logger from '../util/Logger'
 //import Util from '../util/Util'
 
@@ -51,7 +55,7 @@ export default {
     }
   },
   components: {
-    RDialog, RadioList
+    RDialog, RadioList, CheckBox
   },
   methods: {
     onChange (e) {

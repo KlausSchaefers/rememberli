@@ -1,6 +1,6 @@
 
 <template>
-  <div class="rmli-logo rmli-logo-circle rmli-logo-rX">
+  <div class="rmli-logo rmli-logo-circle rmli-logo-r-t">
      <div class="rmli-logo-mask"/>
   </div>
 </template>

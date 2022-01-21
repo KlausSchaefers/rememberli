@@ -1,5 +1,5 @@
 <template>
-  <RDialog ref="dialog"> 
+  <RDialog ref="dialog" class="rmli-alarm"> 
       <DatePicker v-if="selected" :value="selected" @change="onChange" />
       <div class="rmli-button-bar">
         <button class="rmli-button" @click="save">{{$t('alarm.set')}}</button>
