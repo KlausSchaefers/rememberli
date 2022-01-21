@@ -1,5 +1,5 @@
 <template>
-  <RDialog ref="dialog">
+  <RDialog ref="dialog" size="m">
       <div class="rmli-help">
 
             <div class="rmli-tab-bar">

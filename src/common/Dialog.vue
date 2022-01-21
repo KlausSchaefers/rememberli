@@ -1,6 +1,6 @@
 <template>
 <div class="rmli-dialog-background" v-if="isOpen" @mousedown="close">
-  <div class="rmli-dialog" @click.stop="" @mousedown.stop="">
+  <div :class="'rmli-dialog rmli-dialog-' + size" @click.stop="" @mousedown.stop="">
     <div class="rmli-dialog-body" @click.stop="">
       <slot>Enter your stuff here</slot>
     </div>
@@ -18,16 +18,16 @@ import Logger from '../util/Logger'
 
 export default {
   name: "Dialog",
-  mixins: [],
+  props: {
+    size: {
+      type: String,
+      default: 's'
+    }
+  },
   data: function() {
-  return {
-    isOpen: false,
-  }
-  },
-  computed: {
-
-  },
-  components: {
+    return {
+      isOpen: false,
+    }
   },
   methods: {
     close (e) {

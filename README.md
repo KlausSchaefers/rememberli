@@ -33,6 +33,10 @@ https://github.com/nklayman/vue-cli-plugin-electron-builder
 https://www.electronjs.org/docs/latest/api/ipc-main
 
 
+## Mention
+
+the logo background is based on the work https://pxhere.com/en/photo/1624621
+
 ### Links
 https://tiptap.dev/examples/suggestions -> Vue and also @support...
 https://quilljs.com/playground/#autogrow-height -> looks best!!
