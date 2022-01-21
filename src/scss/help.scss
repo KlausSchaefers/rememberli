@@ -4,15 +4,45 @@
     width: 720px;
     font-size: $font-size-s ;
 
-    i {
-        font-size: $font-size-xs ;
-        color: $color1-hover;
+    ul {
+        list-style: none;
+    }
+
+    li{
+        padding: $spacing-s;
+    }
+
+    .rmli-help-example-icon {
+        font-weight: 700;
+        border: 1px solid $border-color-hover;
+        padding: $spacing-xs;
+    }
+
+   
+
+    .rmli-help-about {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $spacing-l;
+        position: relative;
+
+        .rmli-logo{
+            margin-top: $spacing-xxl;
+        }
+
+     
+        .rmli-secondary-label {
+            position: absolute;
+            bottom: $spacing-s;
+            right: $spacing-s;
+        }
     }
 
     b {
-        color: $color1-hover;
         display: inline-block;
         width: 64px;
+        text-align: right;
     }
     
     h3 {

@@ -27,7 +27,7 @@
 		z-index: 1;
 		background: linear-gradient(-45deg, $color8, $color8, $color6, $color5, $color3);
 		background-size: 400% 400%;
-		animation: gradient 10s ease infinite;
+		animation: gradient 10s linear infinite;
     }
 
 	&.rmli-logo-circle {
@@ -40,7 +40,7 @@
 		.rmli-logo-background{
 			background-image: url('../assets/Triangles.png');
 			background-size: 110% 110%;
-			animation: gradient 20s ease infinite;
+			animation: gradient 20s linear infinite;
 			//background-size: 100% 100%;
 			//animation: rotate 10s linear infinite;
 		}

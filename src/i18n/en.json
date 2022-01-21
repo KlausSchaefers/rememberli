@@ -12,7 +12,8 @@
     "help": {
         "help": "Help",
         "about": "About",
-        "tos": "Terms of service"
+        "tos": "Terms of service",
+        "contact": "Contact"
     },
     "settings": {
         "theme": "Theme",

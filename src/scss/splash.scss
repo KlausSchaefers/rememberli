@@ -12,6 +12,13 @@
         align-items: center;
     }
 
+    .rmli-splash-version {
+        position: fixed;
+        bottom: $spacing-s;
+        right: $spacing-s;
+        font-size: $font-size-xs;
+    }
+
 
     .rmli-splash-actions {
         display: flex;

@@ -17,6 +17,8 @@
         </div>
       </div>
 
+      <span class="rmli-splash-version"> {{version}} </span>
+
   </div>
   <div :class="'rmli-editor rmli-add-popX  rmli-theme-' + settings.theme + ' rmli-font-size-' + settings.fontSize" v-if="file">
 
@@ -110,7 +112,7 @@
     </main>
     <AlarmDialog ref="alarmDialog"/>
     <SettingsDialog ref="settingsDialog"/>
-    <HelpDialog ref="helpDialog" />
+    <HelpDialog ref="helpDialog" @openWebLink="onOpenWebLink" :version="version"/>
   </div>
   <div :class="'rmli-status rmli-status-' + (status.visible ? 'visibale' : 'hidden')"> 
     {{status.message}}
@@ -146,6 +148,7 @@ export default {
   props:['value'],
   data: function () {
       return {
+        version: '0.9.0.beta',
         settings: {
           theme: 'soft',
           fontSize: 's',
@@ -504,6 +507,10 @@ export default {
       Logger.log(-2, 'Editor.showHelp()')
       this.$refs.helpDialog.show()
     },
+    onOpenWebLink (e) {
+      Logger.log(-2, 'Editor.showHelp()', e)
+      this.api.openLink(e)
+    }
   },
   mounted () {
     this.initSettings()

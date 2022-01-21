@@ -10,7 +10,7 @@
       <div class="rmli-note-status rmli-element-border">
        
             
-            <div :class="['rmli-note-status-due-message',{'rmli-due': isDue}]" v-if="isAlarmSet" >
+            <div :class="['rmli-note-status-due-message',{'rmli-due': isDue}]" v-if="isAlarmSet"  @mousedown="onAlarm(true)">
               <i class="ri-alarm-line"  v-if="isAlarmSet" @click="onAlarm(false)"></i>
               {{printDate(element.due)}}
             </div>

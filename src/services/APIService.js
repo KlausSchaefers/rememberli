@@ -47,6 +47,17 @@ export default class APIService {
        
     }
 
+    openLink (e) {
+        Logger.log(-2, 'APIService.openLink()', e)
+        e.stopPropagation()
+        e.preventDefault()
+        if (e.target && e.target.href) {
+            let href = e.target.href
+            let ipcRenderer = window.ipcRenderer
+            ipcRenderer.send('openLink', href)
+        } 
+    }
+
     save (content) {
         Logger.log(2, 'APIService.save()', content)
         let ipcRenderer = window.ipcRenderer

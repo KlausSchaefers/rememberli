@@ -81,3 +81,14 @@ body, html {
         color: $color1-hover;
     }
 }
+
+.rmli-secondary-label {
+    color: rgba($color1, 0.5);
+}
+
+a {
+    text-decoration: none;
+    &.rmli-link{
+        color: $color1-hover;
+    }
+}

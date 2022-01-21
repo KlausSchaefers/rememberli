@@ -2,14 +2,20 @@ import { ipcMain } from 'electron'
 import Logger from '../util/Logger'
 import {dialog} from 'electron'
 import fs from 'fs'
+import electron from 'electron'
 
 export function init() {
 
     ipcMain.on('save', save)
     ipcMain.on('load', load)
     ipcMain.on('select', select)
+    ipcMain.on('openLink', openLink)
 }
 
+async function openLink (event, data) {
+    Logger.log(-3,'APIBackend.openLink() > enter', data)
+    electron.shell.openExternal(data)
+}
 async function save (event, data) {
     Logger.log(3,'APIBackend.save() > enter', data)
     let file = JSON.parse(data)
