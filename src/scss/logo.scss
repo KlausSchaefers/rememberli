@@ -3,33 +3,44 @@
 .rmli-logo{
     height: 240px;
     width: 240px;
-    background: linear-gradient(-45deg, $color8, $color8, $color6, $color5, $color3);
-	background-size: 400% 400%;
-	animation: gradient 10s ease infinite;
+
+	position: relative;
+	overflow: hidden;
    
     .rmli-logo-mask {
         background-image: url('../assets/Logo_Trans_Thin.png');
         background-size: 100% 100%;
         height: 100%;
         width: 100%;
+		position: absolute;
+		top:0px;
+		left:0px;
+		z-index: 2;
+    }
+
+	.rmli-logo-background {
+        height: 100%;
+        width: 100%;
+		position: absolute;
+		top:0px;
+		left:0px;
+		z-index: 1;
+		background: linear-gradient(-45deg, $color8, $color8, $color6, $color5, $color3);
+		background-size: 400% 400%;
+		animation: gradient 10s ease infinite;
     }
 
 	&.rmli-logo-circle {
 		height: 140px;
 		width: 140px;
 		margin-bottom: $spacing-xl;
-
-		.rmli-logo-mask {
-			background-image: url('../assets/Logo_Trans_Thin_Circle_S.png');
-		}
 	}
 
-	&.rmli-logo-r-t {
-		background-image: url('../assets/Triangles.png');
-		background-size: 120% 120%;
-		animation: gradient 20s linear infinite;
-		.rmli-logo-mask {
-			background-image: url('../assets/Logo_Trans_R_Circle.png');
+	&.rmli-logo-triangle{
+		.rmli-logo-background{
+			background-image: url('../assets/Triangles.png');
+			background-size: 110% 110%;
+			animation: gradient 20s ease infinite;
 		}
 	}
 
@@ -41,16 +52,23 @@
 }
 
 
-
+@keyframes rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
 
 @keyframes gradient {
 	0% {
-		background-position: 0% 50%;
+		background-position: 0% 0%;
 	}
 	50% {
 		background-position: 100% 50%;
 	}
 	100% {
-		background-position: 0% 50%;
+		background-position: 0% 0%;
 	}
 }

@@ -1,7 +1,8 @@
 
 <template>
-  <div class="rmli-logo rmli-logo-circle rmli-logo-r-t">
+  <div class="rmli-logo rmli-logo-circle rmli-logo-r rmli-logo-triangle">
      <div class="rmli-logo-mask"/>
+     <div class="rmli-logo-background"/>
   </div>
 </template>
 

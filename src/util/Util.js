@@ -1,10 +1,10 @@
 export function getTextWithLineBreaks(html) {
     const node = document.createElement('div')
     node.innerHTML = html
-    return _getTextWithLineBreaks(node, false)
+    return innerText(node, false)
 }
 
-export function _getTextWithLineBreaks (node, isOnFreshLine) {
+export function innerText (node, isOnFreshLine = false) {
     let result = ''
     const childNodes = node.childNodes
     for (let i = 0; i < childNodes.length; i++) {
@@ -29,7 +29,7 @@ export function _getTextWithLineBreaks (node, isOnFreshLine) {
         }
     
         // If this node has children, get into them as well:
-        result += _getTextWithLineBreaks(childNode, isOnFreshLine);
+        result += innerText(childNode, isOnFreshLine);
     }
     return result
 }
