@@ -1,22 +1,33 @@
 
 <template>
   <div 
-    :class="['rmli-note ', {'rmli-focus': hasFocus}, {'rmli-due': isDue}, {'rmli-pinned': isPinned}]" 
+    :class="[
+      'rmli-note ', 
+      {'rmli-focus': hasFocus}, 
+      {'rmli-due': isDue}, 
+      {'rmli-pinned': isPinned}, 
+      {'rmli-timeline-note': settings.hasTimeline}
+    ]" 
     @click="$emit('click')" 
     :data-element-id="element.id"  
     @dragstart="onDragStart"
     :draggable="isDragable"
     >
-      <div class="rmli-note-status rmli-element-border">
+      <div :class="['rmli-note-status', {'rmli-element-border': settings.hasBorderTop}, {'rmli-note-date-left': settings.hasDateLeft}]">
+            <div class="rmli-timeline-note-knop" v-if="settings.hasTimeline"/>
        
-            
-            <div :class="['rmli-note-status-due-message',{'rmli-due': isDue}]" v-if="isAlarmSet"  @mousedown="onAlarm(true)">
-              <i class="ri-alarm-line"  v-if="isAlarmSet" @click="onAlarm(false)"></i>
-              {{printDate(element.due)}}
+            <div class="rmli-note-status-dates" >
+             
+                <div :class="['rmli-note-status-due-message',{'rmli-due': isDue}]" v-if="isAlarmSet"  @mousedown="onAlarm(true)">
+                  <i class="ri-alarm-line"></i>{{printDate(element.due)}}
+                </div>
+                <span v-else/>
+
+                {{created}}    
             </div>
 
-            {{created}}
-        
+
+             
       
             <DropDown icon="ri-more-line"  class="rmli-note-more">
               <div class="rmli-dropdown-item" v-if="!isPinned" @mousedown="onPinned(true)">
@@ -38,6 +49,7 @@
                   <i class="ri-delete-bin-7-line"></i> {{$t('note.delete')}}
               </div>          
             </DropDown>
+  
            
       </div>
       <div class="rmli-placeholder-container">
@@ -126,7 +138,13 @@ export default {
         // hack to make ui update
         this.setValue(this.element.value)
         if (this.element.created) {
-          return dayjs(this.element.created).fromNow()
+          let age = (new Date().getTime() -this.element.created )
+          if (age < 1000 * 24 * 60 * 60 ) {
+            return dayjs(this.element.created).fromNow()
+          } else {
+            return this.printDate(this.element.created)
+          }
+          
         }
         return ''
       },

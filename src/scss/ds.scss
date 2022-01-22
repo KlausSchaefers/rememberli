@@ -13,7 +13,7 @@ $primary-color-hover:rgb(15, 106, 224);
 
 $color1-hover: $primary-color;
 $color1-placeholder:  hsla(210, 29%, 24%, 0.314);
-$color-hint: #2c3e5099;
+$color-hint: #818B96;
 
 $background-primary: #fff;
 $background-secondary: #2c3e5022; 
@@ -56,6 +56,9 @@ $line-height: 1.5;
 $border-color-transparent: transparent;
 $border-color-hover: rgba(0,0,0, 0.1);
 $border-color-focus: $primary-color;
+$border-color-timeline: $color-hint;
+$border-color-timeline-hover: $color-hint;
+
 $border-radius-xl: 30px;
 $border-radius-m: 8px;
 $border-radius-s: 2px;

@@ -93,3 +93,12 @@ export function on (node, event, callback) {
 export function body () {
     return document.getElementsByTagName("BODY")[0]
 }
+
+export function replaceLastPart (str, part) {
+    let parts = str.split(' ')
+    if (parts.length > 1) {
+        parts[parts.length - 1] = part
+        return parts.join(' ')
+    }
+    return part
+}

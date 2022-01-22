@@ -1,4 +1,6 @@
 @import './ds.scss';
+@import './note-timeline.scss';
+
 
 .rmli-note{
    
@@ -15,10 +17,27 @@
         padding-top: $spacing-s;
         display: flex;
         flex-direction: row;
-        justify-content: flex-end;
+        justify-content: space-between; // flex-end;
         align-items: center;
         color: $color-hint;
         gap: $spacing-m;
+        border-top: 1px solid transparent;
+
+        .rmli-note-status-dates{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            gap: $spacing-m;
+            flex-grow: 1;
+        }
+
+        &.rmli-note-date-left {
+            .rmli-note-status-dates{
+                flex-direction: row-reverse;
+                justify-content: space-between;
+            }
+        }
 
         .rmli-note-status-due-message {
             display: flex;
@@ -87,20 +106,20 @@
 
 
     &:hover{
-        border-left: 3px solid $border-color-hover;
+        border-left-color: $border-color-hover;
     }
 
     &.rmli-pinned {
-        border-left: 3px solid $color-pinned-border;
-        //background: rgba($color3, .05);
+        border-left-color:  $color-pinned-border;
+       
     }
 
     &.rmli-due {
-        border-left: 3px solid $color-due-border;
+        border-left-color: $color-due-border;
     }
     
     &.rmli-focus {
-        border-left: 3px solid rgba($border-color-focus, 1);
+        border-left-color: rgba($border-color-focus, 1);
     }
 
     textarea, .rmli-editable{
@@ -138,61 +157,28 @@
         position: relative;
     }
 
-    
-
     .rmi-highlight-icon {
         vertical-align: middle;
-        //font-size: $font-size-xs;
     }
+
+
 }
 
 .rmli-font-size-m {
-
     .rmli-note {
-
         textarea, .rmli-editable{
             font-size: $font-size-default;
         }
     }
-
 }
 
 
 .rmli-font-size-l {
-
     .rmli-note {
-
         textarea, .rmli-editable{
             font-size: $font-size-l;
         }
     }
-
 }
 
-.rmi-highlight-tag {
-    background: rgba($color: $color2, $alpha: 1);
-}
 
-.rmi-highlight-person {
-    background: rgba($color: $color3, $alpha: 1);
-}
-
-.rmi-highlight-task {
-    height: $font-size-s;
-    width: $font-size-s;
-    display: inline-block;
-    border: 1px solid $color1;
-    border-radius: 50px;
-    padding: $spacing-xs;
-    box-sizing: border-box;
-    vertical-align: middle;
-}
-
-.rmi-highlight-task-done::after {
-    content: '';
-    display: block;
-    height: 100%;
-    width: 100%;
-    border-radius: 50px;
-    background: $color1;
-}

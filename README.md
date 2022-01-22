@@ -1,4 +1,4 @@
-# remember-like-lili
+# rememberli
 
 ## Project setup
 ```
@@ -29,6 +29,7 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 https://github.com/nklayman/vue-cli-plugin-electron-builder
+https://github.com/nklayman/vue-cli-plugin-electron-builder/issues/1633
 
 https://www.electronjs.org/docs/latest/api/ipc-main
 
@@ -40,6 +41,9 @@ the logo background is based on the work https://pxhere.com/en/photo/1624621
 ### Links
 https://tiptap.dev/examples/suggestions -> Vue and also @support...
 https://quilljs.com/playground/#autogrow-height -> looks best!!
+
+https://glench.github.io/fuzzyset.js/
+https://github.com/nextapps-de/flexsearch
 
 https://github.com/prosemirror
 https://github.com/outline/outline

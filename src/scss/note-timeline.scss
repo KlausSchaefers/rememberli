@@ -1,0 +1,58 @@
+
+.rmli-note.rmli-timeline-note {
+        border-left-width: 1px;
+        border-left-color: $border-color-timeline;
+        border-left-color: $border-color-timeline-hover;
+     
+
+        .rmli-timeline-note-knop {
+            position: absolute;
+            border: 12px solid #fff;
+            background: $border-color-timeline;
+            height: 8px;
+            width: 8px;
+            border-radius: 50%;
+            top:0px;
+            left:-16px;
+        }
+
+      
+
+        &:hover{
+            border-left-color: $border-color-timeline-hover;
+            .rmli-timeline-note-knop {
+                background: $border-color-timeline-hover;
+            }
+        }
+
+        &.rmli-pinned {
+            border-left-color: $color-pinned-border;
+            .rmli-timeline-note-knop {
+                background: $color-pinned-border;
+            }
+        }
+
+        &.rmli-due {
+            border-left-color:  $color-due-border;
+            .rmli-timeline-note-knop {
+                background: $color-due-border;
+            }
+        }
+        
+        &.rmli-focus {
+            border-left-color: rgba($border-color-focus, 1);
+            .rmli-timeline-note-knop {
+                background: rgba($border-color-focus, 1);
+            }
+        }
+
+        .rmli-note-status {
+            position: relative;
+           
+
+            .rmli-note-status-dates {
+                flex-direction: row-reverse;
+                justify-content: space-between;
+            }
+        }
+    }

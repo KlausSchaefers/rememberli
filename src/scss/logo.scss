@@ -83,3 +83,20 @@
 		background-position: 0% 0%;
 	}
 }
+
+@keyframes gradient_rotate {
+	0% {
+		background-position: 0% 0%;
+		transform: rotate(0deg);
+	}
+	50% {
+		background-position: 100% 50%;
+		transform: rotate(30deg);
+		
+	}
+	100% {
+		background-position: 0% 0%;
+		transform: rotate(00deg);
+	}
+}
+

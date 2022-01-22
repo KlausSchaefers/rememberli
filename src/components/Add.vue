@@ -1,6 +1,6 @@
 
 <template>
-  <div :class="['rmli-note rmli-add', {'rmli-focus': hasFocus}]" @click="$emit('click')">
+  <div :class="['rmli-note rmli-add', {'rmli-focus': hasFocus}, {'rmli-timeline-note': settings.hasTimeline}]" @click="$emit('click')">
     <div class="rmli-placeholder-container">
         <span class="rmli-placeholder" v-if="hasPlaceHolder"  @click="onPlaceHolderClick"> {{placeholder}} </span> 
         <div 

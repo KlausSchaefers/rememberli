@@ -12,36 +12,52 @@ export default class SearchService {
     find(query) {
         Logger.log(-1, "SearchService.find() > " , query)
         const result  = {}
+  
         if (this.isValidQuery(query)) {
             let now = new Date().getTime()
-            const parts = query.toLowerCase().split(' ')
+            const parts = query.toLowerCase().split(' ').filter(part => this.isValidQuery(part))
+            Logger.log(-1, "SearchService.find() > parts: " , parts)
             const elements = Object.values(this.elements)
+            let scores = {}
             elements.forEach(e => {
                 parts.forEach(part => {
-                    if (this.isValidQuery(part)) {
                       
-                        if (part === 'due') {
-                            console.debug(part, e.due, now)
-                            if (e.due && e.due < now) {
-                                if (!result[e.id]) {
-                                    result[e.id] = {score:0}
-                                }
-                                result[e.id].score++
+                    if (part === 'due') {
+                        if (e.due && e.due < now) {
+                            if (!scores[e.id]) {
+                                scores[e.id] = {score:0}
                             }
-                        }
-
-                        if (e.value.indexOf(part) >= 0) {
-                            if (!result[e.id]) {
-                                result[e.id] = {score:0}
-                            }
-                            result[e.id].score++
+                            scores[e.id].score++
                         }
                     }
+
+                    if (e.value.indexOf(part) >= 0) {
+                        if (!scores[e.id]) {
+                            scores[e.id] = {score:0}
+                        }
+                        scores[e.id].score++
+                    }
+                   
                 })
             })
+
+            // assume AND
+            let minScore = parts.length
+            Logger.log(-1, "SearchService.find() > minScore: " , minScore)
+            console.debug('  ', scores)
+            for (let id in scores) {
+                console.debug('  ', id, scores[id])
+                if (scores[id].score >= minScore) {
+                    result[id] = scores[id]
+                }
+            }
+            
+
         } else {
             Logger.log(-1, "SearchService.find() > not valid" , query)
         }
+
+
         return result
     }
 
@@ -71,9 +87,7 @@ export default class SearchService {
         Logger.log(3, "SearchService.indexElement() > ", element.id)
         let text = Util.getText(element.value).toLowerCase()
 
-        //if (element.due && element.due < new Date().getTime()) {
-        //    text += ' due'
-        //}
+        // FIXME: add the month?
        
         this.elements[element.id] = {
             value : text,

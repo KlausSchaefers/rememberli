@@ -20,7 +20,10 @@
         "fontSize": "Font Size",
         "pinned": "Allow pinning",
         "other": "Other",
-        "beta": "Allow Beta features"
+        "hasBorderTop": "Show line between notes",
+        "hasDateLeft": "Show date on left side",
+        "timeline": "Show timeline",
+        "beta": "Enable experimental features"
     },
     "note": {
         "remove": "Remove all text to delete note",

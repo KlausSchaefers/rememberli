@@ -1,3 +1,31 @@
+$font-color-dark: #bbb;
+$border-color-dark: #555;
+
 .rmli-theme-dark {
 
+    background: #222;
+    color:$font-color-dark;
+
+    .rmli-note{ 
+        .rmli-note-status {
+            color:$font-color-dark;
+        }
+
+        .rmli-placeholder {
+            color:rgba($font-color-dark, 0.6);
+        }
+    }
+
+    .rmli-editor {
+       
+    }
+
+    .rmli-toolbar .rmli-search input {
+        background:rgba($font-color-dark, 0.6);
+    }
+
+    .rmli-element-border {
+        border-top: 1px solid $border-color-dark;
+    }    
 }
+

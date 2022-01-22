@@ -26,7 +26,7 @@
 @import "../scss/dropdown.scss";
 </style>
 <script>
-//import * as Util from "../util/Util"
+import * as Util from "../util/Util"
 import Logger from "../util/Logger"
 
 export default {
@@ -152,8 +152,9 @@ export default {
     select(option) {
         Logger.log(-5, "Combo.select()", option.value)
         // FIXME: make this better to append multi part queries
-        this.selected = option.value
-        this.$refs.comboInput.value = option.value
+        let newValue= Util.replaceLastPart(this.selected, option.value)
+        this.selected = newValue
+        this.$refs.comboInput.value = newValue
         this.$emit("update:modelValue", this.selected)
         this.$emit("change", this.selected)
         this.close()

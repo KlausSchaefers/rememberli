@@ -2,10 +2,19 @@
 
 .rmli-add.rmli-note{
     border-top: 1px solid rgba(0,0,0, 0.00);
-    padding: $spacing-m 0px;  
+    padding: $spacing-m 0px; 
+    
+    &.rmli-timeline-note {
+        border-left-color: transparent;
 
+        &:hover {
+            border-left-color: transparent;
+        }
 
-  
+        &.rmli-focus {
+            border-left-color: rgba($border-color-focus, 1);
+        }
+    }
 }
 
 .rmli-add-pop {
@@ -16,15 +25,10 @@
             background: $background-secondary;
             border-radius: $border-radius-xl;
             
-      
             &:focus {
               background: none;
               border-radius: 0px;
             }
-          }
-      
-          &:hover {
-              border-left: 3px solid rgba(0,0,0, 0.00);
           }
     }
 }

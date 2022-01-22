@@ -9,7 +9,12 @@
         <RadioList :options="sizes" v-model="settings.fontSize"/>
 
         <h1 class="rmli-margin-top-l">{{$t('settings.other')}}</h1>
-        <CheckBox v-model="settings.allowBeta" :label="$t('settings.beta')"/>
+        <CheckBox v-model="settings.hasTimeline" :label="$t('settings.timeline')"/>
+        <CheckBox v-model="settings.hasBorderTop" :label="$t('settings.hasBorderTop')"/>
+        <CheckBox v-model="settings.hasDateLeft" :label="$t('settings.hasDateLeft')"/>
+        <CheckBox v-if="false" v-model="settings.hasBeta" :label="$t('settings.beta')"/>
+
+        
 
         <div class="rmli-button-bar">
             <button class="rmli-button" @click="save">{{$t('common.save')}}</button>
@@ -37,19 +42,15 @@ export default {
   data: function () {
     return {
         themes: [
-            {label: "Pop!", value: "default"},
+            {label: "Light", value: "default"},
             {label:"Soft", value: "soft"},
-            {label:"Black & White", value: "bw"},
-            {label:"Dark", value: "dark"}
+            //{label:"Black & White", value: "bw"},
+            //{label:"Dark", value: "dark"}
         ],
         sizes: [
             {label: "Small", value: "s"},
             {label: "Medium", value: "m"},
             {label: "Large", value: "l"}
-        ],
-        hasPinning: [
-            {label: "Notes can be pinned to top", value: true},
-            {label: "No", value: false},
         ],
         settings: null
     }

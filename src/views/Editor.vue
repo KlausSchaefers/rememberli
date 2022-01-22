@@ -68,6 +68,7 @@
                     <component 
                       :is="element.type" 
                       :element="element" 
+                      :settings="settings"
                       :query="query"
                       :hasMenu="hasMenu"
                       @alarm="onAlarm(element, $event)"
@@ -85,8 +86,8 @@
                   {{selectedFolder ? selectedFolder.label : $t('list.rest')}}
               </h1>
         
-               <div class="rmli-element rmli-element-add rmli-element-no-border rmli-element-add-top" v-if="settings.isPinnedTopLayout">
-                <Add @add="addStart" :placeholder="$t('add.start')" ref="add"/>
+               <div class="rmli-element rmli-element-add rmli-element-no-border rmli-element-add-top">
+                <Add @add="addStart" :placeholder="$t('add.start')" ref="add"     :settings="settings"/>
               </div>
           
               <transition-group name="list" tag="div">
@@ -122,6 +123,7 @@
 <style lang="scss">
   @import '../scss/splash.scss';
   @import '../scss/editor.scss';
+  @import '../scss/highlight.scss';
   @import '../scss/animation.scss';
   @import '../scss/theme-soft.scss';
   @import '../scss/theme-bw.scss';
@@ -148,12 +150,14 @@ export default {
   props:['value'],
   data: function () {
       return {
-        version: '0.9.0.beta',
+        version: '0.9.1.beta',
         settings: {
-          theme: 'soft',
+          theme: 'default',
           fontSize: 's',
-          isPinnedTopLayout: true,
-          hasPinning: true,
+          hasTimeline: false,
+          hasBorderTop: true,
+          hasDateLeft: false,
+          hasBeta: false
         },
         status: {
           message: '',
@@ -411,7 +415,7 @@ export default {
               elements:[],
               pinned:false,
               type: 'Note',
-              value: `This is an example. Click in this note to see the markup. \n\nUse @person and #tag markup to highlight elements and get suggestion in the search.\n\n Use [], [x] and -> to create symbols.\n\nRemove the content to delete the note
+              value: `This is an example. Click on it to see the markup. You can use the following markup codes:\n\n - @person and #tag markup to highlight elements and get suggestion in the search.\n - [], [x] and -> to create symbols.
                       `,
               folder: ''
             }]
