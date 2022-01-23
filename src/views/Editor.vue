@@ -321,7 +321,7 @@ export default {
        * TODO: We could have here more, e.g. splitting
        */
       if (value) {
-        Logger.log(-1, 'Editor.onElementChange() > update element', element.id, value)
+        Logger.log(-1, 'Editor.onElementChange() > update element', element.id, JSON.stringify({value:value}))
         if (element.value !== value) {
           this.historyService.change(element, value, this.file)
           element.value = value
@@ -338,7 +338,7 @@ export default {
       }
     },
     onChange (element, updateIndex) {
-      Logger.log(-1, 'Editor.onChange()', element)
+      Logger.log(1, 'Editor.onChange()', element)
       if (updateIndex) {
         this.searchService.indexElement(element)
         this.updateTagsAndPersons()

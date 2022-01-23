@@ -60,10 +60,8 @@ https://codepen.io/P1N2O/pen/pyBNzX
 
 # TODO:
 
-- last opened?
-- due query in side bar
 - dark scheme
-- "Due" folder as query?
+- replace note dnd with folder dialog?
 - notes as documents?
 - Fix focus bug when clicking on highlights
 - Markup:

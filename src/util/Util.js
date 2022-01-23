@@ -1,38 +1,54 @@
-export function getTextWithLineBreaks(html) {
-    const node = document.createElement('div')
-    node.innerHTML = html
-    return innerText(node, false)
-}
-
-export function innerText (node, isOnFreshLine = false) {
+/**
+ *  enterring a<enter><enter>b will give such an HTML
+ * 
+ *  a
+ *  <div>
+ *      <br>
+ *  </div>
+ *  <div>
+ *      b
+ *  </div>
+ * 
+ *  The shitty part is <div><br><div> or 
+ * 
+ *  When we ask for innerText it will have three line breaks
+ */
+export function innerText (node, isOnFreshLine = false, level = 0) {
     let result = ''
     const childNodes = node.childNodes
+    let lastChildWasBr = false
     for (let i = 0; i < childNodes.length; i++) {
         const childNode = childNodes[i];
-    
         if (childNode.nodeName === 'BR') {
-            // BRs are always line breaks which means the next loop is on a fresh line
             result += '\n';
-            isOnFreshLine = true;
+            lastChildWasBr = true
             continue;
         }
     
         // We may or may not need to create a new line
-        if (childNode.nodeName === 'DIV' && isOnFreshLine === false) {
-            result += '\n';
+        if (childNode.nodeName === 'DIV') {
+            if (!lastChildWasBr) {
+                result += '\n';
+            }
         }
-    
-        isOnFreshLine = false;
+        lastChildWasBr = false
     
         if (childNode.nodeType === 3 && childNode.textContent) {
             result += childNode.textContent;
         }
     
-        // If this node has children, get into them as well:
-        result += innerText(childNode, isOnFreshLine);
+        if (!isDivWithBRChild(childNode)) {
+            result += innerText(childNode, isOnFreshLine, level+1);
+        }
     }
     return result
 }
+
+function isDivWithBRChild(node) {
+    return node.nodeName === 'DIV' && (node.innerHTML === '<br>' || node.innerHTML === '<br/>')
+}
+
+
 
 export function getText(html) {
 

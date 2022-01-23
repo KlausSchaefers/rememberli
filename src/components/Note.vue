@@ -79,6 +79,7 @@ import * as relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import * as Highlighter from '../util/Highlighter'
 import DropDown from '../common/DropDown.vue'
+import * as Util from '../util/Util'
 
 
 export default {
@@ -123,7 +124,7 @@ export default {
   },
   computed: {
       isDragable () {
-        return true // FIMXE: this.hasMenu
+        return !this.hasFocus
       },
       isDue () {
         return this.element.due > 0 && this.element.due < new Date().getTime()
@@ -185,7 +186,7 @@ export default {
       this.setValue(this.element.value)
     },
     onBlur () {
-      Logger.log(3, 'Note.onBlur() ', this.getValue(), `>${this.getText()}<`)
+      Logger.log(3, 'Note.onBlur() ',`>${this.getText()}<`)
       if (this.isDnd) {
         Logger.log(3, 'Note.onBlur() > blue after DNN')
         return
@@ -228,7 +229,9 @@ export default {
     },
     getValue () {
         if (this.$refs.input) {
-            return this.$refs.input.innerHTML
+            // this is a hacky version, but seem to work.
+            return Util.innerText(this.$refs.input)
+            //return this.$refs.input.innerHTML
         }
         return ''
     },

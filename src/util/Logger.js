@@ -7,6 +7,14 @@ class Logger {
     setLogLevel (l) {
         this.logLevel = l
     }
+
+    space (level, msg, space= '  ') {
+        let result = ''
+        for (let i = 0; i < level; i++) {
+            result += space
+        }
+        console.debug(result + msg)
+    }
   
     warn(msg, obj) {
         if (obj !== undefined) {
