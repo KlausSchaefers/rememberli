@@ -39,10 +39,10 @@
 	&.rmli-logo-triangle{
 		.rmli-logo-background{
 			background-image: url('../assets/Triangles.png');
-			background-size: 110% 110%;
-			animation: gradient 20s linear infinite;
-			//background-size: 100% 100%;
-			//animation: rotate 10s linear infinite;
+			//background-size: 110% 110%;
+			//animation: gradient 20s linear infinite;
+			background-size: 100% 100%;
+			animation: rotate 300s linear infinite;
 		}
 	}
 
@@ -57,18 +57,15 @@
 @keyframes rotate {
 	0% {
 		transform: rotate(0deg);
+		background-position: 50% 50%;
 	}
-	25% {
-		transform: rotate(10deg);
-	}
-	0% {
-		transform: rotate(0deg);
-	}
-	75% {
-		transform: rotate(-10deg);
+	50% {
+		background-size: 110% 110%;
+		background-position: 50% 50%;
 	}
 	100% {
-		transform: rotate(0deg);
+		transform: rotate(360deg);
+		background-position: 50% 50%;
 	}
 }
 

@@ -26,7 +26,7 @@
                   <span>{{$t('sidebar.all')}}</span>
             </a>
 
-            <a @click="setDue()" v-if="hasDueFilter"
+            <a @click="setDue()" v-if="settings.hasDueFolder"
               :class="[
                 'rmli-sidebar-folder', 
                 {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder.id === dueFolder.id }
@@ -123,7 +123,7 @@ export default {
       'save', 'select', 'search', 'new', 'exit', 'setFolder', 'deleteFolder', 
       'createFolder', 'changeFolder', 'deleteFolder', 'settings', 'moveElementToFolder', 'help'
   ],
-  props: ['file', 'isDirty', 'hasMenu'],
+  props: ['file', 'isDirty', 'hasMenu', 'settings'],
   data: function () {
     return {
         iconFolderSelected: 'ri-folder-open-line', //'ri-folder-4-line',
@@ -202,7 +202,7 @@ export default {
       this.isDue = true
       this.$emit('search', 'due')
       this.selectedFolder = this.dueFolder
-      this.$emit('setFolder', this.dueFolder)
+      this.$emit('setFolder', null)
     },
     setSearch (query) {
       Logger.log(3, 'SideBar.setSearch()', query)

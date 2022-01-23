@@ -1,3 +1,4 @@
+
 import Logger from '../util/Logger'
 import * as Util from '../util/Util'
 
@@ -9,21 +10,21 @@ export default class SearchService {
         this.persons = new Set()
     }
 
-    find(query) {
-        Logger.log(-1, "SearchService.find() > " , query)
+    find(str) {
+        Logger.log(-1, "SearchService.find() > " , str)
         const result  = {}
   
-        if (this.isValidQuery(query)) {
+        if (this.isValidQuery(str)) {
             let now = new Date().getTime()
-            const parts = query.toLowerCase().split(' ').filter(part => this.isValidQuery(part))
-            Logger.log(-1, "SearchService.find() > parts: " , parts)
+            const query = this.parseQuery(str)
+            Logger.log(-1, "SearchService.find() > query: " , query.operator, query.terms)
             const elements = Object.values(this.elements)
             let scores = {}
             elements.forEach(e => {
-                parts.forEach(part => {
+                query.terms.forEach(term => {
                       
-                    if (part === 'due') {
-                        if (e.due && e.due < now) {
+                    if (this.isDueQuery(term)) {
+                        if (Util.isDue(e, now)) {
                             if (!scores[e.id]) {
                                 scores[e.id] = {score:0}
                             }
@@ -31,7 +32,7 @@ export default class SearchService {
                         }
                     }
 
-                    if (e.value.indexOf(part) >= 0) {
+                    if (e.value.indexOf(term) >= 0) {
                         if (!scores[e.id]) {
                             scores[e.id] = {score:0}
                         }
@@ -42,23 +43,57 @@ export default class SearchService {
             })
 
             // assume AND
-            let minScore = parts.length
+            let minScore = this.getMinScore(query)
             Logger.log(-1, "SearchService.find() > minScore: " , minScore)
-            console.debug('  ', scores)
             for (let id in scores) {
-                console.debug('  ', id, scores[id])
                 if (scores[id].score >= minScore) {
                     result[id] = scores[id]
                 }
             }
             
-
         } else {
-            Logger.log(-1, "SearchService.find() > not valid" , query)
+            Logger.log(-1, "SearchService.find() > not valid" , str)
         }
-
-
         return result
+    }
+
+    getMinScore (query) {
+        if (query.operator === 'or') {
+            return 1
+        }
+        return query.terms.length
+    }
+
+    parseQuery (str) {
+        const parts = str.toLowerCase().split(' ')
+        let terms = []
+        let operator = 'and'
+
+        parts.forEach(part => {
+            if (this.isLogicAnd(part)) {
+                operator = 'and'
+            } else if (this.isLogicOr(part)) {
+                operator = 'or'
+            } else if (this.isValidQuery(part)) {
+                terms.push(part)
+            }
+        })
+        return {
+            operator: operator,
+            terms: terms
+        }
+    }
+
+    isDueQuery (query) {
+        return query === 'due'
+    }
+
+    isLogicOr (query) {
+        return query === 'or' || query === '|'
+    }
+
+    isLogicAnd (query) {
+        return query === 'and' || query === '&'
     }
 
     isValidQuery (query) {

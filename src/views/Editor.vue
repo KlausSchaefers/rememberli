@@ -25,6 +25,7 @@
     
     <SideBar
         :hasMenu="hasMenu"
+        :settings="settings"
         @save="onSave" 
         @select="onSelect" 
         @new="onNew" 
@@ -38,7 +39,7 @@
         @moveElementToFolder="moveElementToFolder"
         :file="file" 
         :isDirty="isDirty" 
-        @search="onSearch"
+        @search="setSearch"
         />
 
     <main class="rmli-editor-body rmli-drag-bar-below">
@@ -60,7 +61,7 @@
               <!-- clean this up -->
              
               <h1 class="rmli-pinned" v-if="filteredElements.pinned.length > 0">
-                {{selectedFolder ? selectedFolder.label : $t('list.rest')}} - {{$t('list.pinned')}}
+                {{settings.hasDueInTop ? $t('list.pinnedAndDue'): $t('list.pinned')}}
               </h1>
         
               <transition-group name="list" tag="div">
@@ -143,7 +144,7 @@ import SideBar from '../components/SideBar'
 import Logger from '../util/Logger'
 import SearchService from '../services/SearchService'
 import HistoryService from '../services/HistoryService'
-//import * as Util from '../util/Util'
+import * as Util from '../util/Util'
 
 export default {
   name: 'Editor',
@@ -154,9 +155,11 @@ export default {
         settings: {
           theme: 'default',
           fontSize: 's',
+          hasDueFolder: false,
           hasTimeline: false,
           hasBorderTop: true,
           hasDateLeft: false,
+          hasDueInTop: false,
           hasBeta: false
         },
         status: {
@@ -199,55 +202,35 @@ export default {
       return this.file.content.elements
     },
     filteredElements () {
-      /** 
-       * FIXME: add pinned stuff here
-       */
       let elements = this.folderElements
       if (this.searchService.isValidQuery(this.query)) {
         Logger.log(-1, 'Editor.filteredElements()')
-        if (this.settings.isPinnedTopLayout) {
-          return this.getSplittedElements(this.getFilteredElements(elements))
-        } else {
-          return this.getConcatedElements(this.getFilteredElements(elements))
-        }
-        
+        return this.getSplittedElements(this.getFilteredElements(elements))
       }
       return this.getSplittedElements(elements)
     }
   },
   methods: {
-     getConcatedElements (elements) {
-
-      let pinned = []
-      let rest = []
-
-      elements.forEach(e => {
-        if (e.pinned) {
-          pinned.push(e)
-        } else {
-          rest.push(e)
-        }
-      })
-
-      return {
-          rest: pinned.concat(rest),
-          pinned:[]
-      }
-    },
     getSplittedElements (elements) {
-
-      let pinned = []
-      let rest = []
-
+      const pinned = []
+      const rest = []
+      const now = new Date().getTime()
       elements.forEach(e => {
         if (e.pinned) {
           pinned.push(e)
         } else {
-          rest.push(e)
+          if (this.settings.hasDueInTop && Util.isDue(e, now)) {
+            pinned.push(e)
+          } else {
+            rest.push(e)
+          }
         }
       })
-
       return {pinned, rest}
+    },
+    setSearch (value) {
+      Logger.log(-1, 'Editor.setSearch()')
+      this.$refs.toolbar.setSearch(value)
     },
     onSearch (query) {
       Logger.log(-1, 'Editor.onSearch()', query)
@@ -297,11 +280,11 @@ export default {
      
       this.$refs.alarmDialog.show(element.due, (dueDate) => {
         Logger.log(-1, 'Editor.onAlarm() >  element', element.id, dueDate)
+        this.hasListAnimation = true
         element.due = dueDate
         this.onChange(element, true)
+        setTimeout(() => this.hasListAnimation = false, 1000)
       })
-      
-      
     },
     onPinned (element, value) {
       Logger.log(-1, 'Editor.onPinned() >  element', element.id, value)

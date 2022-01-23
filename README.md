@@ -61,6 +61,7 @@ https://codepen.io/P1N2O/pen/pyBNzX
 # TODO:
 
 - last opened?
+- due query in side bar
 - dark scheme
 - "Due" folder as query?
 - notes as documents?
@@ -80,6 +81,9 @@ https://codepen.io/P1N2O/pen/pyBNzX
 - stars with color and special view?
 - placeholder color
 - suggestions for search?
+- add logic operator selector to the search bar??
+- add month splitters
+- show time line when scrolling long document???
 
 -> Landing: https://www.framer.com/sites/integrations/
 -> https://www.framer.com/sites/, https://www.framer.com/sites/

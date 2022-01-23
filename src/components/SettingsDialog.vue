@@ -9,6 +9,8 @@
         <RadioList :options="sizes" v-model="settings.fontSize"/>
 
         <h1 class="rmli-margin-top-l">{{$t('settings.other')}}</h1>
+        <CheckBox v-model="settings.hasDueInTop" :label="$t('settings.hasDueInTop')"/>
+        <CheckBox v-model="settings.hasDueFolder" :label="$t('settings.hasDueFolder')"/>
         <CheckBox v-model="settings.hasTimeline" :label="$t('settings.timeline')"/>
         <CheckBox v-model="settings.hasBorderTop" :label="$t('settings.hasBorderTop')"/>
         <CheckBox v-model="settings.hasDateLeft" :label="$t('settings.hasDateLeft')"/>

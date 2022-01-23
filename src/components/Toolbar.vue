@@ -69,6 +69,10 @@ export default {
       if (this.$refs.searchInput) {
         this.$refs.searchInput.focus()
       }
+    },
+    setSearch (search) {
+      this.search = search
+      this.onSearch()
     }
   },
   mounted () {

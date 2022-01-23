@@ -17,15 +17,22 @@
 
                 <h3>Concepts</h3>
                  <p>
-                    The app is built around three main 
-                    concepts to organize:
+                    The app is built around three main concepts to organize:
                 </p>
                 <ol>
-                    <li>The powerful search allows you to find and filter all your notes. </li>
-                    <li>Use <span class="rmi-highlight-person">@person</span> and <span class="rmi-highlight-tag">#tag</span> 
-                    markup to highlight important things. </li>
-                   
-                    <li>Place your notes into folders</li>
+                    <li>
+                        A simple markup language that supports <span class="rmi-highlight-person">@person</span> and 
+                        <span class="rmi-highlight-tag">#tag</span> to highlight important elements in a note and help you
+                        to find the right notes.
+                    </li>
+                    <li>
+                        A powerful search engine that allows you to find and filter all your notes. 
+                        It support *magic* commands like "due", "#tag" or "@person" search with smart auto complete. 
+                    </li>
+                      <li>
+                        Notes are taken in a chronological order and this order is perserved, even when you filter the list of Notes
+                        with the search function.
+                    </li>
                 </ol>
 
                 <p>
@@ -56,21 +63,41 @@
                     To delete a note, simply remove all content.
                 </p>
 
+
+                <h3>Search</h3>
+                <p>
+                    To search in RememberLi, just click on the search bar or press <b>CTRL - F</b>. Just type in your query,
+                    and the list of notes will be filtered while you type. The search element allows the following command:
+
+
+                <ul>
+                    <li><b>#</b>: Show suggestions of all your persons</li>
+                    <li><b>@</b>: Show suggestions of all your tags</li>
+                    <li><b>due</b>: Show all notes that are due</li>
+                    <li><b>and</b>: 
+                        Run and AND query. If you type "A and B", only notes 
+                        contain "A" and "B" will be shown. The shortvut is <b>&</b></li>
+                     <li><b>or</b>: 
+                       Runs an OR quert. If you type "A or B", all notes that
+                        contain "A" or "B" will be shown. The shortvut is <b>|</b></li>
+                    
+                </ul>
+                      
+                </p>
+
                 <h3>Reminders:</h3>
                  <p>
                     You can set a remimnder for every note. When the reminder gets due, the note will be indicated with a red border
                     at the left side. To create a reminder follow these steps:
-
-
                     <ol>
                         <li>Click on the <i class="ri-more-line rmli-help-example-icon"/> icon </li>
                         <li>Select the  <i class="ri-alarm-line rmli-help-example-icon"></i> {{$t('note.setreminder')}} entry in the menu.  </li>
                         <li>A dialog will show up. You can now set the date, when the note should become due. </li>
                         <li>You can change or remove the reminder by opening the dialog again.</li>
                     </ol>
-
-
-
+                </p>
+                <p>
+                    <b>Tip:</b> Type "due" in the search box to see all elements that are due
                 </p>
 
                 <h3>Folders</h3>

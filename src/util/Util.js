@@ -102,3 +102,7 @@ export function replaceLastPart (str, part) {
     }
     return part
 }
+
+export function isDue(e, now) {
+    return e.due && e.due < now
+}

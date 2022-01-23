@@ -22,6 +22,8 @@
         "other": "Other",
         "hasBorderTop": "Show line between notes",
         "hasDateLeft": "Show date on left side",
+        "hasDueInTop": "Due notes on top",
+        "hasDueFolder": "Due folder in sidebar",
         "timeline": "Show timeline",
         "beta": "Enable experimental features"
     },
@@ -64,6 +66,7 @@
     },
     "list": {
         "pinned": "Pinned",
+        "pinnedAndDue": "Pinned & Due",
         "rest": "All notes"
     },
     "month": {
