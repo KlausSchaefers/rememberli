@@ -62,3 +62,10 @@
 
  
 }
+
+.rmli-checkbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-s;
+  padding: $spacing-s 0px;
+}
