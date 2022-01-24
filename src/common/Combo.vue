@@ -63,7 +63,7 @@ export default {
         return this.$refs.comboInput.value
     },
     onKeyPress(e) {
-      console.debug('onKeyPress()', this.getInputValue())
+
       let inputValue = e.target.value
       if (inputValue.length > 0) {
         let search = inputValue.toLowerCase()
@@ -90,8 +90,7 @@ export default {
     },
     handleArrows(e) {
       var key = e.which || e.keyCode
-      console.debug('handleArrows', key)
-
+     
       if (40 == key) { // UP
         this.selectedIndex = Math.min(this.matches.length, this.selectedIndex + 1)
         return

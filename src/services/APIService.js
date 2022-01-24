@@ -6,6 +6,7 @@ var loadListener = null
 
 var selectListener = null
 
+var logListner = null
 
 export default class APIService {
     
@@ -27,6 +28,27 @@ export default class APIService {
         selectListener = await ipcRenderer.receive('select:reply', (e) => {
             this.onSelectReply(e)
         })
+
+        logListner = await ipcRenderer.receive('log:reply', (e) => {
+            this.onLogReply(e)
+        })
+    }
+
+    onAppLoaded () {
+        Logger.log(-2, 'APIService.onAppLoaded()')
+        let ipcRenderer = window.ipcRenderer
+        ipcRenderer.send('openFileExtensionOnStart')
+    }
+
+    getElectronLog () {
+        Logger.log(-2, 'APIService.getElectronLog()')
+        let ipcRenderer = window.ipcRenderer
+        ipcRenderer.send('log')
+    }
+
+    onLogReply (data) {
+        Logger.log(-2, 'APIService.onLogReply()', data)
+        console.table(data.log)
     }
 
     cleanUp () {
@@ -40,6 +62,9 @@ export default class APIService {
             }
             if (selectListener) {
                 ipcRenderer.removeListener('select:reply', selectListener)
+            }
+            if (logListner) {
+                ipcRenderer.removeListener('log:reply', logListner)
             }
         } catch (err) {
             Logger.error('APIService.cleanUp', err)

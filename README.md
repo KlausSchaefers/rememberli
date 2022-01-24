@@ -7,12 +7,12 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run electron:serve 
 ```
 
 ### Compiles and minifies for production
 ```
-npm run build
+npm run electron:build -- --win --linux
 ```
 
 ### Run your unit tests
@@ -60,7 +60,13 @@ https://codepen.io/P1N2O/pen/pyBNzX
 
 # TODO:
 
-- dark scheme
+- somehow a nice todo view
+    -> Needs faster parser...
+    -> make one special view or build one super note?
+    -> how to back link so edits get proapagated?
+- create mixins
+- fix responsive ness
+- remove log or stream to browser
 - replace note dnd with folder dialog?
 - notes as documents?
 - Fix focus bug when clicking on highlights

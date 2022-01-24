@@ -58,61 +58,65 @@
         <div :class="'rmli-element-list ' + (hasListAnimation ? 'rmli-is-animated ': '')">
           <div class="rmli-container" ref="elementCntr">
 
-              <!-- clean this up -->
-             
-              <h1 class="rmli-pinned" v-if="filteredElements.pinned.length > 0">
-                {{settings.hasDueInTop ? $t('list.pinnedAndDue'): $t('list.pinned')}}
-              </h1>
-        
-              <transition-group name="list" tag="div">
-                <div :class="'rmli-element ' + (i === 0 ? 'rmli-element-no-border' : '')" v-for="(element,i) in filteredElements.pinned" :key="element.id" :data-element-id="element.id">
-                    <component 
-                      :is="element.type" 
-                      :element="element" 
-                      :settings="settings"
-                      :query="query"
-                      :hasMenu="hasMenu"
-                      @hint="showStatusMessage"
-                      @folder="showFolderDialog(element)"
-                      @alarm="onAlarm(element, $event)"
-                      @pinned="onPinned(element, $event)"
-                      @change="onElementChange(element, $event)" 
-                      @search="setSearch"
-                      @join="onJoinElement(element)"
-                      :placeholder="$t('note.remove')"
-                      ref="elements"/>
-                </div>
-              </transition-group>
-          
-           
+         
 
-              <h1 :class="{'rmli-margin-top-xxl': filteredElements.pinned.length > 0 }">
-                  {{selectedFolder ? selectedFolder.label : $t('list.rest')}}
-              </h1>
-        
-               <div class="rmli-element rmli-element-add rmli-element-no-border rmli-element-add-top">
-                <Add @add="addStart" :placeholder="$t('add.start')" ref="add"     :settings="settings"/>
-              </div>
-          
-              <transition-group name="list" tag="div">
-                <div class="rmli-element" v-for="(element) in filteredElements.rest" :key="element.id" :data-element-id="element.id">
-                  <component 
-                    :is="element.type"
-                    :settings="settings"
-                    :element="element" 
-                    :query="query"
-                    @hint="showStatusMessage"
-                    @search="setSearch"
-                    @folder="showFolderDialog(element)"
-                    @alarm="onAlarm(element, $event)"
-                    @pinned="onPinned(element, $event)"
-                    @change="onElementChange(element, $event)" 
-                    @join="onJoinElement(element)"
-                    :placeholder="$t('note.remove')"
-                    ref="elements"/>
-                </div>
-              </transition-group>
+              <div v-if="viewMode === 'list'">             
+                
+                  <h1 class="rmli-pinned" v-if="filteredElements.pinned.length > 0">
+                    {{settings.hasDueInTop ? $t('list.pinnedAndDue'): $t('list.pinned')}}
+                  </h1>
             
+                  <transition-group name="list" tag="div">
+                    <div :class="'rmli-element ' + (i === 0 ? 'rmli-element-no-border' : '')" v-for="(element,i) in filteredElements.pinned" :key="element.id" :data-element-id="element.id">
+                        <component 
+                          :is="element.type" 
+                          :element="element" 
+                          :settings="settings"
+                          :query="query"
+                          :hasMenu="hasMenu"
+                          @hint="showStatusMessage"
+                          @folder="showFolderDialog(element)"
+                          @alarm="onAlarm(element, $event)"
+                          @pinned="onPinned(element, $event)"
+                          @change="onElementChange(element, $event)" 
+                          @search="setSearch"
+                          @join="onJoinElement(element)"
+                          :placeholder="$t('note.remove')"
+                          ref="elements"/>
+                    </div>
+                  </transition-group>
+              
+              
+
+                  <h1 :class="{'rmli-margin-top-xxl': filteredElements.pinned.length > 0 }">
+                      {{selectedFolder ? selectedFolder.label : $t('list.rest')}}
+                  </h1>
+            
+                  <div class="rmli-element rmli-element-add rmli-element-no-border rmli-element-add-top">
+                    <Add @add="addStart" :placeholder="$t('add.start')" ref="add"     :settings="settings"/>
+                  </div>
+              
+                  <transition-group name="list" tag="div">
+                    <div class="rmli-element" v-for="(element) in filteredElements.rest" :key="element.id" :data-element-id="element.id">
+                      <component 
+                        :is="element.type"
+                        :settings="settings"
+                        :element="element" 
+                        :query="query"
+                        @hint="showStatusMessage"
+                        @search="setSearch"
+                        @folder="showFolderDialog(element)"
+                        @alarm="onAlarm(element, $event)"
+                        @pinned="onPinned(element, $event)"
+                        @change="onElementChange(element, $event)" 
+                        @join="onJoinElement(element)"
+                        :placeholder="$t('note.remove')"
+                        ref="elements"/>
+                    </div>
+                  </transition-group>
+                
+
+              </div>
 
           </div>
               
@@ -159,7 +163,7 @@ export default {
   props:['value'],
   data: function () {
       return {
-        version: '0.9.1.beta',
+        version: '0.9.3.beta',
         settings: {
           theme: 'default',
           fontSize: 's',
@@ -183,7 +187,8 @@ export default {
         selectedFolder:'',
         selectedFolderName: '',
         lastQuery: new Date().getTime(),
-        tagsAndPersons: []
+        tagsAndPersons: [],
+        viewMode: 'list'
     }
   },
   components: {
@@ -246,6 +251,12 @@ export default {
       this.query = query
       this.lastQuery = new Date().getTime()
       this.searchResultsScores = this.searchService.find(query, this.file, this.selectedFolder)
+      if (query === 'log') {
+        this.api.getElectronLog()
+      }
+      if (query === 'todo') {
+        // FIXME: add here some magic todo view...
+      }
     },
     getFilteredElements (elements) {
         let results = elements.filter(e => {
@@ -446,6 +457,9 @@ export default {
         setTimeout(() => this.status.visible = false, 1000)
       }
     },
+    /**
+     *  Folders
+     */
     setFolder (folder) {
       Logger.log(-2, 'Editor.setFolder() > ', folder)
       this.selectedFolder = folder
@@ -493,6 +507,9 @@ export default {
         Logger.log(-2, 'Editor.moveElementToFolder() > Could not find element', elementId)
       }
     },
+    /**
+     *  Dialogs
+     */
     showSettings () {
       Logger.log(2, 'Editor.showSettings()')
       this.$refs.settingsDialog.show(this.settings, (settings) => {
@@ -520,6 +537,7 @@ export default {
     this.api = new APIService()
     this.api.onSave(this.onSaveReply)
     this.api.onSelect(this.onSelectReply)
+    this.api.onAppLoaded()
     this.searchService = new SearchService()
     this.historyService = new HistoryService()
     this.keyUpHandler = (e) => this.onKeyUp(e) 

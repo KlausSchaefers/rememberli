@@ -21,7 +21,7 @@
           :draggable="isDragable"
       >
             <div class="rmli-timeline-note-knop" v-if="settings.hasTimeline"/>
-            <div class="rmli-note-status-dates" >
+            <div class="rmli-note-status-dates" > 
              
                 <div :class="['rmli-note-status-due-message',{'rmli-due': isDue}]" v-if="isAlarmSet"  @mousedown="onAlarm(true)">
                   <i class="ri-alarm-line"></i>{{printDate(element.due)}}
@@ -275,7 +275,7 @@ export default {
         }
         return ''
     },
-    setValue (value) {
+    setValue (value) {   
         if (this.$refs.input) {
           if (!this.hasFocus) {
             this.$refs.input.innerHTML = Highlighter.highlight(value, this.query)
@@ -283,9 +283,6 @@ export default {
             this.$refs.input.innerHTML = value
           }
         }
-        this.$nextTick(() => {
-          this.value = this.getText()
-        })
     },
     onPlaceHolderClick () {
       this.focus()
