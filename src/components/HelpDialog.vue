@@ -11,13 +11,13 @@
 
             <div class="rmli-dialog-content-m" v-if="tab ==='help'">
                 <p>
-                    RememberLi is a simple note-taking app, that will help you to remember 
-                    the important things.
+                    RememberLi is a simple note-taking app, that is focussed on 
+                    finding and remembering the important things in your life.
                 </p>
 
                 <h3>Concepts</h3>
                  <p>
-                    The app is built around three main concepts to organize:
+                    The app is built around three main concepts:
                 </p>
                 <ol>
                     <li>
@@ -49,16 +49,18 @@
 
                 <p>
                     RememberLi supports the following markups that make it easy for you to organize your notes:
+
+                    <ul>
+                        <li><b>@name</b>: Create a <span class="rmi-highlight-person">@person</span>  markup</li>
+                        <li><b>#tag</b>: Create a and <span class="rmi-highlight-tag">#tag</span> markup</li>
+                        <li><b>[]</b>: Create a open task checkbox <span class="rmi-highlight-task rmi-highlight-task-open"></span></li>
+                        <li><b>[X]</b>: Create on closed markup checkbox <span class="rmi-highlight-task rmi-highlight-task-done"></span></li>
+                        <li><b>-></b>: Create an <i class="ri-arrow-right-line rmi-highlight-icon"></i></li>
+                    </ul>
+
                 </p>
 
-                <ul>
-                    <li><b>@name</b>: Create a <span class="rmi-highlight-person">@person</span>  markup</li>
-                    <li><b>#tag</b>: Create a and <span class="rmi-highlight-tag">#tag</span> markup</li>
-                    <li><b>[]</b>: Create a open task checkbox <span class="rmi-highlight-task rmi-highlight-task-open"></span></li>
-                    <li><b>[X]</b>: Create on closed markup checkbox <span class="rmi-highlight-task rmi-highlight-task-done"></span></li>
-                    <li><b>-></b>: Create an <i class="ri-arrow-right-line rmi-highlight-icon"></i></li>
-                </ul>
-
+               
                 <p>
                     To delete a note, simply remove all content.
                 </p>
@@ -70,20 +72,33 @@
                     and the list of notes will be filtered while you type. The search element allows the following command:
 
 
-                <ul>
-                    <li><b>#</b>: Show suggestions of all your persons</li>
-                    <li><b>@</b>: Show suggestions of all your tags</li>
-                    <li><b>due</b>: Show all notes that are due</li>
-                    <li><b>and</b>: 
-                        Run and AND query. If you type "A and B", only notes 
-                        contain "A" and "B" will be shown. The shortvut is <b>&</b></li>
-                     <li><b>or</b>: 
-                       Runs an OR quert. If you type "A or B", all notes that
-                        contain "A" or "B" will be shown. The shortvut is <b>|</b></li>
-                    
-                </ul>
-                      
+                    <ul>
+                        <li><b>#</b>: Show suggestions of all your persons</li>
+                        <li><b>@</b>: Show suggestions of all your tags</li>
+                        <li><b>due</b>: Show all notes that are due</li>
+                        <li><b>and</b>: 
+                            Run and AND query. If you type "A and B", only notes 
+                            contain "A" and "B" will be shown. The shortvut is <b>&</b></li>
+                        <li><b>or</b>: 
+                        Runs an OR quert. If you type "A or B", all notes that
+                            contain "A" or "B" will be shown. The shortvut is <b>|</b></li>
+                        
+                    </ul>                      
                 </p>
+
+                <h3>Keyboard shortcuts:</h3>
+
+                <p>
+                    You can use teh following keyboard shortcuts:
+
+                    <ul>
+                        <li><b>CTRl + F</b>: Focus search field.</li>
+                        <li><b>CTRL + CLICK + #tag</b>: Search for the tag</li>
+                        <li><b>CTRL + CLICK + @person</b>: Search for the person</li>
+                    </ul>
+
+                </p>
+
 
                 <h3>Reminders:</h3>
                  <p>

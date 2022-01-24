@@ -2,12 +2,10 @@
 @import './note-timeline.scss';
 
 
-.rmli-note{
-   
+.rmli-note {
     margin: 0px;
     padding: $spacing-l 0px;
-    padding-top: 0px;
- 
+    padding-top: 0px; 
     border-left: 2px solid $border-color-transparent;
 
     .rmli-note-status {
@@ -66,8 +64,7 @@
             }
         }
 
-        .rmli-dropdown {
-      
+        .rmli-dropdown {      
             cursor: pointer;
             font-size: $font-size-s;
             width: 24px;
@@ -78,12 +75,10 @@
 
             .rmli-dropdown-item {
                 font-size: $font-size-xs;
-
                 &.rmli-note-delete:hover{
                     color: $color5;
                 }
             }
-
 
             .rmli-dropdown-popup {
                 width: 200px;
@@ -136,6 +131,10 @@
         overflow: hidden;
         white-space: pre-wrap;
         
+
+        .rmi-highlight-tag, .rmi-highlight-person {
+            cursor: pointer;
+        }
 
         &:hover {
             outline: none;

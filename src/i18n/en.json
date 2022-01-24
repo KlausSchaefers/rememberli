@@ -39,7 +39,8 @@
         "setreminder": "Set reminder",
         "changeFolder": "Change folder",
         "addFolder": "Move to folder",
-        "changereminder": "Change reminder"
+        "changereminder": "Change reminder",
+        "metaKeyToSearch": "Press CTRL or CMD to search for "
     },
     "toolbar": {
         "search": "Search"

@@ -122,3 +122,8 @@ export function replaceLastPart (str, part) {
 export function isDue(e, now) {
     return e.due && e.due < now
 }
+
+export function stopEvent(e) {
+    e.preventDefault()
+    e.stopPropagation()
+}

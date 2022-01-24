@@ -61,6 +61,7 @@
           :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
           contenteditable="true" 
           ref="input"
+          @mousedown="onMouseDown"
           @focus="onFocus"
           @paste="onPaste"
           @keydown="onKeyDown"
@@ -87,7 +88,7 @@ import * as Util from '../util/Util'
 
 export default {
   name: 'Note',
-  emits: ['change', 'focus', 'click', 'pinned', 'alarm', 'delete', 'folder'],
+  emits: ['change', 'focus', 'click', 'pinned', 'alarm', 'delete', 'folder', 'search', 'hint'],
   props: {
     hasMenu: {
       type: Boolean,
@@ -162,6 +163,33 @@ export default {
       }
   },
   methods: {
+    onMouseDown (e) {
+      Logger.log(-3, 'Note.onMouseDown() > enter', e)
+      if (e.target) {
+        let type = e.target.getAttribute('data-rmli-type')
+        console.debug(type)
+        switch (type) {
+          case 'tag':
+            this.setSearch(e)
+            break
+          case 'person':
+            this.setSearch(e)
+            break
+          default:
+            break
+        }
+      } 
+    },
+    setSearch (e) {
+      const query = e.target.innerText
+      if (e.metaKey) {
+        Util.stopEvent(e)        
+        Logger.log(-3, 'Note.setSearch() > enter', query)
+        this.$emit('search', query)
+      } else {
+        this.$emit('hint', this.$t('note.metaKeyToSearch'))
+      }
+    },
     onDragStart (e) {
         Logger.log(-3, 'Note.onDragStart() > enter', e)
         e.dataTransfer.setData("text/plain", this.element.id);

@@ -1,28 +1,33 @@
 
 .rmi-highlight-tag {
     background: rgba($color: $color2, $alpha: 1);
+
 }
 
 .rmi-highlight-person {
     background: rgba($color: $color3, $alpha: 1);
+
 }
 
 .rmi-highlight-task {
     height: $font-size-s;
     width: $font-size-s;
+    border-radius: $border-radius-s; 
     display: inline-block;
     border: 1px solid $color1;
-    border-radius: 50px;
     padding: $spacing-xs;
     box-sizing: border-box;
-    vertical-align: middle;
+    vertical-align: middle
 }
 
+
+
 .rmi-highlight-task-done::after {
-    content: '';
+    content: '';   
     display: block;
-    height: 100%;
+    height: 50%;
     width: 100%;
-    border-radius: 50px;
-    background: $color1;
+    border-bottom: 2px solid $color1;
+    border-left: 2px solid $color1;
+    transform: rotate(-45deg);
 }
