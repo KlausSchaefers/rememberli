@@ -72,6 +72,7 @@
                       :settings="settings"
                       :query="query"
                       :hasMenu="hasMenu"
+                      @folder="showFolderDialog(element)"
                       @alarm="onAlarm(element, $event)"
                       @pinned="onPinned(element, $event)"
                       @change="onElementChange(element, $event)" 
@@ -98,6 +99,7 @@
                     :settings="settings"
                     :element="element" 
                     :query="query"
+                    @folder="showFolderDialog(element)"
                     @alarm="onAlarm(element, $event)"
                     @pinned="onPinned(element, $event)"
                     @change="onElementChange(element, $event)" 
@@ -115,6 +117,7 @@
     <AlarmDialog ref="alarmDialog"/>
     <SettingsDialog ref="settingsDialog"/>
     <HelpDialog ref="helpDialog" @openWebLink="onOpenWebLink" :version="version"/>
+    <FolderDialog ref="folderDialog" :file="file"/>
   </div>
   <div :class="'rmli-status rmli-status-' + (status.visible ? 'visibale' : 'hidden')"> 
     {{status.message}}
@@ -135,6 +138,7 @@
 import APIService from '../services/APIService'
 import AlarmDialog from '../components/AlarmDialog.vue'
 import SettingsDialog from '../components/SettingsDialog.vue'
+import FolderDialog from '../components/FolderDialog.vue'
 import Toolbar from '../components/Toolbar'
 import Note from '../components/Note'
 import Add from '../components/Add'
@@ -186,7 +190,8 @@ export default {
     AlarmDialog,
     SettingsDialog,
     Logo,
-    HelpDialog
+    HelpDialog,
+    FolderDialog
   },
   provide() {
     return {
@@ -466,6 +471,13 @@ export default {
       })
       this.onSave()
     },
+    showFolderDialog (element) {
+      Logger.log(-2, 'Editor.showFolderDialog() > ', element)
+      this.$refs.folderDialog.show(element, folder => {
+        Logger.log(-2, 'Editor.showFolderDialog() > ', folder)
+        this.moveElementToFolder(folder, element.id)
+      })
+    },
     moveElementToFolder (folder, elementId) {
       Logger.log(2, 'Editor.moveElementToFolder() > ', folder, elementId)
       let element = this.file.content.elements.find(e => e.id === elementId)
@@ -484,7 +496,7 @@ export default {
       })
     },
     initSettings () {
-      Logger.log(-2, 'Editor.initSettings()')
+      Logger.log(2, 'Editor.initSettings()')
       let value = localStorage.getItem('rmli-settings')
       if (value) {
         this.settings = JSON.parse(value)

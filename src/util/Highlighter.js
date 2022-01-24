@@ -3,7 +3,7 @@ export function highlight (html){
     result = result.replace(/(@[a-zA-Z0-9\-_]+)/g,'<span class="rmi-highlight-person">$1</span>')
     result = result.replace(/\[\]/g,'<span class="rmi-highlight-task rmi-highlight-task-open"></span>')
     result = result.replace(/\[x\]/gi,'<span class=" rmi-highlight-task rmi-highlight-task-done"></span>')
-    result = replaceAll(result, '-&gt;','<i class="ri-arrow-right-line rmi-highlight-icon"></i>')
+    //result = replaceAll(result, '-&gt;','<i class="ri-arrow-right-line rmi-highlight-icon"></i>')
     result = replaceAll(result, '->','<i class="ri-arrow-right-line rmi-highlight-icon"></i>')
     return result
 }

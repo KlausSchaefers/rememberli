@@ -9,45 +9,48 @@
       {'rmli-timeline-note': settings.hasTimeline}
     ]" 
     @click="$emit('click')" 
-    :data-element-id="element.id"  
-    @dragstart="onDragStart"
-    :draggable="isDragable"
     >
-      <div :class="['rmli-note-status', {'rmli-element-border': settings.hasBorderTop}, {'rmli-note-date-left': settings.hasDateLeft}]">
+      <div 
+        :class="[
+            'rmli-note-status', 
+            {'rmli-element-border': settings.hasBorderTop}, 
+            {'rmli-note-date-left': settings.hasDateLeft}
+          ]"
+          :data-element-id="element.id"  
+          @dragstart="onDragStart"
+          :draggable="isDragable"
+      >
             <div class="rmli-timeline-note-knop" v-if="settings.hasTimeline"/>
-       
             <div class="rmli-note-status-dates" >
              
                 <div :class="['rmli-note-status-due-message',{'rmli-due': isDue}]" v-if="isAlarmSet"  @mousedown="onAlarm(true)">
                   <i class="ri-alarm-line"></i>{{printDate(element.due)}}
                 </div>
                 <span v-else/>
-
                 {{created}}    
             </div>
 
-
-             
-      
             <DropDown icon="ri-more-line"  class="rmli-note-more">
-              <div class="rmli-dropdown-item" v-if="!isPinned" @mousedown="onPinned(true)">
-                <i class="ri-pushpin-2-line rmli-pinned" ></i> {{$t('note.pin')}}
-              </div>
-              <div class="rmli-dropdown-item" v-if="isPinned" @mousedown="onPinned(false)">
-                <i class="ri-pushpin-2-fill rmli-pinned"  ></i> {{$t('note.unpin')}}
-              </div>
-
-              <div class="rmli-dropdown-item" v-if="!isAlarmSet" @mousedown="onAlarm(true)">
-                  <i class="ri-alarm-line"></i> {{$t('note.setreminder')}}
-              </div>
-
-              <div class="rmli-dropdown-item" v-if="isAlarmSet" @mousedown="onAlarm(false)">
-                  <i class="ri-alarm-fill"></i> {{$t('note.changereminder')}}
-              </div>     
-
+                <div class="rmli-dropdown-item" v-if="!isPinned" @mousedown="onPinned(true)">
+                  <i class="ri-pushpin-2-line rmli-pinned" ></i> {{$t('note.pin')}}
+                </div>
+                <div class="rmli-dropdown-item" v-if="isPinned" @mousedown="onPinned(false)">
+                  <i class="ri-pushpin-2-fill rmli-pinned"  ></i> {{$t('note.unpin')}}
+                </div>
+                <div class="rmli-dropdown-item" v-if="!isAlarmSet" @mousedown="onAlarm(true)">
+                    <i class="ri-alarm-line"></i> {{$t('note.setreminder')}}
+                </div>
+                <div class="rmli-dropdown-item" v-if="isAlarmSet" @mousedown="onAlarm(false)">
+                    <i class="ri-alarm-fill"></i> {{$t('note.changereminder')}}
+                </div>     
+                <div class="rmli-dropdown-item rmli-note-delete" @mousedown="onMoveFolder()">
+                    <i class="ri-folder-transfer-line" v-if="element.folder"/>
+                    <i class="ri-folder-add-line" v-else/>
+                    {{ element.folder ? $t('note.changeFolder') : $t('note.addFolder')}}
+                </div>    
                 <div class="rmli-dropdown-item rmli-note-delete" @mousedown="onDelete()">
-                  <i class="ri-delete-bin-7-line"></i> {{$t('note.delete')}}
-              </div>          
+                    <i class="ri-delete-bin-7-line"></i> {{$t('note.delete')}}
+                </div>        
             </DropDown>
   
            
@@ -84,7 +87,7 @@ import * as Util from '../util/Util'
 
 export default {
   name: 'Note',
-  emits: ['change', 'focus', 'click', 'pinned', 'alarm', 'delete'],
+  emits: ['change', 'focus', 'click', 'pinned', 'alarm', 'delete', 'folder'],
   props: {
     hasMenu: {
       type: Boolean,
@@ -201,6 +204,9 @@ export default {
     },
     onDelete () {
         this.$emit('change', '')
+    },
+    onMoveFolder () {
+      this.$emit('folder', '')
     },
     onKeyUp () {
         let value = this.getText()

@@ -46,7 +46,7 @@ export default {
   data: function () {
     return {
         themes: [
-            {label: "Light", value: "default"},
+            {label: "Pop!", value: "default"},
             {label:"Soft", value: "soft"},
             //{label:"Black & White", value: "bw"},
             //{label:"Dark", value: "dark"}

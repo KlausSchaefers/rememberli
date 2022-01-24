@@ -114,13 +114,7 @@ $spacing-action: 12px;
             flex-grow: 1;
             outline: none;
             padding: 0px;
-            color: #fff;
-
-            &::-webkit-input-placeholder { /* Edge */
-                color: rgba(#fff, $alpha: 0.5);
-                font-style: italic;
-            }
-              
+          
         }
 
         &:hover{
@@ -135,6 +129,15 @@ $spacing-action: 12px;
         }
         &:hover{
            background-color: $primary-color-hover;
+        }
+
+        input {
+            color: #fff;
+            &::-webkit-input-placeholder { /* Edge */
+                color: rgba(#fff, $alpha: 0.5);
+                font-style: italic;
+            }
+              
         }
     }
 
