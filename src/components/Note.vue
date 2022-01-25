@@ -87,7 +87,7 @@ import Logger from '../util/Logger'
 import dayjs from 'dayjs'
 import * as relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
-import * as Highlighter from '../util/Highlighter'
+import Highlighter from '../util/Highlighter'
 import DropDown from '../common/DropDown.vue'
 import * as Util from '../util/Util'
 import * as RememberLi from '../services/RememberLi'

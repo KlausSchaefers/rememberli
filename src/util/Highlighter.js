@@ -1,26 +1,35 @@
-export function highlight (html){
-    let result = html.replace(/(#[a-zA-Z0-9\-_&]+)/g,'<span data-rmli-type="person" class="rmi-highlight-tag">$1</span>')
-    result = result.replace(/(@[a-zA-Z0-9\-_&]+)/g,'<span data-rmli-type="person" class="rmi-highlight-person">$1</span>')
-    result = replaceTasksDiv(result)
-    //result = replaceAll(result, '-&gt;','<i class="ri-arrow-right-line rmi-highlight-icon"></i>')
-    result = replaceAll(result, '->','<i class="ri-arrow-right-line rmi-highlight-icon"></i>')
-    return result
+class Highlighter {
+
+    highlight (html){
+        let result = html.replace(/(#[a-zA-Z0-9\-_&]+)/g,'<span data-rmli-type="person" class="rmi-highlight-tag">$1</span>')
+        result = result.replace(/(@[a-zA-Z0-9\-_&]+)/g,'<span data-rmli-type="person" class="rmi-highlight-person">$1</span>')
+        result = this.replaceTasksDiv(result)
+        //result = replaceAll(result, '-&gt;','<i class="ri-arrow-right-line rmi-highlight-icon"></i>')
+        result = this.replaceAll(result, '->','<i class="ri-arrow-right-line rmi-highlight-icon"></i>')
+        return result
+    }
+    
+    replaceTasksDiv (result) {
+        result = result.replace(/\[\]/g, replaceOpenTodo)
+        result = result.replace(/\[\s\]/g, replaceOpenTodo)
+        result = result.replace(/\[x\]/gi,replaceClosedTodo)
+        return result
+    }
+
+
+    replaceAll(str, needle, replace) {
+        return str.split(needle).join(replace)
+    }
+    
+
+}
+export default new Highlighter()
+
+function replaceOpenTodo (match, offset, string) {
+    return `<span data-rmli-type="taskOpen" data-rmli-offset="${offset}" data-rmli-length="${match.length}"  class="rmi-highlight-task rmi-highlight-task-open"></span>`
 }
 
-export function replaceTasksIcon (result) {
-    result = result.replace(/\[\]/g,'<span data-rmli-type="task" class="ri-checkbox-blank-line"></span>')
-    result = result.replace(/\[\s\]/g,'<span data-rmli-type="task" class="ri-checkbox-blank-line"></span>')
-    result = result.replace(/\[x\]/gi,'<span data-rmli-type="task" class="ri-checkbox-line"></span>')
-    return result
+function replaceClosedTodo (match, offset, string) {
+    return `<span data-rmli-type="taskDone" data-rmli-offset="${offset}" data-rmli-length="${match.length}"  class="rmi-highlight-task rmi-highlight-task-done"></span>`
 }
 
-export function replaceTasksDiv (result) {
-    result = result.replace(/\[\]/g,'<span data-rmli-type="task" class="rmi-highlight-task rmi-highlight-task-open"></span>')
-    result = result.replace(/\[\s\]/g,'<span data-rmli-type="task" class="rmi-highlight-task rmi-highlight-task-open"></span>')
-    result = result.replace(/\[x\]/gi,'<span data-rmli-type="task" class="rmi-highlight-task rmi-highlight-task-done"></span>')
-    return result
-}
-
-function replaceAll(str, needle, replace) {
-    return str.split(needle).join(replace)
-}

@@ -75,13 +75,14 @@
                     <ul>
                         <li><b>#</b>: Show suggestions of all your persons</li>
                         <li><b>@</b>: Show suggestions of all your tags</li>
-                        <li><b>due</b>: Show all notes that are due</li>
+                        <li><b>:due</b>: Find all notes that are due</li>
+                        <li><b>:todo</b>: Find all notes that have a todo ([], [X]) in it and filter out lines that do not contain todos</li>
                         <li><b>and</b>: 
                             Run and AND query. If you type "A and B", only notes 
-                            contain "A" and "B" will be shown. The shortvut is <b>&</b></li>
+                            contain "A" and "B" will be shown. The shortcut is <b>&</b></li>
                         <li><b>or</b>: 
                         Runs an OR quert. If you type "A or B", all notes that
-                            contain "A" or "B" will be shown. The shortvut is <b>|</b></li>
+                            contain "A" or "B" will be shown. The shortcut is <b>|</b></li>
                         
                     </ul>                      
                 </p>

@@ -61,6 +61,7 @@ https://codepen.io/P1N2O/pen/pyBNzX
 # TODO:
 
 - hight when call setSearch in toolbar
+- bug: when selecting due ot todo folder and then searching, the sidebar does not work
 - create mixins
 - fix responsive ness
 - remove log or stream to browser

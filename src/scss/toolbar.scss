@@ -35,6 +35,13 @@
         gap: $spacing-m;
         align-items: center;
         position: relative;
+        
+
+        &.rmli-search-attention {
+            input {
+                border: 1px solid $border-color-focus;
+            }
+        }
 
         input {
             border: 1px solid transparent;
