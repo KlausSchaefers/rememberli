@@ -29,11 +29,21 @@
             <a @click="setDue()" v-if="settings.hasDueFolder"
               :class="[
                 'rmli-sidebar-folder', 
-                {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder.id === dueFolder.id }
+                {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder.isDue}
                 ]"
                 >
                   <i class="ri-alarm-line" ></i> 
                   <span>{{$t('sidebar.due')}}</span>
+            </a>
+
+             <a @click="setTodo()" v-if="settings.hasTodoFolder"
+              :class="[
+                'rmli-sidebar-folder', 
+                {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder.isTodo }
+                ]"
+                >
+                  <i class="ri-checkbox-multiple-line" ></i> 
+                  <span>{{$t('sidebar.todos')}}</span>
             </a>
 
             <a @click="setFolder(folder)" @dblclick="showEditFolder(folder)"
@@ -116,6 +126,7 @@
 </style>
 <script>
 import Logger from '../util/Logger'
+import {TERMS} from '../services/RememberLi'
 
 export default {
   name: 'SideBar',
@@ -143,6 +154,11 @@ export default {
           isDue: true,
           id:'',
           label:'Due'
+        },
+        todoFolder: {
+          isTodo: true,
+          id:'',
+          label:'Todo'
         },
         hasDueFilter: false
     }
@@ -200,8 +216,14 @@ export default {
     },
     setDue () {
       this.isDue = true
-      this.$emit('search', 'due')
+      this.$emit('search', TERMS.DUE)
       this.selectedFolder = this.dueFolder
+      this.$emit('setFolder', null)
+    },
+    setTodo () {
+      this.isDue = true
+      this.$emit('search', TERMS.TODO)
+      this.selectedFolder = this.todoFolder
       this.$emit('setFolder', null)
     },
     setSearch (query) {

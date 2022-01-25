@@ -8,6 +8,10 @@
     padding-top: 0px; 
     border-left: 2px solid $border-color-transparent;
 
+    &.rmli-todo {
+        //padding-bottom: 0px;
+    }
+
     .rmli-note-status {
         height: $spacing-m;
         font-size: $font-size-xs;

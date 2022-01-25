@@ -23,10 +23,12 @@
         "fontSize": "Font Size",
         "pinned": "Allow pinning",
         "other": "Other",
+        "sidebar": "Sidebar",
         "hasBorderTop": "Show line between notes",
         "hasDateLeft": "Show date on left side",
         "hasDueInTop": "Due notes on top",
         "hasDueFolder": "Due folder in sidebar",
+        "hasTodoFolder": "Todo folder in sidebar",
         "timeline": "Show timeline",
         "beta": "Enable experimental features"
     },
@@ -68,7 +70,8 @@
         "new": "Create new folder",
         "newplaceholder": "Enter the name",
         "delete": "Remove",
-        "due": "Due notes"
+        "due": "Due notes",
+        "todos": "Only todos"
     },
     "list": {
         "pinned": "Pinned",

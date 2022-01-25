@@ -171,6 +171,7 @@ export default {
           theme: 'default',
           fontSize: 's',
           hasDueFolder: false,
+          hasTodoFolder: false,
           hasTimeline: false,
           hasBorderTop: true,
           hasDateLeft: false,

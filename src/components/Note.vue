@@ -5,6 +5,7 @@
       'rmli-note ', 
       {'rmli-focus': hasFocus}, 
       {'rmli-due': isDue}, 
+      {'rmli-todo': isTodoQuery}, 
       {'rmli-pinned': isPinned}, 
       {'rmli-timeline-note': settings.hasTimeline}
     ]" 
@@ -71,9 +72,7 @@
           @blur="onBlur"/>
       </div>
       <div v-if="isTodoQuery && !hasFocus" @click="focus">
-         <div :class="['rmli-editable']" v-html="todosText">
-        
-          </div>
+         <div :class="['rmli-editable']" v-html="todosText" />
       </div>
   </div>
 </template>
@@ -140,7 +139,6 @@ export default {
   },
   computed: {
       todosText () {
-        console.debug('todoText', this.isTodoQuery)
         if (this.isTodoQuery) {
           let text = this.element.value
           let result = text.split('\n').filter(line => {        

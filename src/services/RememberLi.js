@@ -1,6 +1,6 @@
 export const TERMS = {
-    TODO: 'todo',
-    DUE: 'due'
+    TODO: ':todo',
+    DUE: ':due'
 }
 
 export function isDueTerm (query) {
