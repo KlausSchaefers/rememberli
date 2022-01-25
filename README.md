@@ -60,10 +60,7 @@ https://codepen.io/P1N2O/pen/pyBNzX
 
 # TODO:
 
-- somehow a nice todo view
-    -> Needs faster parser...
-    -> make one special view or build one super note?
-    -> how to back link so edits get proapagated?
+- hight when call setSearch in toolbar
 - create mixins
 - fix responsive ness
 - remove log or stream to browser

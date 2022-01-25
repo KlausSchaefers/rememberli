@@ -1,6 +1,10 @@
+@import './ds.scss';
+
 .rmli-settings {
-     
+    font-size: $font-size-s ;
     h1 {
-        
+        font-size: $font-size-s ;
+        margin: $spacing-m 0px;
+        margin-top: $spacing-xl;
     }
 }
