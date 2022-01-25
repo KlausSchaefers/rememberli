@@ -134,7 +134,7 @@ export default {
         }
     },
     open() {
-      Logger.log(-5, "Combo.open()")
+      Logger.log(5, "Combo.open()")
       this.isOpen = true
     },
     close() {
@@ -143,14 +143,13 @@ export default {
       this.selectedIndex = -1
     },
     onInputChange () {
-        Logger.log(-5, "Combo.onInputChange()", this.getInputValue())
+        Logger.log(5, "Combo.onInputChange()", this.getInputValue())
         this.selected = this.getInputValue()
         this.$emit("update:modelValue", this.selected)
         this.$emit("change", this.selected)
     },
     select(option) {
-        Logger.log(-5, "Combo.select()", option.value)
-        // FIXME: make this better to append multi part queries
+        Logger.log(5, "Combo.select()", option.value)
         let newValue= Util.replaceLastPart(this.selected, option.value)
         this.selected = newValue
         this.$refs.comboInput.value = newValue

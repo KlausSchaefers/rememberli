@@ -1,6 +1,8 @@
 
 import Logger from '../util/Logger'
 import * as Util from '../util/Util'
+import * as RememberLi from './RememberLi'
+
 
 export default class SearchService {
 
@@ -11,32 +13,32 @@ export default class SearchService {
     }
 
     find(str) {
-        Logger.log(-1, "SearchService.find() > " , str)
+        Logger.log(1, "SearchService.find() > " , str)
         const result  = {}
   
-        if (this.isValidQuery(str)) {
+        if (RememberLi.isValidQuery(str)) {
             let now = new Date().getTime()
             const query = this.parseQuery(str)
-            Logger.log(-1, "SearchService.find() > query: " , query.operator, query.terms)
+            Logger.log(1, "SearchService.find() > query: " , query.operator, query.terms)
             const elements = Object.values(this.elements)
             let scores = {}
             elements.forEach(e => {
                 query.terms.forEach(term => {
                       
-                    if (this.isDueQuery(term)) {
+                    if (RememberLi.isDueTerm(term)) {
                         if (Util.isDue(e, now)) {
-                            if (!scores[e.id]) {
-                                scores[e.id] = {score:0}
-                            }
-                            scores[e.id].score++
+                           this.incScore(scores, e)
+                        }
+                    }
+
+                    if (RememberLi.isTodoTerm(term)) {
+                        if (RememberLi.matchesToDo(e.value)) {
+                           this.incScore(scores, e)
                         }
                     }
 
                     if (e.value.indexOf(term) >= 0) {
-                        if (!scores[e.id]) {
-                            scores[e.id] = {score:0}
-                        }
-                        scores[e.id].score++
+                        this.incScore(scores, e)
                     }
                    
                 })
@@ -44,7 +46,7 @@ export default class SearchService {
 
             // assume AND
             let minScore = this.getMinScore(query)
-            Logger.log(-1, "SearchService.find() > minScore: " , minScore)
+            Logger.log(1, "SearchService.find() > minScore: " , minScore)
             for (let id in scores) {
                 if (scores[id].score >= minScore) {
                     result[id] = scores[id]
@@ -52,9 +54,16 @@ export default class SearchService {
             }
             
         } else {
-            Logger.log(-1, "SearchService.find() > not valid" , str)
+            Logger.log(1, "SearchService.find() > not valid" , str)
         }
         return result
+    }
+
+    incScore (scores, e) {
+        if (!scores[e.id]) {
+            scores[e.id] = {score:0}
+        }
+        scores[e.id].score++
     }
 
     getMinScore (query) {
@@ -70,11 +79,11 @@ export default class SearchService {
         let operator = 'and'
 
         parts.forEach(part => {
-            if (this.isLogicAnd(part)) {
+            if (RememberLi.isLogicAnd(part)) {
                 operator = 'and'
-            } else if (this.isLogicOr(part)) {
+            } else if (RememberLi.isLogicOr(part)) {
                 operator = 'or'
-            } else if (this.isValidQuery(part)) {
+            } else if (RememberLi.isValidQuery(part)) {
                 terms.push(part)
             }
         })
@@ -84,28 +93,8 @@ export default class SearchService {
         }
     }
 
-    isDueQuery (query) {
-        return query === 'due'
-    }
-
-    isLogicOr (query) {
-        return query === 'or' || query === '|'
-    }
-
-    isLogicAnd (query) {
-        return query === 'and' || query === '&'
-    }
-
     isValidQuery (query) {
-        return query && (query.length > 2 || this.isTagQuery(query) || this.isPersonQuery(query))
-    }
-
-    isPersonQuery (query) {
-        return query.indexOf('@') && query.length > 1
-    }
-
-    isTagQuery (query) {
-        return (query.indexOf('#') && query.length > 1)
+       return RememberLi.isValidQuery(query)
     }
 
     indexAll (file) {

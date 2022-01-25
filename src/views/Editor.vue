@@ -74,6 +74,7 @@
                           :settings="settings"
                           :query="query"
                           :hasMenu="hasMenu"
+                          :isTodoQuery="isTodoQuery"
                           @hint="showStatusMessage"
                           @folder="showFolderDialog(element)"
                           @alarm="onAlarm(element, $event)"
@@ -103,6 +104,7 @@
                         :settings="settings"
                         :element="element" 
                         :query="query"
+                        :isTodoQuery="isTodoQuery"
                         @hint="showStatusMessage"
                         @search="setSearch"
                         @folder="showFolderDialog(element)"
@@ -157,6 +159,7 @@ import Logger from '../util/Logger'
 import SearchService from '../services/SearchService'
 import HistoryService from '../services/HistoryService'
 import * as Util from '../util/Util'
+import * as RememberLi from '../services/RememberLi'
 
 export default {
   name: 'Editor',
@@ -208,6 +211,10 @@ export default {
     }
   },
   computed: {
+    isTodoQuery () {
+      Logger.log(-2, 'Editor.isTodoQuery()', this.query, RememberLi.isTodoQuery(this.query))
+      return RememberLi.isTodoQuery(this.query)
+    },
     folderElements () {
       if (this.selectedFolder) {
         Logger.log(2, 'Editor.folderElements()', this.selectedFolder)

@@ -22,6 +22,7 @@
       >
             <div class="rmli-timeline-note-knop" v-if="settings.hasTimeline"/>
             <div class="rmli-note-status-dates" > 
+              ToDo: {{isTodoQuery}}
              
                 <div :class="['rmli-note-status-due-message',{'rmli-due': isDue}]" v-if="isAlarmSet"  @mousedown="onAlarm(true)">
                   <i class="ri-alarm-line"></i>{{printDate(element.due)}}
@@ -55,7 +56,8 @@
   
            
       </div>
-      <div class="rmli-placeholder-container">
+      <!-- must be show because otherwise ref might be not there on setValue() -->
+      <div class="rmli-placeholder-container" v-show="!isTodoQuery | hasFocus">
         <span class="rmli-placeholder" v-if="hasPlaceHolder" @click="onPlaceHolderClick"> {{placeholder}} </span> 
         <div 
           :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
@@ -67,6 +69,11 @@
           @keydown="onKeyDown"
           @keyup="onKeyUp"
           @blur="onBlur"/>
+      </div>
+      <div v-if="isTodoQuery && !hasFocus" @click="focus">
+         <div :class="['rmli-editable']" v-html="todosText">
+        
+          </div>
       </div>
   </div>
 </template>
@@ -84,12 +91,17 @@ dayjs.extend(relativeTime)
 import * as Highlighter from '../util/Highlighter'
 import DropDown from '../common/DropDown.vue'
 import * as Util from '../util/Util'
+import * as RememberLi from '../services/RememberLi'
 
 
 export default {
   name: 'Note',
   emits: ['change', 'focus', 'click', 'pinned', 'alarm', 'delete', 'folder', 'search', 'hint'],
   props: {
+    isTodoQuery: {
+      type: Boolean,
+      default: false
+    },
     hasMenu: {
       type: Boolean,
       default: false
@@ -127,6 +139,17 @@ export default {
     DropDown
   },
   computed: {
+      todosText () {
+        console.debug('todoText', this.isTodoQuery)
+        if (this.isTodoQuery) {
+          let text = this.element.value
+          let result = text.split('\n').filter(line => {        
+            return RememberLi.matchesToDo(line) || RememberLi.isTodoQuery(line)
+          }).join('\n')     
+          return Highlighter.highlight(result, this.query)
+        }
+        return ''
+      },
       isDragable () {
         return !this.hasFocus
       },
@@ -167,7 +190,6 @@ export default {
       Logger.log(-3, 'Note.onMouseDown() > enter', e)
       if (e.target) {
         let type = e.target.getAttribute('data-rmli-type')
-        console.debug(type)
         switch (type) {
           case 'tag':
             this.setSearch(e)
@@ -210,6 +232,14 @@ export default {
     onPinned (v) {
       Logger.log(-3, 'Note.onPinned() ', v)
       this.$emit('pinned', v)
+    },
+    focus () {
+      Logger.log(-3, 'Note.focus() ')
+      this.hasFocus = true
+      this.$nextTick(() => {
+        this.$refs.input.focus()
+      })
+      
     },
     onFocus () {
       this.hasFocus = true
@@ -282,13 +312,12 @@ export default {
           } else {
             this.$refs.input.innerHTML = value
           }
+        } else {
+          Logger.log(3, 'Note.setValue() > No input')
         }
     },
     onPlaceHolderClick () {
       this.focus()
-    },
-    focus () {
-      this.$refs.input.focus()
     },
     printDate (ts) {
       return new Date(ts).toLocaleDateString()
