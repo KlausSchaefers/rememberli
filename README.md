@@ -20,7 +20,7 @@ RememberLi supports the following markups that make it easy for you to organize 
 2. #tag: Create a and #tag markup
 3. []: Create a open task checkbox 
 4. [X]: Create on closed markup checkbox 
-5. ->: Create an 
+5. ->: Create an arrow
 
 ## Download
 Windows [Download](https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.2/RememberLi.Setup.1.0.2.exe)
