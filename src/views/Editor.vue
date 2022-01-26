@@ -192,7 +192,7 @@ export default {
         selectedFolder:'',
         selectedFolderName: '',
         lastQuery: new Date().getTime(),
-        tagsAndPersons: [],
+        tagsAndPersons: [':due', ':todo'],
         now: 0,
         metaKeyPressed: false
     }
@@ -210,7 +210,7 @@ export default {
   },
   provide() {
     return {
-      tagsAndPersons: this.tagsAndPersons.concat([':due', ':todo'])
+      tagsAndPersons: this.tagsAndPersons
     }
   },
   computed: {

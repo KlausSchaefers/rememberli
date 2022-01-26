@@ -43,7 +43,7 @@ npm run electron:serve
 
 ### Compiles and minifies for production
 ```
-npm run electron:build -- --win --linux
+npm run electron:build -- --win --linux --mac
 ```
 
 ### Run your unit tests
