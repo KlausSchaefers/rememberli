@@ -1,4 +1,4 @@
-# Rememberli
+# RememberLi
 
 ![RemeberLI Logo](https://github.com/KlausSchaefers/rememberli/blob/main/src/assets/Logo_Window_Circle_R_Triangle_Small.png)
 
