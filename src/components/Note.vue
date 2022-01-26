@@ -328,6 +328,7 @@ export default {
         return ''
     },
     setValue (value) {
+        Logger.log(-3, 'Note.setValue() > enter', this.element.id)
         if (this.$refs.input) {
           if (!this.hasFocus) {
             this.$refs.input.innerHTML = Highlighter.highlight(value, this.query)

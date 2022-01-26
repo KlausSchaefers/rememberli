@@ -388,6 +388,10 @@ export default {
     },
     onSaveReply(file) {
       Logger.log(2, 'Editor.onSaveReply()', file)
+      if (!this.file.url) {
+        Logger.log(-2, 'Editor.onSaveReply() > set url', file.url)
+        this.file.url = file.url
+      }
       this.isDirty = false
       this.showStatusMessage('status.saved')
     },
