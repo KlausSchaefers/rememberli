@@ -12,7 +12,7 @@
             <div class="rmli-dialog-content-m" v-if="tab ==='help'">
                 <p>
                     RememberLi is a simple note-taking app, that is focussed on 
-                    finding and remembering the important things in your life.
+                    finding and remembering the important things.
                 </p>
 
                 <h3>Concepts</h3>
