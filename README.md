@@ -29,8 +29,6 @@ Windows [Download](https://github.com/KlausSchaefers/rememberli/releases/downloa
 
 Mac [Download](https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.3/RememberLi-1.0.3.dmg)
 
-Linux [Download](https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.3/RememberLi-1.0.3.AppImage)
-
 ## Project setup
 ```
 npm install
