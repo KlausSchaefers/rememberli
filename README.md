@@ -1,6 +1,6 @@
-# Rememberli
+# RememberLi
 
-![RemeberLI Logo](https://github.com/KlausSchaefers/rememberli/blob/main/build/Icon.png)
+![RemeberLI Logo](https://github.com/KlausSchaefers/rememberli/blob/main/src/assets/Logo_Window_Circle_R_Triangle_Small.png)
 
  RememberLi is a simple note-taking app, that is focussed on finding and remembering the important things in your life.
 
