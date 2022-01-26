@@ -13,9 +13,11 @@ The app is built around three main concepts:
 In addition, you can also set reminders. When a note is due, it will be indicated with a red bar.
 
 ## Download
-Windows [Download] (https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.2/RememberLi.Setup.1.0.2.exe)
-Mac [Download] (https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.2/RememberLi-1.0.2.dmg)
-Linux [Download] (https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.2/RememberLi-1.0.2.AppImage)
+Windows [Download](https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.2/RememberLi.Setup.1.0.2.exe)
+
+Mac [Download](https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.2/RememberLi-1.0.2.dmg)
+
+Linux [Download](https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.2/RememberLi-1.0.2.AppImage)
 
 ## Project setup
 ```
