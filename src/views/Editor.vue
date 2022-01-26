@@ -210,7 +210,7 @@ export default {
   },
   provide() {
     return {
-      tagsAndPersons: this.tagsAndPersons
+      tagsAndPersons: this.tagsAndPersons.concat([':due', ':todo'])
     }
   },
   computed: {
