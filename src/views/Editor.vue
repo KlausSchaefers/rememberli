@@ -42,7 +42,7 @@
         @search="setSearch"
         />
 
-    <main class="rmli-editor-body rmli-drag-bar-below">
+    <main :class="['rmli-editor-body rmli-drag-bar-below', {'rmi-highlight-pointer': hasHighLightPointer}]">
 
          <Toolbar
             @menu="hasMenu = !hasMenu"
@@ -176,7 +176,8 @@ export default {
           hasBorderTop: true,
           hasDateLeft: false,
           hasDueInTop: false,
-          hasBeta: false
+          hasBeta: false,
+          needMetaKeyForNoteAction: false
         },
         status: {
           message: '',
@@ -192,7 +193,8 @@ export default {
         selectedFolderName: '',
         lastQuery: new Date().getTime(),
         tagsAndPersons: [],
-        now: 0
+        now: 0,
+        metaKeyPressed: false
     }
   },
   components: {
@@ -212,6 +214,9 @@ export default {
     }
   },
   computed: {
+    hasHighLightPointer () {
+      return !this.settings.needMetaKeyForNoteAction || this.metaKeyPressed
+    },
     isTodoQuery () {
       Logger.log(-2, 'Editor.isTodoQuery()', this.query, RememberLi.isTodoQuery(this.query))
       return RememberLi.isTodoQuery(this.query)
@@ -372,9 +377,7 @@ export default {
         this.updateTagsAndPersons()
       }
       // TODO: parse tags and people
-      this.file.content.elements.forEach((e, i) => {
-        e.order = i
-      })
+     
       
       this.isDirty = true
       this.onSave()
@@ -388,7 +391,6 @@ export default {
     },
     onSaveReply(file) {
       Logger.log(2, 'Editor.onSaveReply()', file)
-      this.file = file
       this.isDirty = false
       this.showStatusMessage('status.saved')
     },
@@ -444,18 +446,7 @@ export default {
         value: value,
         folder: this.selectedFolder ? this.selectedFolder.id : ''
       }
-    },
-    onKeyUp (e) {
-      if (e.key === 'f' && e.ctrlKey && this.$refs.toolbar) {
-        Logger.log(-2, 'Editor.onKeyUp() > search')
-        this.$refs.toolbar.focus()
-      }
-      if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
-        Logger.log(-2, 'Editor.onKeyUp() > undo')
-        this.historyService.undo(this.file)
-        this.onChange()
-      }
-    },
+    },   
     showStatusMessage (msgKey, type = 'success') {
       if (this.$t instanceof Function) {
         const msg = this.$t(msgKey)
@@ -545,7 +536,22 @@ export default {
         Logger.log(-2, 'Editor.initRefreshTimer() > Update now')
         this.now = new Date().getTime()
       }, 3600 * 1000)
-    }
+    },
+    onKeyUp (e) {
+      this.metaKeyPressed = e.metaKey
+    },
+    onKeyDown (e) {
+      this.metaKeyPressed = e.metaKey
+      if (e.key === 'f' && e.ctrlKey && this.$refs.toolbar) {
+        Logger.log(-2, 'Editor.onKeyDown() > search')
+        this.$refs.toolbar.focus()
+      }
+      if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+        Logger.log(-2, 'Editor.onKeyDown() > undo')
+        this.historyService.undo(this.file)
+        this.onChange()
+      }
+    },
   },
   mounted () {
     this.initSettings()
@@ -556,15 +562,20 @@ export default {
     this.api.onAppLoaded()
     this.searchService = new SearchService()
     this.historyService = new HistoryService()
-    this.keyUpHandler = (e) => this.onKeyUp(e) 
-    window.addEventListener('keydown', this.keyUpHandler );
+    this.keyUpHandler = (e) => this.onKeyUp(e)
+    this.keyDownHandler = (e) => this.onKeyDown(e) 
+    window.addEventListener('keyup', this.keyUpHandler );
+    window.addEventListener('keydown', this.keyDownHandler );
     if (this.value) {
       this.file = this.value
     }
   },
   beforeUnmount () {
     if (this.keyUpHandler) {
-      window.removeEventListener('keydown', this.keyUpHandler);
+      window.removeEventListener('keyup', this.keyUpHandler);
+    }
+    if (this.keyDownHandler) {
+      window.removeEventListener('keydown', this.keyDownHandler);
     }
     if (this.refreshTimer) {
       clearInterval(this.refreshTimer)

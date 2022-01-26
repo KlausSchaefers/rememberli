@@ -1,12 +1,10 @@
 
 .rmi-highlight-tag {
     background: rgba($color: $color2, $alpha: 1);
-
 }
 
 .rmi-highlight-person {
     background: rgba($color: $color3, $alpha: 1);
-
 }
 
 .rmi-highlight-task {
@@ -17,7 +15,7 @@
     border: 1px solid $color1;
     padding: $spacing-xs;
     box-sizing: border-box;
-    vertical-align: middle
+    vertical-align: middle;
 }
 
 
@@ -30,4 +28,13 @@
     border-bottom: 2px solid $color1;
     border-left: 2px solid $color1;
     transform: rotate(-45deg);
+}
+
+.rmi-highlight-pointer {
+
+    .rmi-highlight-tag, 
+    .rmi-highlight-task,
+    .rmi-highlight-person {
+        cursor: pointer;
+    }
 }

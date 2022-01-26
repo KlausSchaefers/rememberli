@@ -30,7 +30,8 @@
         "hasDueFolder": "Due folder in sidebar",
         "hasTodoFolder": "Todo folder in sidebar",
         "timeline": "Show timeline",
-        "beta": "Enable experimental features"
+        "beta": "Enable experimental features",
+        "needMetaKeyForNoteAction": "Require CMD or CTRL for clicks on tags"
     },
     "note": {
         "remove": "Remove all text to delete note",
@@ -42,7 +43,8 @@
         "changeFolder": "Change folder",
         "addFolder": "Move to folder",
         "changereminder": "Change reminder",
-        "metaKeyToSearch": "Press CTRL or CMD to search for "
+        "metaKeyToSearch": "Press CTRL or CMD to search",
+        "metaKeyTask": "Press CTRL or CMD to toggle task"
     },
     "toolbar": {
         "search": "Search"

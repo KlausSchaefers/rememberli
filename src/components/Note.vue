@@ -72,7 +72,7 @@
           @blur="onBlur"/>
       </div>
       <div v-if="isTodoQuery && !hasFocus" @click="focus">
-         <div :class="['rmli-editable']" v-html="todosText" />
+         <div :class="['rmli-editable']" v-html="todosText" @mousedown="onMouseDown"/>
       </div>
   </div>
 </template>
@@ -145,10 +145,11 @@ export default {
       todosText () {
         if (this.isTodoQuery) {
           let text = this.element.value
+          text = Highlighter.highlight(text, this.query)
           let result = text.split('\n').filter(line => {        
-            return RememberLi.matchesToDo(line) || RememberLi.isTodoQuery(line)
+            return Highlighter.matchesToDo(line) || RememberLi.isTodoQuery(line)
           }).join('\n')     
-          return Highlighter.highlight(result, this.query)
+          return result
         }
         return ''
       },
@@ -173,23 +174,14 @@ export default {
             return dayjs(this.element.created).fromNow()
           } else {
             return this.printDate(this.element.created)
-          }
-          
-        }
-        return ''
-      },
-      lastUpdate () {
-        // hack to make ui update
-        this.setValue(this.element.value)
-        if (this.element.lastUpdate) {
-          return dayjs(this.element.lastUpdate).fromNow()
+          }          
         }
         return ''
       }
   },
   methods: {
     onMouseDown (e) {
-      Logger.log(-3, 'Note.onMouseDown() > enter', e)
+      Logger.log(3, 'Note.onMouseDown() > enter', e)
       if (e.target) {
         let type = e.target.getAttribute('data-rmli-type')
         switch (type) {
@@ -199,14 +191,40 @@ export default {
           case 'person':
             this.setSearch(e)
             break
+          case 'taskOpen':
+            this.setTask(e, true)
+            break
+          case 'taskDone':
+            this.setTask(e, false)
+            break
           default:
             break
         }
       } 
     },
+    hasMeta (e) {
+      return e.metaKey || !this.settings.needMetaKeyForNoteAction
+    },
+    setTask (e, done) {
+      Logger.log(3, 'Note.setTask() > enter', done)
+      if (this.hasMeta(e)) {
+        Util.stopEvent(e)
+        const offset = e.target.getAttribute('data-rmli-offset') * 1
+        const length = e.target.getAttribute('data-rmli-length') * 1 
+        const value = this.element.value
+        //console.debug('setTask', value)
+        const start = value.substring(0, offset)
+        const end = value.substring((offset + length), value.length)
+        const newValue = start + (done ? '[x]' : '[]') + end     
+        this.$emit('change', newValue)
+      } else {
+        this.$emit('hint', this.$t('note.metaKeyTask'))
+      }
+
+    },
     setSearch (e) {
       const query = e.target.innerText
-      if (e.metaKey) {
+      if (this.hasMeta(e)) {
         Util.stopEvent(e)        
         Logger.log(-3, 'Note.setSearch() > enter', query)
         this.$emit('search', query)
@@ -307,7 +325,7 @@ export default {
         }
         return ''
     },
-    setValue (value) {   
+    setValue (value) {
         if (this.$refs.input) {
           if (!this.hasFocus) {
             this.$refs.input.innerHTML = Highlighter.highlight(value, this.query)

@@ -21,6 +21,9 @@ class Highlighter {
         return str.split(needle).join(replace)
     }
     
+    matchesToDo (str) {
+        return str.indexOf('rmi-highlight-task ') >0
+    }
 
 }
 export default new Highlighter()
