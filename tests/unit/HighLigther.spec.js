@@ -56,7 +56,7 @@ describe('Highlighter.js', () => {
 
   function getRandomString (i) {
 
-    let text = `klaus was #here${i} @person${i+1}\n - [] Open task ${i + 2}\n - [x] Done task ${i + 4}\n\n -> Arrow ${i + 5}\n`
+    let text = `klaus was #here${i} @person${i+1}\n - [] Open task ${i + 2}\n- [ ] Open task ${i + 6}\n- [X] Open task ${i + 7}\n - [x] Done task ${i + 4}\n\n -> Arrow ${i + 5}\n`
     let result = ''
     for (let j=0; j < 100; j++) {
       result += text

@@ -211,12 +211,12 @@ export default {
         Util.stopEvent(e)
         const offset = e.target.getAttribute('data-rmli-offset') * 1
         const length = e.target.getAttribute('data-rmli-length') * 1 
-        const value = this.element.value
-        console.debug(JSON.stringify({str: value}))
-        console.debug('setTask', value.length, offset, length, (offset + length))
+        const value = this.element.value   
         const start = value.substring(0, offset)     
         const end = value.substring((offset + length), value.length)
-        console.debug('setTask', '>' + start + '<', '>' + end + '<')
+        // console.debug(JSON.stringify({str: value}))
+        // console.debug('setTask', value.length, offset, length, (offset + length))
+        // console.debug('setTask', '>' + start + '<', '>' + end + '<')
         const newValue = start + (done ? '[x]' : '[]') + end     
         this.$emit('change', newValue)
       } else {

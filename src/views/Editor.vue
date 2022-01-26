@@ -166,7 +166,7 @@ export default {
   props:['value'],
   data: function () {
       return {
-        version: '0.9.4.beta',
+        version: '0.9.5.beta',
         settings: {
           theme: 'default',
           fontSize: 's',
@@ -354,7 +354,7 @@ export default {
        * TODO: We could have here more, e.g. splitting
        */
       if (value) {
-        Logger.log(-1, 'Editor.onElementChange() > update element', element.id, JSON.stringify({value:value}))
+        Logger.log(-1, 'Editor.onElementChange() > update element', element.id)
         if (element.value !== value) {
           this.historyService.change(element, value, this.file)
           element.value = value
@@ -375,10 +375,7 @@ export default {
       if (updateIndex) {
         this.searchService.indexElement(element)
         this.updateTagsAndPersons()
-      }
-      // TODO: parse tags and people
-     
-      
+      }      
       this.isDirty = true
       this.onSave()
     },

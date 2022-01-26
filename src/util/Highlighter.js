@@ -2,6 +2,10 @@
 class Highlighter {
 
     highlight (html){
+        /**
+         * Replace all the task first, because we need the position in the string. If
+         * replace the tags or so, before the markup will change the positions
+         */
         let result = this.replaceTasksDiv(html)
         result = result.replace(/(#[a-zA-Z0-9\-_&]+)/g,'<span data-rmli-type="person" class="rmi-highlight-tag">$1</span>')
         result = result.replace(/(@[a-zA-Z0-9\-_&]+)/g,'<span data-rmli-type="person" class="rmi-highlight-person">$1</span>')
