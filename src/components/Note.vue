@@ -23,7 +23,7 @@
       >
             <div class="rmli-timeline-note-knop" v-if="settings.hasTimeline"/>
             <div class="rmli-note-status-dates" > 
-              ToDo: {{isTodoQuery}}
+             
              
                 <div :class="['rmli-note-status-due-message',{'rmli-due': isDue}]" v-if="isAlarmSet"  @mousedown="onAlarm(true)">
                   <i class="ri-alarm-line"></i>{{printDate(element.due)}}
@@ -101,6 +101,10 @@ export default {
       type: Boolean,
       default: false
     },
+    now: {
+      type: Number,
+      default: 0
+    },
     hasMenu: {
       type: Boolean,
       default: false
@@ -152,7 +156,7 @@ export default {
         return !this.hasFocus
       },
       isDue () {
-        return this.element.due > 0 && this.element.due < new Date().getTime()
+        return this.element.due > 0 && this.element.due < this.now
       },
       isAlarmSet () {
         return this.element.due > 0

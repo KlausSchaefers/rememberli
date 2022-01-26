@@ -25,11 +25,11 @@ class Highlighter {
 }
 export default new Highlighter()
 
-function replaceOpenTodo (match, offset, string) {
+function replaceOpenTodo (match, offset) {
     return `<span data-rmli-type="taskOpen" data-rmli-offset="${offset}" data-rmli-length="${match.length}"  class="rmi-highlight-task rmi-highlight-task-open"></span>`
 }
 
-function replaceClosedTodo (match, offset, string) {
+function replaceClosedTodo (match, offset) {
     return `<span data-rmli-type="taskDone" data-rmli-offset="${offset}" data-rmli-length="${match.length}"  class="rmi-highlight-task rmi-highlight-task-done"></span>`
 }
 

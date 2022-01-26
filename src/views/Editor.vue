@@ -59,8 +59,7 @@
           <div class="rmli-container" ref="elementCntr">
 
          
-
-              <div v-if="viewMode === 'list'">             
+         
                 
                   <h1 class="rmli-pinned" v-if="filteredElements.pinned.length > 0">
                     {{settings.hasDueInTop ? $t('list.pinnedAndDue'): $t('list.pinned')}}
@@ -75,6 +74,7 @@
                           :query="query"
                           :hasMenu="hasMenu"
                           :isTodoQuery="isTodoQuery"
+                          :now="now"
                           @hint="showStatusMessage"
                           @folder="showFolderDialog(element)"
                           @alarm="onAlarm(element, $event)"
@@ -105,6 +105,7 @@
                         :element="element" 
                         :query="query"
                         :isTodoQuery="isTodoQuery"
+                        :now="now"
                         @hint="showStatusMessage"
                         @search="setSearch"
                         @folder="showFolderDialog(element)"
@@ -118,8 +119,7 @@
                   </transition-group>
                 
 
-              </div>
-
+            
           </div>
               
         </div>
@@ -192,7 +192,7 @@ export default {
         selectedFolderName: '',
         lastQuery: new Date().getTime(),
         tagsAndPersons: [],
-        viewMode: 'list'
+        now: 0
     }
   },
   components: {
@@ -538,10 +538,18 @@ export default {
     onOpenWebLink (e) {
       Logger.log(-2, 'Editor.showHelp()', e)
       this.api.openLink(e)
+    },
+    initRefreshTimer () {
+      this.now = new Date().getTime()
+      this.refreshTimer = setInterval(() => {
+        Logger.log(-2, 'Editor.initRefreshTimer() > Update now')
+        this.now = new Date().getTime()
+      }, 3600 * 1000)
     }
   },
   mounted () {
     this.initSettings()
+    this.initRefreshTimer()
     this.api = new APIService()
     this.api.onSave(this.onSaveReply)
     this.api.onSelect(this.onSelectReply)
@@ -557,6 +565,9 @@ export default {
   beforeUnmount () {
     if (this.keyUpHandler) {
       window.removeEventListener('keydown', this.keyUpHandler);
+    }
+    if (this.refreshTimer) {
+      clearInterval(this.refreshTimer)
     }
   }
 }

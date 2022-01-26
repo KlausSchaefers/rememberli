@@ -262,7 +262,7 @@ export default {
     if (this.value) {
         this.setDate(this.value) 
     }
-    Logger.log(-1,'DatePicker.mounted() > enter' + this.value.getDate(), this.viewDate.getDate(), this.selectedDate.getDate())
+    Logger.log(2,'DatePicker.mounted() > enter')
   }
 }
 </script>
