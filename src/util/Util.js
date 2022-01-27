@@ -1,3 +1,4 @@
+import Logger from './Logger'
 /**
  *  enterring a<enter><enter>b will give such an HTML
  * 
@@ -9,36 +10,44 @@
  *      b
  *  </div>
  * 
+ * or abc<enter><tab>1<enter><tab>2<enter> will give HTML such as
+ * 
+ *  abc
+ *  <div>
+ *  	1<br>
+ *  </div>
+ *  <div>
+ *  	2<br>
+ *  </div>
+ * 
  *  The shitty part is <div><br><div> or 
  * 
  *  When we ask for innerText it will have three line breaks
  */
-export function innerText (node, isOnFreshLine = false, level = 0) {
+
+export function innerText (node, lastChildWasBr =  {isTrue: true}, level = 0) {
     let result = ''
     const childNodes = node.childNodes
-    let lastChildWasBr = false
+    
     for (let i = 0; i < childNodes.length; i++) {
         const childNode = childNodes[i];
-        if (childNode.nodeName === 'BR') {
-            result += '\n';
-            lastChildWasBr = true
-            continue;
-        }
-    
-        // We may or may not need to create a new line
         if (childNode.nodeName === 'DIV') {
-            if (!lastChildWasBr) {
+            if (!lastChildWasBr.isTrue) {
                 result += '\n';
             }
         }
-        lastChildWasBr = false
-    
+        lastChildWasBr.isTrue = false
+        if (childNode.nodeName === 'BR') {
+            result += '\n';
+            lastChildWasBr.isTrue = true
+            continue;
+        }
         if (childNode.nodeType === 3 && childNode.textContent) {
+            Logger.space(level + 1, childNode.textContent)
             result += childNode.textContent;
         }
-    
         if (!isDivWithBRChild(childNode)) {
-            result += innerText(childNode, isOnFreshLine, level+1);
+            result += innerText(childNode, lastChildWasBr, level+1);
         }
     }
     return result

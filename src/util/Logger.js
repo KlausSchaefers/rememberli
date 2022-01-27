@@ -33,7 +33,7 @@ class Logger {
     log(level, msg, obj, obj2) {
         if (level < this.logLevel) {
             if (obj !== undefined) {
-                if (obj2) {
+                if (obj2 !== undefined) {
                     console.debug(msg, obj, obj2)
                 } else {
                     console.debug(msg, obj)

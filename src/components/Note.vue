@@ -5,8 +5,8 @@
       'rmli-note ', 
       {'rmli-focus': hasFocus}, 
       {'rmli-due': isDue}, 
-      {'rmli-todo': isTodoQuery}, 
       {'rmli-pinned': isPinned}, 
+      {'rmli-note-todo' : isTodoQuery && !hasFocus},
       {'rmli-timeline-note': settings.hasTimeline}
     ]" 
     @click="$emit('click')" 
@@ -15,7 +15,8 @@
         :class="[
             'rmli-note-status', 
             {'rmli-element-border': settings.hasBorderTop}, 
-            {'rmli-note-date-left': settings.hasDateLeft}
+            {'rmli-note-date-left': settings.hasDateLeft},
+            {'rmli-note-sttus-hide-for-todo': settings.hideStatusForToDoView}
           ]"
           :data-element-id="element.id"  
           @dragstart="onDragStart"
@@ -29,7 +30,9 @@
                   <i class="ri-alarm-line"></i>{{printDate(element.due)}}
                 </div>
                 <span v-else/>
-                {{created}}    
+                <span @dblclick="onCreate(true)">
+                {{created}}
+                </span>
             </div>
 
             <DropDown icon="ri-more-line"  class="rmli-note-more">
@@ -95,7 +98,7 @@ import * as RememberLi from '../services/RememberLi'
 
 export default {
   name: 'Note',
-  emits: ['change', 'focus', 'click', 'pinned', 'alarm', 'delete', 'folder', 'search', 'hint'],
+  emits: ['change', 'focus', 'click', 'pinned', 'alarm', 'delete', 'folder', 'search', 'hint', 'create'],
   props: {
     isTodoQuery: {
       type: Boolean,
@@ -146,8 +149,10 @@ export default {
         if (this.isTodoQuery) {
           let text = this.element.value
           text = Highlighter.highlight(text, this.query)
-          let result = text.split('\n').filter(line => {        
+          let result = text.split('\n').filter(line => {     
             return Highlighter.matchesToDo(line) || RememberLi.isTodoQuery(line)
+          }).map(line => {
+            return line.trim()
           }).join('\n')     
           return result
         }
@@ -251,6 +256,10 @@ export default {
       Logger.log(-3, 'Note.onAlarm() ', v)
       this.$emit('alarm', v)
     },
+    onCreate () {
+      Logger.log(-3, 'Note.onCreate() ')
+      this.$emit('create')
+    },
     onPinned (v) {
       Logger.log(-3, 'Note.onPinned() ', v)
       this.$emit('pinned', v)
@@ -316,6 +325,7 @@ export default {
     getValue () {
         if (this.$refs.input) {
             // this is a hacky version, but seem to work.
+            console.debug('getValue()', this.$refs.input.innerHTML)
             return Util.innerText(this.$refs.input)
             //return this.$refs.input.innerHTML
         }
@@ -328,7 +338,7 @@ export default {
         return ''
     },
     setValue (value) {
-        Logger.log(-3, 'Note.setValue() > enter', this.element.id)
+        //Logger.log(-3, 'Note.setValue() > enter', this.element.id)
         if (this.$refs.input) {
           if (!this.hasFocus) {
             this.$refs.input.innerHTML = Highlighter.highlight(value, this.query)

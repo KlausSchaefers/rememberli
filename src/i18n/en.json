@@ -31,7 +31,8 @@
         "hasTodoFolder": "Todo folder in sidebar",
         "timeline": "Show timeline",
         "beta": "Enable experimental features",
-        "needMetaKeyForNoteAction": "Require CMD or CTRL for clicks on tags"
+        "needMetaKeyForNoteAction": "Require CMD or CTRL for clicks on tags",
+        "hideStatusForToDoView": "Hide date for :todo view"
     },
     "note": {
         "remove": "Remove all text to delete note",
@@ -98,8 +99,8 @@
         "0": "Sun",
         "1": "Mon",
         "2": "Tue",
-        "3": "Tue",
-        "4": "Wed",
+        "3": "Wed",
+        "4": "Thu",
         "5": "Fri",
         "6": "Sat"
     },
@@ -111,5 +112,10 @@
         "headline": "Pick the due date",
         "set": "Set due date",
         "cancel": "No due date"
+    },
+    "create": {
+        "headline": "Pick the due date",
+        "set": "Change create date",
+        "cancel": "Cancel"
     }
 }

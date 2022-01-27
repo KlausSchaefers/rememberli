@@ -27,10 +27,10 @@
                     </li>
                     <li>
                         A powerful search engine that allows you to find and filter all your notes. 
-                        It support *magic* commands like "due", "#tag" or "@person" search with smart auto complete. 
+                        It support *magic* commands like ":due", ":todo", "#tag" or "@person" search with smart auto complete. 
                     </li>
                       <li>
-                        Notes are taken in a chronological order and this order is perserved, even when you filter the list of Notes
+                        Notes are taken in a chronological order and this order is preserved, even when you filter the list of Notes
                         with the search function.
                     </li>
                 </ol>

@@ -35,6 +35,16 @@ body, html {
   font-size: $font-size-s;
   transition: 0.2s all;
 
+  &.rmli-button-danger{
+    background: $color4;
+    border: 1px solid $color4;
+
+    &:hover {
+        background: $color4-hover;
+        border: 1px solid $color4-hover;
+    }
+  }
+
   &:hover {
       background: $button-background-hover;
       border: 1px solid $button-background-hover;

@@ -78,6 +78,7 @@
                           @hint="showStatusMessage"
                           @folder="showFolderDialog(element)"
                           @alarm="onAlarm(element, $event)"
+                          @create="onCreate(element)"
                           @pinned="onPinned(element, $event)"
                           @change="onElementChange(element, $event)" 
                           @search="setSearch"
@@ -110,6 +111,7 @@
                         @search="setSearch"
                         @folder="showFolderDialog(element)"
                         @alarm="onAlarm(element, $event)"
+                        @create="onCreate(element)"
                         @pinned="onPinned(element, $event)"
                         @change="onElementChange(element, $event)" 
                         @join="onJoinElement(element)"
@@ -125,6 +127,7 @@
         </div>
     </main>
     <AlarmDialog ref="alarmDialog"/>
+    <CreateDialog ref="createDialog" />
     <SettingsDialog ref="settingsDialog"/>
     <HelpDialog ref="helpDialog" @openWebLink="onOpenWebLink" :version="version"/>
     <FolderDialog ref="folderDialog" :file="file"/>
@@ -147,6 +150,7 @@
 
 import APIService from '../services/APIService'
 import AlarmDialog from '../components/AlarmDialog.vue'
+import CreateDialog from '../components/CreateDialog.vue'
 import SettingsDialog from '../components/SettingsDialog.vue'
 import FolderDialog from '../components/FolderDialog.vue'
 import Toolbar from '../components/Toolbar'
@@ -177,7 +181,8 @@ export default {
           hasDateLeft: false,
           hasDueInTop: false,
           hasBeta: false,
-          needMetaKeyForNoteAction: false
+          needMetaKeyForNoteAction: false,
+          hideStatusForToDoView: false
         },
         status: {
           message: '',
@@ -206,7 +211,8 @@ export default {
     SettingsDialog,
     Logo,
     HelpDialog,
-    FolderDialog
+    FolderDialog,
+    CreateDialog
   },
   provide() {
     return {
@@ -317,6 +323,24 @@ export default {
         element.due = dueDate
         this.onChange(element, true)
         setTimeout(() => this.hasListAnimation = false, 1000)
+      })
+    },
+    onCreate (element) {
+      Logger.log(-1, 'Editor.onCreate() >  element', element.id)
+      this.$refs.createDialog.show(element.created, (newCreate) => {
+        Logger.log(-1, 'Editor.onCreate() >  element', element.id, newCreate)
+        if (newCreate > 0) {
+          this.hasListAnimation = true
+          element.created = newCreate
+          this.sortNotes()
+          this.onChange(element, true)
+          setTimeout(() => this.hasListAnimation = false, 1000)
+        }
+      })
+    },
+    sortNotes () {
+      this.file.content.elements.sort((a,b) => {
+        return b.created - a.created
       })
     },
     onPinned (element, value) {

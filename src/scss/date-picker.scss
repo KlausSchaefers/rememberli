@@ -2,13 +2,13 @@
 
 .rmli-date {
     overflow: hidden;
-    height: 280px;
+    height: 320px;
     font-size: $font-size-default;
 
     .rmli-date-header {
         display: flex;
         width: 100%;
-        height: 15%;
+        height: 40px;
   
 
         .rmli-date-header-btn {
@@ -31,7 +31,7 @@
 
     .rmli-date-body {
         width: 100%;
-        height: 85%;
+        height: 280px;
     
         table {
             width: 100%;
@@ -42,6 +42,7 @@
         }
         
         th, td {
+            height: 32px;
             padding: 5px;
             width: 14.3%;
         }

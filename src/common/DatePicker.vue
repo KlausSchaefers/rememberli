@@ -84,7 +84,7 @@ export default {
         let week = []
         let result = []
         // male 45 and filter empty last row
-        for (let i = 0; i < 35; i++) {
+        for (let i = 0; i < 40; i++) {
             if (i % 7 == 0) {
                 week = []
                 result.push(week)
@@ -116,6 +116,7 @@ export default {
             day.css = this.getSelectedCSS(day)
             
         }
+        console.debug(result)
         return result
       }
   },
