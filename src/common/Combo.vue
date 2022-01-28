@@ -3,9 +3,10 @@
     <input class="rmli-combo-input" 
         @keyup="onKeyPress" 
         @change="onInputChange" 
+        @focus="onFocus"
         @blur="onBlur" 
         :value="modelValue"
-        :placeholder="placeholder" 
+        :placeholder="dynamicPlaceholder" 
         ref="comboInput"
     />
     <div class="rmli-dropdown-popup" v-if="matches.length > 0">
@@ -31,17 +32,24 @@ import Logger from "../util/Logger"
 
 export default {
   name: "Combo",
-  props: ['options', 'placeholder', 'modelValue'],
+  props: ['options', 'placeholder', 'placeholder2', 'modelValue'],
   emits: ['update:modelValue', 'change'],
   data: function() {
     return {
       isOpen: false,
+      hasFocus: false,
       selected: null,
       matches: [],
-      selectedIndex: -1
+      selectedIndex: -1,
     }
   },
   computed: {
+    dynamicPlaceholder () {
+      if (this.hasFocus  && this.placeholder2) {
+          return this.placeholder2
+      }
+      return this.placeholder
+    },
     hints() {
       return this.options.map(o => {
         if (o.toLowerCase) {
@@ -108,9 +116,14 @@ export default {
       }
 
       if (13 == key) { // ENTER
-        Logger.log(-5, "Combo.handleArrows()", this.selectedIndex, this.matches)
+        Logger.log(-5, "Combo.handleArrows() > enter", this.selectedIndex, this.matches)
         if (this.selectedIndex >= 0 && this.selectedIndex < this.matches.length) {
           this.select(this.matches[this.selectedIndex])
+          this.onInputChange()
+          return
+        } 
+        if (this.selectedIndex < 0 && this.matches.length === 1) {
+          this.select(this.matches[0])
           this.onInputChange()
           return
         }
@@ -127,6 +140,10 @@ export default {
     onBlur () {
       this.onInputChange()
       this.close()
+      this.hasFocus = false
+    },
+    onFocus () {
+      this.hasFocus = true
     },
     focus () {
         if (this.$refs.comboInput) {

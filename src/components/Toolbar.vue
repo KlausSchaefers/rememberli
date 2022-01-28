@@ -10,8 +10,8 @@
                 <div class="rmli-tools">
                 </div>
                 <div :class="['rmli-search', {'rmli-search-attention': hasAttention}]">
-                    <Combo :options="tagsAndPersons" :placeholder="$t('toolbar.search')" v-model="search" @change="onSearch" v-if="hasCombo" ref="searchInput" />
-                    <input v-model="search" :placeholder="$t('toolbar.search')" @keyup="onSearch" ref="searchInput" v-else>
+                    <Combo :options="tagsAndPersons" :placeholder="$t('toolbar.search')" :placeholder2="$t('toolbar.search_hint')" v-model="search" @change="onSearch" @focus="onFocus" @blur="onBlur" ref="searchInput" />
+                 
                     <i class="ri-close-line rmli-toolbar-reset" v-if="search !== ''" @click="reset"></i>
                     <i class="ri-search-line rmli-toolbar-search" v-else></i>
                 </div>
@@ -36,7 +36,8 @@ export default {
         search: '',
         hasMenu: false,
         hasCombo: true,
-        hasAttention: false
+        hasAttention: false,
+        hasFocus: false
     }
   },
   components: {
@@ -70,6 +71,12 @@ export default {
       if (this.$refs.searchInput) {
         this.$refs.searchInput.focus()
       }
+    },
+    onFocus () {
+      this.hasFocus = true
+    },
+    onBlur () {
+      this.hasFocus = false
     },
     setSearch (search) {
       this.search = search

@@ -7,7 +7,7 @@
 
           <div class="rmli-sidebar-section-header">
                <span>{{$t('sidebar.folders')}}</span>
-                <i class="ri-add-line rmli-folder-add rmli-tooltip" @click="showNewFolder" >
+                <i class="ri-add-line rmli-folder-add rmli-tooltip" @click="showNewFolder" v-if="false" >
                     <span class="rmli-tooltip-message"> {{$t('sidebar.new')}}</span>
                 </i> 
           </div>
@@ -73,9 +73,9 @@
                   />
             </a>
 
-             <a class="rmli-sidebar-folder rmli-sidebar-folder-add" v-if="hasNewFolderInput" >
+            <a class="rmli-sidebar-folder  rmli-sidebar-folder-add" v-if="hasNewFolderInput" >
                  
-                  <i class="ri-folder-line" ></i> 
+                  <i class="ri-folder-add-line" ></i> 
                   <input 
                     
                     :placeholder="$t('sidebar.newplaceholder')"
@@ -84,6 +84,13 @@
                     @blur="createNewFolder" 
                     ref="newFolderInput"
                   />
+            </a>
+
+            <a class="rmli-sidebar-folder rmli-sidebar-folder-add " v-if="!hasNewFolderInput" @click="showNewFolder">
+                <i class="ri-folder-add-line" v-if="false"></i> 
+                <span class="rmli-sidebar-hint ">
+                      {{$t('sidebar.addFolder')}}
+                </span>
             </a>
 
         

@@ -95,7 +95,7 @@
                   </h1>
             
                   <div class="rmli-element rmli-element-add rmli-element-no-border rmli-element-add-top">
-                    <Add @add="addStart" :placeholder="$t('add.start')" ref="add"     :settings="settings"/>
+                    <Add @add="addStart" :placeholder="$t('add.start')" ref="add" :settings="settings"/>
                   </div>
               
                   <transition-group name="list" tag="div">
@@ -237,7 +237,7 @@ export default {
     filteredElements () {
       let elements = this.folderElements
       if (this.searchService.isValidQuery(this.query)) {
-        Logger.log(-1, 'Editor.filteredElements()')
+        Logger.log(1, 'Editor.filteredElements() > search')
         return this.getSplittedElements(this.getFilteredElements(elements))
       }
       return this.getSplittedElements(elements)
@@ -571,6 +571,10 @@ export default {
         Logger.log(-2, 'Editor.onKeyDown() > search')
         this.$refs.toolbar.focus()
       }
+      if (e.key === 'n' && e.ctrlKey && this.$refs.add) {
+        Logger.log(-2, 'Editor.onKeyDown() > new')
+        this.$refs.add.focus()
+      }
       if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
         Logger.log(-2, 'Editor.onKeyDown() > undo')
         this.historyService.undo(this.file)
@@ -605,6 +609,7 @@ export default {
     if (this.refreshTimer) {
       clearInterval(this.refreshTimer)
     }
+    this.api.cleanUp()
   }
 }
 </script>

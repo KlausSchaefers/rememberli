@@ -48,7 +48,8 @@
         "metaKeyTask": "Press CTRL or CMD to toggle task"
     },
     "toolbar": {
-        "search": "Search"
+        "search": "Search",
+        "search_hint": "e.g. :due, :todo, #tag"
     },
     "status": {
         "saved": "Changes saved...",
@@ -71,10 +72,11 @@
         "persons": "Persons",
         "all": "All notes",
         "new": "Create new folder",
-        "newplaceholder": "Enter the name",
+        "newplaceholder": "New folder name",
         "delete": "Remove",
         "due": "Due notes",
-        "todos": "Only todos"
+        "todos": "Only todos",
+        "addFolder": "Add new folder"
     },
     "list": {
         "pinned": "Pinned",

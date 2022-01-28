@@ -44,12 +44,15 @@ $spacing-action: 12px;
         flex-grow: 1;
         overflow: auto;
 
+
+
         i.rmli-folder-add {
             cursor: pointer;
             font-weight: 400;
             opacity: 0.8;
             font-size: $font-size-default;
             transition: all 0.2s;
+       
             &:hover {
                 color: $color1-hover;
                 font-weight: 400;
@@ -145,8 +148,13 @@ $spacing-action: 12px;
         color: $color1-hover;
     }
 
+    .rmli-sidebar-hint {
+        font-style: italic;
+    }
+
     .rmli-sidebar-folder-add {
         span, i {
+        
             color: rgba($color: #000000, $alpha: 0.3);
         }
         &:hover {

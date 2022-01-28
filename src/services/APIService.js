@@ -56,15 +56,19 @@ export default class APIService {
             let ipcRenderer = window.ipcRenderer
             if (saveListener) {
                 ipcRenderer.removeListener('save:reply', saveListener)
+                saveListener = null
             }
             if (loadListener) {
                 ipcRenderer.removeListener('load:reply', loadListener)
+                loadListener = null
             }
             if (selectListener) {
                 ipcRenderer.removeListener('select:reply', selectListener)
+                selectListener = null
             }
             if (logListner) {
                 ipcRenderer.removeListener('log:reply', logListner)
+                logListner = null
             }
         } catch (err) {
             Logger.error('APIService.cleanUp', err)

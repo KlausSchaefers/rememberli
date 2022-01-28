@@ -77,6 +77,8 @@
                         <li><b>@</b>: Show suggestions of all your tags</li>
                         <li><b>:due</b>: Find all notes that are due</li>
                         <li><b>:todo</b>: Find all notes that have a todo ([], [X]) in it and filter out lines that do not contain todos</li>
+                        <li><b>:month</b>: Find all notes from the month, e.g. :september</li>
+                        <li><b>:year</b>: Find all notes from the year, e.g. :2022</li>
                         <li><b>and</b>: 
                             Run and AND query. If you type "A and B", only notes 
                             contain "A" and "B" will be shown. The shortcut is <b>&</b></li>
@@ -94,8 +96,8 @@
 
                     <ul>
                         <li><b>CTRl + F</b>: Focus search field.</li>
-                        <li><b>CTRL + CLICK + #tag</b>: Search for the tag</li>
-                        <li><b>CTRL + CLICK + @person</b>: Search for the person</li>
+                        <li><b>CTRl + N</b>: Create new note</li>
+                        <li><b>CTRl + Z</b>: Undo</li>
                     </ul>
 
                 </p>
