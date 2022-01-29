@@ -22,7 +22,7 @@ export default class SearchService {
         if (RememberLi.isValidQuery(str)) {
             let now = new Date().getTime()
             const query = this.parseQuery(str)
-            Logger.log(1, "SearchService.find() > query: " , query.operator, query.terms)
+            Logger.log(-1, "SearchService.find() > query: " , query.operator, query.terms)
             const elements = Object.values(this.elements)
             let scores = {}
             elements.forEach(e => {
@@ -41,6 +41,7 @@ export default class SearchService {
                         }
                         runFullText = false
                     }
+
 
                     if (this.isMonthTerm(term)) {
                         Logger.log(1, "SearchService.find() > isMonthTerm: " , term, e.month)

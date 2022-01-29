@@ -174,15 +174,16 @@ export default {
         settings: {
           theme: 'default',
           fontSize: 's',
-          hasDueFolder: false,
-          hasTodoFolder: false,
+          hasDueFolder: true,
+          hasTodoFolder: true,
           hasTimeline: false,
           hasBorderTop: true,
           hasDateLeft: false,
           hasDueInTop: false,
           hasBeta: false,
           needMetaKeyForNoteAction: false,
-          hideStatusForToDoView: false
+          hideStatusForToDoView: false,
+          hasFocusedSearch: false
         },
         status: {
           message: '',
@@ -262,19 +263,16 @@ export default {
       return {pinned, rest}
     },
     setSearch (value) {
-      Logger.log(-1, 'Editor.setSearch()')
+      Logger.log(1, 'Editor.setSearch()')
       this.$refs.toolbar.setSearch(value)
     },
     onSearch (query) {
-      Logger.log(-1, 'Editor.onSearch()', query)
+      Logger.log(1, 'Editor.onSearch()', query)
       this.query = query
       this.lastQuery = new Date().getTime()
       this.searchResultsScores = this.searchService.find(query, this.file, this.selectedFolder)
       if (query === 'log') {
         this.api.getElectronLog()
-      }
-      if (query === 'todo') {
-        // FIXME: add here some magic todo view...
       }
     },
     getFilteredElements (elements) {
@@ -449,6 +447,7 @@ export default {
             elements: [{
               id: 'n' + new Date().getTime(),
               created: this.getTimestamp(),
+              firstCreate: this.getTimestamp(),
               lastUpdate: this.getTimestamp(),
               elements:[],
               pinned:false,
@@ -574,6 +573,10 @@ export default {
       if (e.key === 'n' && e.ctrlKey && this.$refs.add) {
         Logger.log(-2, 'Editor.onKeyDown() > new')
         this.$refs.add.focus()
+      }
+       if (e.key === 's' && e.ctrlKey && this.$refs.toolbar) {
+        Logger.log(-2, 'Editor.onKeyDown() > shrink')
+        this.settings.hasFocusedSearch = !this.settings.hasFocusedSearch
       }
       if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
         Logger.log(-2, 'Editor.onKeyDown() > undo')

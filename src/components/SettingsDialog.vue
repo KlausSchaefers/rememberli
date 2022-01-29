@@ -1,31 +1,40 @@
 <template>
   <RDialog ref="dialog">
       <div class="rmli-settings">
-     
-        <h1>{{$t('settings.theme')}}</h1>
-        <RadioList :options="themes" v-model="settings.theme"/>
 
-        <h1 class="rmli-margin-top-l">{{$t('settings.fontSize')}}</h1>
-        <RadioList :options="sizes" v-model="settings.fontSize"/>
-
-
-        <h1 class="rmli-margin-top-l">{{$t('settings.sidebar')}}</h1>
-        <div class="rmli-checkbox-list">  
-          <CheckBox v-model="settings.hasDueFolder" :label="$t('settings.hasDueFolder')"/>
-          <CheckBox v-model="settings.hasTodoFolder" :label="$t('settings.hasTodoFolder')"/>
+        <div class="rmli-tab-bar">
+            <a :class="{'rmli-tab-active': tab=== 'appearance'}" @click="tab = 'appearance'">{{ $t('settings.appearance')}}</a>
+            <a :class="{'rmli-tab-active': tab=== 'advanced'}" @click="tab = 'advanced'">{{ $t('settings.advanced')}}</a>
         </div>
 
+        <div  class="rmli-dialog-content-m" v-if="tab ==='appearance'">
+     
+          <h1>{{$t('settings.theme')}}</h1>
+          <RadioList :options="themes" v-model="settings.theme"/>
 
-        <h1 class="rmli-margin-top-l">{{$t('settings.other')}}</h1>
-        <div class="rmli-checkbox-list">
-          <CheckBox v-model="settings.hasDueInTop" :label="$t('settings.hasDueInTop')"/>      
-          <CheckBox v-model="settings.hasTimeline" :label="$t('settings.timeline')"/>
-          <CheckBox v-model="settings.hasBorderTop" :label="$t('settings.hasBorderTop')"/>
-          <CheckBox v-model="settings.hasDateLeft" :label="$t('settings.hasDateLeft')"/>
-          <CheckBox v-model="settings.needMetaKeyForNoteAction" :label="$t('settings.needMetaKeyForNoteAction')"/>
-          <CheckBox v-model="settings.hideStatusForToDoView" :label="$t('settings.hideStatusForToDoView')"/>
-          
-          <CheckBox v-if="false" v-model="settings.hasBeta" :label="$t('settings.beta')"/>
+          <h1 class="rmli-margin-top-l">{{$t('settings.fontSize')}}</h1>
+          <RadioList :options="sizes" v-model="settings.fontSize"/>
+
+          <h1 class="rmli-margin-top-l">{{$t('settings.sidebar')}}</h1>
+          <div class="rmli-checkbox-list">  
+            <CheckBox v-model="settings.hasDueFolder" :label="$t('settings.hasDueFolder')"/>
+            <CheckBox v-model="settings.hasTodoFolder" :label="$t('settings.hasTodoFolder')"/>
+          </div>
+
+        </div>
+
+        <div  class="rmli-dialog-content-m" v-if="tab ==='advanced'">
+            <h1 class="rmli-margin-top-l">{{$t('settings.other')}}</h1>
+            <div class="rmli-checkbox-list">
+              <CheckBox v-model="settings.hasDueInTop" :label="$t('settings.hasDueInTop')"/>     
+              <CheckBox v-model="settings.hasFocusedSearch" :label="$t('settings.hasFocusedSearch')"/> 
+              <CheckBox v-model="settings.hasTimeline" :label="$t('settings.timeline')"/>
+              <CheckBox v-model="settings.hasBorderTop" :label="$t('settings.hasBorderTop')"/>
+              <CheckBox v-model="settings.hasDateLeft" :label="$t('settings.hasDateLeft')"/>
+              <CheckBox v-model="settings.needMetaKeyForNoteAction" :label="$t('settings.needMetaKeyForNoteAction')"/>
+              <CheckBox v-model="settings.hideStatusForToDoView" :label="$t('settings.hideStatusForToDoView')"/>
+              <CheckBox v-if="false" v-model="settings.hasBeta" :label="$t('settings.beta')"/>
+            </div>
         </div>
 
         
@@ -39,6 +48,7 @@
 </template>
 
 <style lang="scss">
+  @import '../scss/tab.scss';
   @import '../scss/settings.scss';
 </style>
 <script>
@@ -55,6 +65,7 @@ export default {
   props: [],
   data: function () {
     return {
+        tab: 'appearance',
         themes: [
             {label: "Pop!", value: "default"},
             {label:"Soft", value: "soft"},

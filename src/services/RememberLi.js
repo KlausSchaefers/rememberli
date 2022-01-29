@@ -1,15 +1,23 @@
 export const TERMS = {
     TODO: ':todo',
-    DUE: ':due'
+    DUE: ':due',
+    FOCUS: ':focus'
 }
 
 export function isDueTerm (query) {
     return query === TERMS.DUE
 }
 
+export function isFocusQuery(query) {
+    return query.indexOf(TERMS.FOCUS) >=0
+}
+
+export function isFocusTerm (term) {
+    return term === TERMS.FOCUS
+}
 
 export function isTodoQuery (str) {
-    return str.indexOf('todo') >=0
+    return str.indexOf(':todo') >=0
 }
 
 export function isTodoTerm (query) {
@@ -33,11 +41,11 @@ export function isValidQuery (query) {
 }
 
 export function isPersonQuery (query) {
-    return query.indexOf('@') && query.length > 1
+    return query.indexOf('@') === 0 && query.length > 1
 }
 
 export function isTagQuery (query) {
-    return (query.indexOf('#') && query.length > 1)
+    return (query.indexOf('#') === 0 && query.length > 1)
 }
 
 export function isDue(e, now) {

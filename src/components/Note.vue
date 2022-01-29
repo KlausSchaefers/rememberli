@@ -31,6 +31,7 @@
                 </div>
                 <span v-else/>
                 <span @dblclick="onCreate(true)">
+                  {{$t('note.created')}}
                 {{created}}
                 </span>
             </div>
@@ -61,12 +62,13 @@
            
       </div>
       <!-- must be show because otherwise ref might be not there on setValue() -->
-      <div class="rmli-placeholder-container" v-show="!isTodoQuery | hasFocus">
+      <div class="rmli-placeholder-container" v-if="!isTodoQuery | hasFocus">
         <span class="rmli-placeholder" v-if="hasPlaceHolder" @click="onPlaceHolderClick"> {{placeholder}} </span> 
         <div 
           :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
           contenteditable="true" 
           ref="input"
+          v-html="text"
           @mousedown="onMouseDown"
           @focus="onFocus"
           @paste="onPaste"
@@ -138,6 +140,7 @@ export default {
         hasMore: true,
         hasFocus:false,
         hasPlaceHolder: false,
+        hasSetInnerHTML: false,
         value: ''
     }
   },
@@ -145,6 +148,24 @@ export default {
     DropDown
   },
   computed: {
+      text () {
+        const value = this.element.value
+        if (!this.hasFocus) {     
+            if (this.settings.hasFocusedSearch  && RememberLi.isValidQuery(this.query)) {
+               return this.getFocusedText(value)
+            } else {
+              return this.highlightedText
+            }
+        } else {
+            return value
+        }
+      },
+      highlightedText () {
+        if (RememberLi.isValidQuery(this.query)) {
+          return Highlighter.highlight(this.element.value, this.query)
+        }
+        return Highlighter.highlight(this.element.value)
+      },
       todosText () {
         if (this.isTodoQuery) {
           let text = this.element.value
@@ -172,7 +193,7 @@ export default {
       },
       created () {
         // hack to make ui update
-        this.setValue(this.element.value)
+        //this.setValue(this.element.value)
         if (this.element.created) {
           let age = (new Date().getTime() -this.element.created )
           if (age < 1000 * 24 * 60 * 60 ) {
@@ -185,6 +206,53 @@ export default {
       }
   },
   methods: {
+     getFocusedText (value) {     
+       /**
+        * First get the hits lines with a hit
+        */
+        let lines = value.split('\n')
+        let hits = new Set()
+        lines.forEach((line, i) => {
+          if (line.indexOf(this.query) > -1) {
+            hits.add(i)
+          }
+        })
+
+        /**
+         * Render the highlights
+         */
+        let highlighted = Highlighter.highlight(value, this.query)
+        let highlightedLines = highlighted.split('\n')
+
+        /**
+         * print out all hit lines and the ones above and below
+         */
+        let result = ''
+        const printed = {}
+        highlightedLines.forEach((line, i) => {
+          if (hits.has(i)){
+
+            let below = i - 1
+            if (below >= 0 && !printed[below]) {
+              result += `<span class="rmli-lowlight">${highlightedLines[below]}</span>\n`
+              printed[below] = true
+            }
+
+            if (!printed[i]) {
+              result += line + '\n'
+              printed[i] = true
+            }
+    
+            let above = i + 1          
+            if (above < lines.length  && !printed[above]) {
+              result += `<span class="rmli-lowlight">${highlightedLines[above]}</span>\n`
+              printed[above] = true
+            }         
+          }                                          
+        })
+
+        return result
+    },
     onMouseDown (e) {
       Logger.log(3, 'Note.onMouseDown() > enter', e)
       if (e.target) {
@@ -270,12 +338,11 @@ export default {
       this.$nextTick(() => {
         this.$refs.input.focus()
       })
-      
     },
     onFocus () {
       this.hasFocus = true
       this.isDnd = false
-      this.setValue(this.element.value)
+      //this.setValue(this.element.value)
     },
     onBlur () {
       Logger.log(3, 'Note.onBlur() ',`>${this.getText()}<`)
@@ -289,7 +356,7 @@ export default {
         this.$emit('change', this.getValue())
       }
       this.hasFocus = false
-      this.setValue(this.element.value)
+      //this.setValue(this.element.value)
     },
     onDelete () {
         this.$emit('change', '')
@@ -299,7 +366,6 @@ export default {
     },
     onKeyUp () {
         let value = this.getText()
-        this.value = value
         this.hasPlaceHolder = value === ''
     },
     onKeyDown (e) {
@@ -325,7 +391,6 @@ export default {
     getValue () {
         if (this.$refs.input) {
             // this is a hacky version, but seem to work.
-            console.debug('getValue()', this.$refs.input.innerHTML)
             return Util.innerText(this.$refs.input)
             //return this.$refs.input.innerHTML
         }
@@ -339,15 +404,20 @@ export default {
     },
     setValue (value) {
         //Logger.log(-3, 'Note.setValue() > enter', this.element.id)
-        if (this.$refs.input) {
-          if (!this.hasFocus) {
-            this.$refs.input.innerHTML = Highlighter.highlight(value, this.query)
-          } else {
-            this.$refs.input.innerHTML = value
-          }
-        } else {
-          Logger.log(3, 'Note.setValue() > No input')
+        let html = value
+        if (!this.hasFocus) {
+          html = Highlighter.highlight(value, this.query)
         }
+        if (this.hasSetInnerHTML) {
+          this.setInnerHTML(html)
+        }
+    },
+    setInnerHTML (html) {
+      if (this.$refs.input) {
+        this.$refs.input.innerHTML = html
+      } else {
+        Logger.log(3, 'Note.setInnerHTML() > No input')
+      }
     },
     onPlaceHolderClick () {
       this.focus()

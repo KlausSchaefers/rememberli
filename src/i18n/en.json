@@ -20,6 +20,8 @@
     },
     "settings": {
         "theme": "Theme",
+        "advanced": "Advanced",
+        "appearance": "Appearance",
         "fontSize": "Font Size",
         "pinned": "Allow pinning",
         "other": "Other",
@@ -32,12 +34,14 @@
         "timeline": "Show timeline",
         "beta": "Enable experimental features",
         "needMetaKeyForNoteAction": "Require CMD or CTRL for clicks on tags",
-        "hideStatusForToDoView": "Hide date for :todo view"
+        "hideStatusForToDoView": "Hide date for :todo view",
+        "hasFocusedSearch": "Shrink search results"
     },
     "note": {
         "remove": "Remove all text to delete note",
         "delete": "Delete",
         "due": "Due at ",
+        "created": "Created",
         "pin": "Pin to top",
         "unpin": "Remove pin",
         "setreminder": "Set reminder",

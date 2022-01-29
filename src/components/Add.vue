@@ -57,9 +57,16 @@ export default {
     },
     reset () {
         // make somehow invisible and then popin again...
-        this.setValue('')
+        this.setInnerHTML('')
         this.hasPlaceHolder = true
-    }
+    },
+    setInnerHTML (html) {
+      if (this.$refs.input) {
+        this.$refs.input.innerHTML = html
+      } else {
+        Logger.log(3, 'Add.setInnerHTML() > No input')
+      }
+    },
   },
   mounted () {
       this.reset()
