@@ -2,6 +2,10 @@
   "name": "RememberLi",
   "version": "1.0.4",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KlausSchaefers/rememberli.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -16,6 +20,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "dayjs": "^1.10.7",
+    "electron-updater": "^4.6.1",
     "moment": "^2.29.1",
     "remixicon": "^2.5.0",
     "vue": "^3.0.0",

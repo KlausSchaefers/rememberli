@@ -1,9 +1,10 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow,autoUpdater } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import path from 'path'
 import * as APIBackend from './services/APIBackend'
+import * as update from './update'
 
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -80,6 +81,7 @@ if (isDevelopment) {
   }
 }
 
+update.init()
 /**
  * Wire our backend methods to the icpMain
  */

@@ -25,9 +25,9 @@ RememberLi supports the following markups that make it easy for you to organize 
 5. ->: Create an arrow
 
 ## Download
-Windows [Download](https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.3/RememberLi.Setup.1.0.3.exe)
+Windows [Download](https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.4/RememberLi.Setup.1.0.4.exe)
 
-Mac [Download](https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.3/RememberLi-1.0.3.dmg)
+Mac [Download](https://github.com/KlausSchaefers/rememberli/releases/download/Version1.0.4/RememberLi-1.0.4.dmg)
 
 ## Project setup
 ```
@@ -40,8 +40,15 @@ npm run electron:serve
 ```
 
 ### Compiles and minifies for production
+
+Make sure github access token is set
+
 ```
-npm run electron:build -- --win --linux --mac
+export GH_TOKEN=<your token>
+```
+
+```
+npm run electron:build -- --win --linux --mac -p always
 ```
 
 ### Run your unit tests
