@@ -25,7 +25,7 @@ RememberLi supports the following markups that make it easy for you to organize 
 5. ->: Create an arrow
 
 ## Download
-Windows [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.4/RememberLi.Setup.1.0.4.exe)
+Windows [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.4/RememberLi-Setup-1.0.4.exe)
 
 Mac [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.4/RememberLi-1.0.4.dmg)
 
