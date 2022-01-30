@@ -23,12 +23,15 @@
     .rmli-splash-actions {
         display: flex;
         flex-direction: row;
-        gap: $spacing-m;
+        gap: $spacing-l;
+        width: 100%;
+        justify-content: center;
+
 
         a {
             display: flex;
             align-items: center;
-            gap: $spacing-s;
+            gap: $spacing-xs;
             cursor: pointer;
            
 

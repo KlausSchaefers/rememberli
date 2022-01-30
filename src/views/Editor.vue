@@ -1,25 +1,5 @@
 <template>
-  <div :class="'rmli-splash rmli-theme-' + settings.theme " v-if="!file" @keyup="onKeyUp">
-      
-      <div class="rmli-splash-cntr">
-        <Logo />
-        <div class="rmli-splash-actions ">
-          
-            <a @click="onNew">
-                <i class="ri-file-add-line" ></i> 
-                <span>{{$t('actions.new')}}</span>
-            </a>
-          
-            <a @click="onSelect">
-                <i class="ri-folder-line"></i>
-                <span>{{$t('actions.select')}}</span>
-            </a>
-        </div>
-      </div>
-
-      <span class="rmli-splash-version"> {{version}} </span>
-
-  </div>
+  <Splash :version="version" v-if="!file" :settings="settings" @new="onNew" @select="onSelect" />
   <div :class="'rmli-editor rmli-add-popX  rmli-theme-' + settings.theme + ' rmli-font-size-' + settings.fontSize" v-if="file">
 
     
@@ -138,7 +118,7 @@
 </template>
 
 <style lang="scss">
-  @import '../scss/splash.scss';
+
   @import '../scss/editor.scss';
   @import '../scss/highlight.scss';
   @import '../scss/animation.scss';
@@ -153,10 +133,10 @@ import AlarmDialog from '../components/AlarmDialog.vue'
 import CreateDialog from '../components/CreateDialog.vue'
 import SettingsDialog from '../components/SettingsDialog.vue'
 import FolderDialog from '../components/FolderDialog.vue'
+import Splash from '../desktop/Splash.vue'
 import Toolbar from '../components/Toolbar'
 import Note from '../components/Note'
 import Add from '../components/Add'
-import Logo from '../components/Logo'
 import HelpDialog from '../components/HelpDialog'
 import SideBar from '../components/SideBar'
 import Logger from '../util/Logger'
@@ -210,7 +190,7 @@ export default {
     SideBar,
     AlarmDialog,
     SettingsDialog,
-    Logo,
+    Splash,
     HelpDialog,
     FolderDialog,
     CreateDialog

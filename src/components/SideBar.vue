@@ -102,23 +102,8 @@
                <span>{{$t('sidebar.menu')}}</span>   
              </div>
 
-              <div class="rmli-sidebar-actions">
-          
-                <a @click="onExit">
-                    <i class="ri-home-line"></i>
-                    <span>{{$t('actions.home')}}</span>
-                </a>
-
-                <a @click="onSettings">
-                    <i class="ri-sound-module-line"></i>
-                    <span>{{$t('actions.settings')}}</span>
-                </a>
-
-                <a @click="onHelp">
-                    <i class="ri-question-line"></i>
-                    <span>{{$t('actions.help')}}</span>
-                </a>
-              </div>
+            <SidebarActions @help="onHelp" @settings="onSettings" @exit="onExit"/>
+             
         </div>
        
 
@@ -134,6 +119,7 @@
 <script>
 import Logger from '../util/Logger'
 import {TERMS} from '../services/RememberLi'
+import SidebarActions from '../desktop/SidebarActions.vue'
 
 export default {
   name: 'SideBar',
@@ -171,6 +157,7 @@ export default {
     }
   },
   components: {
+    SidebarActions
   },
   computed: {
     folderDueCount () {

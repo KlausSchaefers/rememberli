@@ -9,7 +9,13 @@ module.exports = {
             ext: "rmli",
             name: "RememberLi File",
             role: "Editor"
-          }
+          },
+          mac: {                        
+            hardenedRuntime : true,
+            gatekeeperAssess: false,
+            entitlements: "build/entitlements.mac.plist",
+            entitlementsInherit: "build/entitlements.mac.plist"
+          },
         }
       }
     }

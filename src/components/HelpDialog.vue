@@ -11,7 +11,7 @@
 
             <div class="rmli-dialog-content-m" v-if="tab ==='help'">
                 <p>
-                    RememberLi is a simple note-taking app, that is focussed on 
+                    Rememberli is a simple note-taking app, that is focussed on 
                     finding and remembering the important things.
                 </p>
 
@@ -48,7 +48,7 @@
                 </p>
 
                 <p>
-                    RememberLi supports the following markups that make it easy for you to organize your notes:
+                    Rememberli supports the following markups that make it easy for you to organize your notes:
 
                     <ul>
                         <li><b>@name</b>: Create a <span class="rmi-highlight-person">@person</span>  markup</li>
@@ -68,7 +68,7 @@
 
                 <h3>Search</h3>
                 <p>
-                    To search in RememberLi, just click on the search bar or press <b>CTRL - F</b>. Just type in your query,
+                    To search in Rememberli, just click on the search bar or press <b>CTRL - F</b>. Just type in your query,
                     and the list of notes will be filtered while you type. The search element allows the following command:
 
 
@@ -154,7 +154,7 @@
 
                 <h3>OpenSource</h3>
                 <p>
-                    RememberLi is free and open source. If you like the project, please give me a star at the 
+                    Rememberli is free and open source. If you like the project, please give me a star at the 
                     <a class="rmli-link" href="https://github.com/KlausSchaefers/rememberli" @click="onLink"> Github </a> page.
                 </p>
 
