@@ -27,6 +27,7 @@ export default class SearchService {
             let scores = {}
             elements.forEach(e => {
                 query.terms.forEach(term => {
+    
                     let runFullText = true
                     if (RememberLi.isDueTerm(term)) {
                         if (Util.isDue(e, now)) {
@@ -58,6 +59,8 @@ export default class SearchService {
                         }
                         runFullText = false
                     }
+
+                    console.debug('search', term, runFullText, e.value.indexOf(term))
 
                     // we run full text only of there is no special query, e.g. ':due',
                     // to save some time.
@@ -144,7 +147,7 @@ export default class SearchService {
 
     indexElement (element) {
         Logger.log(3, "SearchService.indexElement() > ", element.id)
-        let text = Util.getText(element.value)
+        let text = Util.getText(element.value).toLocaleLowerCase()
 
         // index year and month. 
         let created = dayjs(element.created)
