@@ -13,8 +13,12 @@ class Highlighter {
         result = result.replace(/(@[a-zA-Z0-9\-_&]+)/g,'<span data-rmli-type="person" class="rmi-highlight-person">$1</span>')
         result = this.replaceAll(result, '->','<i class="ri-arrow-right-line rmi-highlight-icon"></i>')
 
+        /**
+         * Replace query if needed
+         */
         if (query) {
-            result = this.replaceAll(result, query, `<span class="rmi-highlight-query">${query}</span>`)
+            var regExp = new RegExp(query, 'gi');
+            result = result.replaceAll(regExp, `<span class="rmi-highlight-query">${query}</span>`)
         }
         return result
     }
@@ -76,9 +80,10 @@ class Highlighter {
  
 
         if (query) {
-            result = this.replaceAll(result, query, `<span class="rmi-highlight-query">${query}</span>`)
+            var regExp = new RegExp(query, 'gi');
+            result = result.replaceAll(regExp, `<span class="rmi-highlight-query">${query}</span>`)
         }
-
+        
         return result
     }
     

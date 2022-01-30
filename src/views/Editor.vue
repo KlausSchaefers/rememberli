@@ -170,7 +170,7 @@ export default {
   props:['value'],
   data: function () {
       return {
-        version: '1.0.5',
+        version: '1.0.6',
         settings: {
           theme: 'default',
           fontSize: 's',
