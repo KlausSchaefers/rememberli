@@ -31,9 +31,9 @@ import Logger from '../util/Logger'
 export default {
   name: 'SideBarActions',
   emits: [
-      'save', 'select', 'search', 'new', 'exit', 'settings', 'help'
+      'save', 'select', 'search', 'new', 'exit', 'settings', 'help', 'load'
   ],
-  props: ['file', 'isDirty', 'hasMenu', 'settings'],
+  props: ['file', 'settings', 'isDirty'],
   data: function () {
     return {       
     }
@@ -56,11 +56,11 @@ export default {
       this.$emit('exit')
     },
     onSettings () {
-      Logger.log(3, 'SideBar.onSettings()')
+      Logger.log(3, 'SideBarActions.onSettings()')
       this.$emit('settings')
     },
     onHelp () {
-      Logger.log(3, 'SideBar.onHelp()')
+      Logger.log(3, 'SideBarActions.onHelp()')
       this.$emit('help')
     },
   },

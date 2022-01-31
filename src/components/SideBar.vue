@@ -102,7 +102,15 @@
                <span>{{$t('sidebar.menu')}}</span>   
              </div>
 
-            <SidebarActions @help="onHelp" @settings="onSettings" @exit="onExit"/>
+            <SidebarActions 
+              :file="file" 
+              :isDirty="isDirty" 
+              :settings="settings" 
+              @help="onHelp" 
+              @settings="onSettings" 
+              @exit="onExit" 
+              @load="onLoad
+            "/>
              
         </div>
        
@@ -125,7 +133,7 @@ export default {
   name: 'SideBar',
   emits: [
       'save', 'select', 'search', 'new', 'exit', 'setFolder', 'deleteFolder', 
-      'createFolder', 'changeFolder', 'deleteFolder', 'settings', 'moveElementToFolder', 'help'
+      'createFolder', 'changeFolder', 'deleteFolder', 'settings', 'moveElementToFolder', 'help', 'load'
   ],
   props: ['file', 'isDirty', 'hasMenu', 'settings'],
   data: function () {
@@ -270,6 +278,10 @@ export default {
     },
     onAbout () {
       Logger.log(3, 'SideBar.onAbout()')
+    },
+    onLoad (file) {
+      Logger.log(3, 'SideBar.onLoad()')
+      this.$emit('load', file)
     }
   },
   mounted () {

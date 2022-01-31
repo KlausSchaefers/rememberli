@@ -20,12 +20,24 @@ import Logger from './Logger'
  *  	2<br>
  *  </div>
  * 
+ * or we get somethink after editing and existing element
+ * 
+ *  abc\n\t1\n\t2\n\t3\n  <- Here the \n will creak already a line break. 
+ *  <div>
+ *      \t4<br>
+ *  </div>
+ * 
  *  The shitty part is <div><br><div> or 
  * 
  *  When we ask for innerText it will have three line breaks
  */
 
 export function innerText (node, lastChildWasBr =  {isTrue: true}, level = 0) {
+
+    if (level === 0) {
+        console.debug('innerText', JSON.stringify({html: node.innerHTML}))
+    }
+
     let result = ''
     const childNodes = node.childNodes
     
@@ -43,8 +55,16 @@ export function innerText (node, lastChildWasBr =  {isTrue: true}, level = 0) {
             continue;
         }
         if (childNode.nodeType === 3 && childNode.textContent) {
-            Logger.space(level + 1, childNode.textContent)
-            result += childNode.textContent;
+            let text = childNode.textContent
+            Logger.space(level + 1, childNode.text)
+            result += text;
+            /**
+             * If the text index with a \n, we should ignore
+             * the next DIV
+             */
+            if (text.lastIndexOf('\n') === text.length - 1) {
+                lastChildWasBr.isTrue = true
+            }
         }
         if (!isDivWithBRChild(childNode)) {
             result += innerText(childNode, lastChildWasBr, level+1);

@@ -2,7 +2,7 @@
 import Highlighter from '../../src/util/Highlighter'
 
 describe('Highlighter.js', () => {
-    Xit('test hightlight (regex)', () => {      
+    it('test hightlight (regex)', () => {      
       let html = Highlighter.highlight('klaus was #here @person\n - [] Open task 1\n - [x] Done task 2\n\n -> Arrow\n #tag2')
       expect(html.indexOf('<span data-rmli-type="tag" class="rmi-highlight-tag">#here</span>')).toBeGreaterThan(-1)
       expect(html.indexOf('<span data-rmli-type="tag" class="rmi-highlight-tag">#tag2</span>')).toBeGreaterThan(-1)
@@ -12,7 +12,7 @@ describe('Highlighter.js', () => {
       expect(html.indexOf('<i class="ri-arrow-right-line rmi-highlight-icon"></i>')).toBeGreaterThan(-1)
     })
 
-    Xit('test hightlight todo (regex)', () => {
+    it('test hightlight todo (regex)', () => {
       
       let html = Highlighter.highlight('[]')
       expect(html.indexOf('<span data-rmli-type="taskOpen" data-rmli-offset="0" data-rmli-length="2"  class="rmi-highlight-task rmi-highlight-task-open"></span>')).toBeGreaterThan(-1)
@@ -31,7 +31,7 @@ describe('Highlighter.js', () => {
  
     })
 
-    Xit('bug hightlight mixed todo (regex)', () => {
+    it('bug hightlight mixed todo (regex)', () => {
       let html = Highlighter.highlight('Above\n[ ] abc []\n[X] def [x]') 
       expect(html.indexOf('<span data-rmli-type="taskOpen" data-rmli-offset="6" data-rmli-length="3"  class="rmi-highlight-task rmi-highlight-task-open">')).toBeGreaterThan(-1)
       expect(html.indexOf('<span data-rmli-type="taskOpen" data-rmli-offset="14" data-rmli-length="2"  class="rmi-highlight-task rmi-highlight-task-open">')).toBeGreaterThan(-1)
@@ -42,7 +42,7 @@ describe('Highlighter.js', () => {
 
     it('performance hightlight (regex)', () => {
       
-      let max = 20000
+      let max = 1000
       let texts = []
       for (let i = 0; i < max; i++) {
         texts.push(getRandomString(i))
@@ -56,7 +56,7 @@ describe('Highlighter.js', () => {
     })
 
 
-    Xit('test hightlight (fast)', () => {      
+    it('test hightlight (fast)', () => {      
       let html = Highlighter.highlightFast('klaus was #here @person\n - [] Open task 1\n - [x] Done task 2\n\n -> Arrow\n #tag2')
       //console.debug(html)
       expect(html.indexOf('<span data-rmli-type="tag" class="rmi-highlight-tag">#here</span>')).toBeGreaterThan(-1)
@@ -67,10 +67,9 @@ describe('Highlighter.js', () => {
       expect(html.indexOf('<i class="ri-arrow-right-line rmi-highlight-icon"></i>')).toBeGreaterThan(-1)
     })
 
-    Xit('bug hightlight mixed todo (fast)', () => {
+    it('bug hightlight mixed todo (fast)', () => {
       let html = Highlighter.highlightFast('Above\n[ ] abc []\n[X] def [x]')
-      console.debug(html)
-
+    
       expect(html.indexOf('<span data-rmli-type="taskOpen" data-rmli-offset="6" data-rmli-length="3"  class="rmi-highlight-task rmi-highlight-task-open">')).toBeGreaterThan(-1)
       expect(html.indexOf('<span data-rmli-type="taskOpen" data-rmli-offset="14" data-rmli-length="2"  class="rmi-highlight-task rmi-highlight-task-open">')).toBeGreaterThan(-1)
       expect(html.indexOf('<span data-rmli-type="taskDone" data-rmli-offset="17" data-rmli-length="3"  class="rmi-highlight-task rmi-highlight-task-done">')).toBeGreaterThan(-1)
@@ -78,7 +77,7 @@ describe('Highlighter.js', () => {
       expect(html.indexOf('  abc ')).toBe(-1)
     })
 
-    Xit('test hightlight todo (fast)', () => {
+    it('test hightlight todo (fast)', () => {
       
       let html = Highlighter.highlightFast('[]')
       expect(html.indexOf('<span data-rmli-type="taskOpen" data-rmli-offset="0" data-rmli-length="2"  class="rmi-highlight-task rmi-highlight-task-open"></span>')).toBeGreaterThan(-1)
@@ -100,7 +99,7 @@ describe('Highlighter.js', () => {
     it('performance hightlight (fast)', () => {
       
    
-      let max = 20000
+      let max = 1000
       let texts = []
       for (let i = 0; i < max; i++) {
         texts.push(getRandomString(i))

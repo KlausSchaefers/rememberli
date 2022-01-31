@@ -1,11 +1,12 @@
 <template>
-  <Splash :version="version" v-if="!file" :settings="settings" @new="onNew" @select="onSelect" />
+  <Splash :version="version" v-if="!file" :settings="settings" @new="onNew" @select="onSelect" @load="setFile"/>
   <div :class="'rmli-editor rmli-add-popX  rmli-theme-' + settings.theme + ' rmli-font-size-' + settings.fontSize" v-if="file">
 
     
     <SideBar
         :hasMenu="hasMenu"
         :settings="settings"
+        @load="setFile"
         @save="onSave" 
         @select="onSelect" 
         @new="onNew" 
@@ -150,7 +151,7 @@ export default {
   props:['value'],
   data: function () {
       return {
-        version: '1.0.6',
+        version: '1.0.8',
         settings: {
           theme: 'default',
           fontSize: 's',
@@ -205,7 +206,7 @@ export default {
       return !this.settings.needMetaKeyForNoteAction || this.metaKeyPressed
     },
     isTodoQuery () {
-      Logger.log(-2, 'Editor.isTodoQuery()', this.query, RememberLi.isTodoQuery(this.query))
+      Logger.log(2, 'Editor.isTodoQuery()', this.query, RememberLi.isTodoQuery(this.query))
       return RememberLi.isTodoQuery(this.query)
     },
     folderElements () {
@@ -251,9 +252,6 @@ export default {
       this.query = query
       this.lastQuery = new Date().getTime()
       this.searchResultsScores = this.searchService.find(query, this.file, this.selectedFolder)
-      if (query === 'log') {
-        this.api.getElectronLog()
-      }
     },
     getFilteredElements (elements) {
         let results = elements.filter(e => {
@@ -396,6 +394,7 @@ export default {
       }
       this.isDirty = false
       this.showStatusMessage('status.saved')
+      this.saveLastFile()
     },
     onSelect () {
       Logger.log(2, 'Editor.onSelect()')
@@ -403,41 +402,35 @@ export default {
     },
     onSelectReply (file) {
       Logger.log(2, 'Editor.onSelectReply()', file)
+      this.setFile(file)
+      this.showStatusMessage('status.welcome')
+    },
+    setFile (file) {
+      Logger.log(2, 'Editor.setFile()', file)
       this.file = file
       this.isDirty = false
       this.query = ''
       this.searchService.indexAll(this.file)
       this.updateTagsAndPersons()
-      this.showStatusMessage('status.welcome')
+      this.saveLastFile()
+    },
+    saveLastFile () {
+      if (this.file && this.file.url) {
+        localStorage.setItem('rmli-last-url', this.file.url)
+      }
+    },
+    loadLastFile () {
+      let url = localStorage.getItem('rmli-last-url')
+      if (url) {
+        Logger.log(-2, 'SideBarActions.loadLastFile()', url)
+        this.api.load(url)
+      }
     },
     onNew () {
       Logger.log(-2, 'Editor.onNew()')
-      this.file = this.createFile()
+      this.file = RememberLi.createFile()
       this.isDirty = false
       this.onSave()
-    },
-    createFile () {
-      return {
-          url: '',
-          content: {
-            created: new Date().getUTCDate(),
-            lastUpdate: new Date().getUTCDate(),
-            name: 'New File',
-            folders: [],
-            elements: [{
-              id: 'n' + new Date().getTime(),
-              created: this.getTimestamp(),
-              firstCreate: this.getTimestamp(),
-              lastUpdate: this.getTimestamp(),
-              elements:[],
-              pinned:false,
-              type: 'Note',
-              value: `This is an example. Click on it to see the markup. You can use the following markup codes:\n\n - @person and #tag markup to highlight elements and get suggestion in the search.\n - [], [x] and -> to create symbols.
-                      `,
-              folder: ''
-            }]
-          }
-      }
     },
     createNote (value) {
       return {
@@ -580,6 +573,8 @@ export default {
     window.addEventListener('keydown', this.keyDownHandler );
     if (this.value) {
       this.file = this.value
+    } else {        
+      this.loadLastFile()  
     }
   },
   beforeUnmount () {

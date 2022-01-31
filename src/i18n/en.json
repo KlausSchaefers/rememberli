@@ -67,7 +67,8 @@
         "home": "Home",
         "help": "Help",
         "about": "About",
-        "settings": "Settings"
+        "settings": "Settings",
+        "continue": "Continue"
     },
     "sidebar": {
         "menu": "Links",

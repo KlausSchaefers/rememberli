@@ -50,7 +50,8 @@ $color-action-hover: $color1;
             border-left-color: rgba($border-color-focus, 0.4);
         }
    
-        textarea, .rmli-editable{
+        textarea, .rmli-editable {
+            line-height: $line-height-m;
             .rmi-highlight-tag {
                 background: rgba($color: $color2, $alpha: 0.3);
             }

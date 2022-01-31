@@ -51,3 +51,53 @@ export function isTagQuery (query) {
 export function isDue(e, now) {
     return e.due && e.due < now
 }
+
+export function createFile () {
+    let now = getTimestamp()
+    return {
+        url: '',
+        content: {
+          created: now,
+          lastUpdate: now,
+          name: 'New File',
+          folders: [],
+          elements: [{
+            id: 'n' + now,
+            created: now,
+            firstCreate: now,
+            lastUpdate: now,
+            elements:[],
+            pinned:false,
+            type: 'Note',
+            value: `This is an example. Click on it to see the markup. You can use the following markup codes:\n\n - @person and #tag markup to highlight elements and get suggestion in the search.\n - [], [x] and -> to create symbols.
+                    `,
+            folder: ''
+          }]
+        }
+    }
+}
+
+export function getTimestamp () {
+    return new Date().getTime()
+}
+
+
+export function parseQuery (str) {
+    const parts = str.toLowerCase().split(' ')
+    let terms = []
+    let operator = 'and'
+
+    parts.forEach(part => {
+        if (isLogicAnd(part)) {
+            operator = 'and'
+        } else if (isLogicOr(part)) {
+            operator = 'or'
+        } else if (isValidQuery(part)) {
+            terms.push(part)
+        }
+    })
+    return {
+        operator: operator,
+        terms: terms
+    }
+}

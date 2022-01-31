@@ -210,7 +210,7 @@ export default {
        /**
         * First get the hits lines with a hit
         */
-        let lines = value.split('\n')
+        let lines = value.toLowerCase().split('\n')
         let hits = new Set()
         lines.forEach((line, i) => {
           if (line.indexOf(this.query) > -1) {

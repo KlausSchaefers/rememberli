@@ -68,9 +68,17 @@ async function save (event, data) {
     }
 }
 
-function load (event, arg) {
-    APILogger.log(3,'APIBackend.load() > enter', arg) 
-    event.reply('load:reply', {data:1})
+function load (event, path) {
+    APILogger.log(-3,'APIBackend.load() > enter', path) 
+    if (fs.existsSync(path)) {
+        let data = fs.readFileSync(path, 'utf8')
+        let content = JSON.parse(data)
+        APILogger.log(3,'APIBackend.load() > select', content) 
+        event.reply('select:reply', {
+            url: path,
+            content: content
+        })
+    }   
 }
 
 async function select (event, arg) {

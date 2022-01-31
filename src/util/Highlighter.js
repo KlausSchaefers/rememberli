@@ -1,4 +1,6 @@
 
+import * as RememberLi from '../services/RememberLi'
+
 const breakChars = {' ':true, '\n': true, '.': true, ',': true, '!': true, "?": true, '\\': true, '/': true}
 
 class Highlighter {
@@ -10,15 +12,24 @@ class Highlighter {
          */
         let result = this.replaceTasksDiv(html)      
         result = result.replace(/(#[a-zA-Z0-9\-_&]+)/g,'<span data-rmli-type="tag" class="rmi-highlight-tag">$1</span>')
-        result = result.replace(/(@[a-zA-Z0-9\-_&]+)/g,'<span data-rmli-type="person" class="rmi-highlight-person">$1</span>')
+        result = result.replace(/(@[a-zA-Z0-9\-_&]+)/g,'<span data-rmli-type="person" class="rmi-highlight-person">$1</span>')    
         result = this.replaceAll(result, '->','<i class="ri-arrow-right-line rmi-highlight-icon"></i>')
-
+       
         /**
          * Replace query if needed
          */
+        result = this.hightlightQuery(result, query)
+        return result
+    }
+
+    hightlightQuery (result, query) {
         if (query) {
-            var regExp = new RegExp(query, 'gi');
-            result = result.replaceAll(regExp, `<span class="rmi-highlight-query">${query}</span>`)
+            let parsed = RememberLi.parseQuery(query)
+            parsed.terms.forEach(term => {
+                var reg = "(" + term + ")(?![^<]*>|[^<>]*</)"; 
+                var regExp = new RegExp(reg, 'gi');
+                result = result.replace(regExp, '<span class="rmi-highlight-query">$1</span>')
+            })  
         }
         return result
     }
@@ -80,8 +91,8 @@ class Highlighter {
  
 
         if (query) {
-            var regExp = new RegExp(query, 'gi');
-            result = result.replaceAll(regExp, `<span class="rmi-highlight-query">${query}</span>`)
+            var regExp = new RegExp('(' + query + ')', 'gi');
+            result = result.replace(regExp, '<span class="rmi-highlight-query">$1</span>')
         }
         
         return result

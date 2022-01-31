@@ -47,7 +47,7 @@ export default {
         this.$emit('change', e.target.value)
     },
     onBlur () {
-        Logger.log(-1, 'Add.onBlur()', this.getValue(), `>${this.getText()}<`)
+        Logger.log(1, 'Add.onBlur()', this.getValue(), `>${this.getText()}<`)
         let text = this.getText()
         this.hasFocus = false
         if (text) {

@@ -16,13 +16,13 @@ export default class SearchService {
     }
 
     find(str) {
-        Logger.log(1, "SearchService.find() > " , str)
+        Logger.log(2, "SearchService.find() > " , str)
         const result  = {}
   
         if (RememberLi.isValidQuery(str)) {
             let now = new Date().getTime()
-            const query = this.parseQuery(str)
-            Logger.log(-1, "SearchService.find() > query: " , query.operator, query.terms)
+            const query = RememberLi.parseQuery(str)
+            Logger.log(1, "SearchService.find() > query: " , query.operator, query.terms)
             const elements = Object.values(this.elements)
             let scores = {}
             elements.forEach(e => {
@@ -60,8 +60,6 @@ export default class SearchService {
                         runFullText = false
                     }
 
-                    console.debug('search', term, runFullText, e.value.indexOf(term))
-
                     // we run full text only of there is no special query, e.g. ':due',
                     // to save some time.
                     if (runFullText) {
@@ -76,7 +74,7 @@ export default class SearchService {
 
             // assume AND
             let minScore = this.getMinScore(query)
-            Logger.log(1, "SearchService.find() > minScore: " , minScore)
+            Logger.log(2, "SearchService.find() > minScore: " , minScore)
             for (let id in scores) {
                 if (scores[id].score >= minScore) {
                     result[id] = scores[id]
@@ -84,7 +82,7 @@ export default class SearchService {
             }
             
         } else {
-            Logger.log(1, "SearchService.find() > not valid" , str)
+            Logger.log(2, "SearchService.find() > not valid" , str)
         }
         return result
     }
@@ -111,26 +109,7 @@ export default class SearchService {
         return query.terms.length
     }
 
-    parseQuery (str) {
-        const parts = str.toLowerCase().split(' ')
-        let terms = []
-        let operator = 'and'
-
-        parts.forEach(part => {
-            if (RememberLi.isLogicAnd(part)) {
-                operator = 'and'
-            } else if (RememberLi.isLogicOr(part)) {
-                operator = 'or'
-            } else if (RememberLi.isValidQuery(part)) {
-                terms.push(part)
-            }
-        })
-        return {
-            operator: operator,
-            terms: terms
-        }
-    }
-
+   
     isValidQuery (query) {
        return RememberLi.isValidQuery(query)
     }
@@ -175,14 +154,14 @@ export default class SearchService {
     indexTags (text) {
         let tags = text.match(/(#[a-zA-Z0-9\-_]+)/g)
         if (tags) {
-            tags.forEach(t => this.tags.add(t))
+            tags.forEach(t => this.tags.add(t.toLocaleLowerCase()))
         }
     }
 
     indexPersons (text) {
         let persons = text.match(/(@[a-zA-Z0-9\-_]+)/g)
         if (persons) {
-            persons.forEach(p => this.persons.add(p))
+            persons.forEach(p => this.persons.add(p.toLocaleLowerCase()))
         }
     }
 

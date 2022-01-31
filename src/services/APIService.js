@@ -112,7 +112,7 @@ export default class APIService {
     }
 
     load (fileName) {
-        Logger.log(2, 'APIService.load()', fileName)
+        Logger.log(-2, 'APIService.load()', fileName)
         let ipcRenderer = window.ipcRenderer
         ipcRenderer.send('load', fileName)
     }
