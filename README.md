@@ -25,9 +25,29 @@ RememberLi supports the following markups that make it easy for you to organize 
 5. ->: Create an arrow
 
 ## Download
-Windows [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.5/RememberLi-Setup-1.0.5.exe)
+Windows [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.9/RememberLi-Setup-1.0.9.exe)
 
-Mac [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.5/RememberLi-1.0.5.dmg)
+Mac [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.9/RememberLi-1.0.9.dmg)
+
+## Mac Install 
+
+On MacOs you might get a warning that the author is unkown and you cannot start the application. This happens becasue I didn't sign the app (cost me 99$)
+
+![Mac os error](https://github.com/KlausSchaefers/rememberli/blob/main/src/assets/MacError1.png)
+
+To still open the app, perform the following steps:
+
+- Open "System Preferences" and go to "Security & Privacy"
+
+![Mac os error](https://github.com/KlausSchaefers/rememberli/blob/main/src/assets/MacError2.png)
+
+- In the "Allow apps downloaded from..." enable Rememberli by clicking "Open Anyway"
+
+![Mac os error](https://github.com/KlausSchaefers/rememberli/blob/main/src/assets/MacError3.png)
+
+- In following dialog click on "Open"
+
+![Mac os error](https://github.com/KlausSchaefers/rememberli/blob/main/src/assets/MacError4.png)
 
 ## Project setup
 ```
