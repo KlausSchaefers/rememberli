@@ -34,10 +34,6 @@ import Logger from './Logger'
 
 export function innerText (node, lastChildWasBr =  {isTrue: true}, level = 0) {
 
-    if (level === 0) {
-        console.debug('innerText', JSON.stringify({html: node.innerHTML}))
-    }
-
     let result = ''
     const childNodes = node.childNodes
     

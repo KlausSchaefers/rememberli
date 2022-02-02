@@ -26,14 +26,18 @@
     <main :class="['rmli-editor-body rmli-drag-bar-below', {'rmi-highlight-pointer': hasHighLightPointer}]">
 
          <Toolbar
-            @menu="hasMenu = !hasMenu"
-            @save="onSave" 
-            @select="onSelect" 
-            ref="toolbar"
-            @new="onNew" 
+            :open="hasMenu"
+            :settings="settings"
             :file="file" 
             :isDirty="isDirty" 
-            @search="onSearch"/>
+            ref="toolbar"
+            @shrink="onShrink"
+            @menu="hasMenu = !hasMenu"
+            @save="onSave" 
+            @select="onSelect"  
+            @new="onNew" 
+            @search="onSearch"
+          />
 
 
         <div :class="'rmli-element-list ' + (hasListAnimation ? 'rmli-is-animated ': '')">
@@ -151,7 +155,7 @@ export default {
   props:['value'],
   data: function () {
       return {
-        version: '1.0.8',
+        version: '1.0.9',
         settings: {
           theme: 'default',
           fontSize: 's',
@@ -164,7 +168,7 @@ export default {
           hasBeta: false,
           needMetaKeyForNoteAction: false,
           hideStatusForToDoView: false,
-          hasFocusedSearch: false
+          hasShrinkedSearch: false
         },
         status: {
           message: '',
@@ -549,7 +553,7 @@ export default {
       }
        if (e.key === 's' && e.ctrlKey && this.$refs.toolbar) {
         Logger.log(-2, 'Editor.onKeyDown() > shrink')
-        this.settings.hasFocusedSearch = !this.settings.hasFocusedSearch
+        this.onShrink()
       }
       if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
         Logger.log(-2, 'Editor.onKeyDown() > undo')
@@ -557,6 +561,10 @@ export default {
         this.onChange()
       }
     },
+    onShrink () {
+      Logger.log(-2, 'Editor.onKeyDown() > onShrink')
+      this.settings.hasShrinkedSearch = !this.settings.hasShrinkedSearch
+    }
   },
   mounted () {
     this.initSettings()

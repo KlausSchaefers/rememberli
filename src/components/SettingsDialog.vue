@@ -27,7 +27,7 @@
             <h1 class="rmli-margin-top-l">{{$t('settings.other')}}</h1>
             <div class="rmli-checkbox-list">
               <CheckBox v-model="settings.hasDueInTop" :label="$t('settings.hasDueInTop')"/>     
-              <CheckBox v-model="settings.hasFocusedSearch" :label="$t('settings.hasFocusedSearch')"/> 
+              <CheckBox v-model="settings.hasShrinkedSearch" :label="$t('settings.hasShrinkedSearch')"/> 
               <CheckBox v-model="settings.hasTimeline" :label="$t('settings.timeline')"/>
               <CheckBox v-model="settings.hasBorderTop" :label="$t('settings.hasBorderTop')"/>
               <CheckBox v-model="settings.hasDateLeft" :label="$t('settings.hasDateLeft')"/>

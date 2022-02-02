@@ -151,7 +151,12 @@ export default {
       text () {
         const value = this.element.value
         if (!this.hasFocus) {     
-            if (this.settings.hasFocusedSearch  && RememberLi.isValidQuery(this.query)) {
+            if (
+                this.settings.hasShrinkedSearch  && 
+                RememberLi.isValidQuery(this.query) && 
+                !RememberLi.isDueQuery(this.query) && 
+                !RememberLi.isTodoQuery(this.query)
+              ) {
                return this.getFocusedText(value)
             } else {
               return this.highlightedText

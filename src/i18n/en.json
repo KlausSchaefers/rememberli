@@ -35,7 +35,7 @@
         "beta": "Enable experimental features",
         "needMetaKeyForNoteAction": "Require CMD or CTRL for clicks on tags",
         "hideStatusForToDoView": "Hide date for :todo view",
-        "hasFocusedSearch": "Shrink search results"
+        "hasShrinkedSearch": "Shrink search results"
     },
     "note": {
         "remove": "Remove all text to delete note",
@@ -52,6 +52,7 @@
         "metaKeyTask": "Press CTRL or CMD to toggle task"
     },
     "toolbar": {
+        "shrink": "Shrink results",
         "search": "Search",
         "search_hint": "e.g. :due, :todo, #tag"
     },

@@ -67,6 +67,17 @@
             right: 10px;
             top:$spacing-s;
             font-size: $font-size-default;
+            cursor: pointer;
+        }
+
+        .rmli-toolbar-shrink {
+            right: 32px;
+            top:$spacing-s;
+            color: rgba($color: $color1, $alpha: 0.4);
+
+            &.rmli-toolbar-shrink-active {
+                color: rgba($color: $color1, $alpha: 1);
+            }
         }
     }
     

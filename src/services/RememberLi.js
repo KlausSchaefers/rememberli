@@ -8,6 +8,10 @@ export function isDueTerm (query) {
     return query === TERMS.DUE
 }
 
+export function isDueQuery (str) {
+    return str.indexOf(TERMS.DUE) >=0
+}
+
 export function isFocusQuery(query) {
     return query.indexOf(TERMS.FOCUS) >=0
 }
@@ -17,7 +21,7 @@ export function isFocusTerm (term) {
 }
 
 export function isTodoQuery (str) {
-    return str.indexOf(':todo') >=0
+    return str.indexOf(TERMS.TODO) >=0
 }
 
 export function isTodoTerm (query) {
