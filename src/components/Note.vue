@@ -217,10 +217,13 @@ export default {
         */
         let lines = value.toLowerCase().split('\n')
         let hits = new Set()
+        let terms = RememberLi.parseQuery(this.query).terms
         lines.forEach((line, i) => {
-          if (line.indexOf(this.query) > -1) {
-            hits.add(i)
-          }
+          terms.forEach(term => {
+            if (line.indexOf(term) > -1) {
+              hits.add(i)
+            }
+          })       
         })
 
         /**
