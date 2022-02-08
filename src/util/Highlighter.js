@@ -26,7 +26,8 @@ class Highlighter {
         if (query) {
             let parsed = RememberLi.parseQuery(query)
             parsed.terms.forEach(term => {
-                var reg = "(" + term + ")(?![^<]*>|[^<>]*</)"; 
+                let reg = "((?<!<[^>]*)" + term + "(?<![^>]*<))";
+                //let reg = "(" + term + ")(?![^<]*>|[^<>]*</)"; 
                 var regExp = new RegExp(reg, 'gi');
                 result = result.replace(regExp, '<span class="rmi-highlight-query">$1</span>')
             })  
