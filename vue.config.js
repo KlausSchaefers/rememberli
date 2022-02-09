@@ -16,6 +16,10 @@ module.exports = {
             entitlements: "build/entitlements.mac.plist",
             entitlementsInherit: "build/entitlements.mac.plist"
           },
+          linux: {
+            maintainer: "KlausSchaefers",
+            category: "Utility"
+          }
         }
       }
     }

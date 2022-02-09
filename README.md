@@ -33,6 +33,8 @@ Linux - Snapp [Download](https://github.com/KlausSchaefers/rememberli/releases/d
 
 Linux - AppImage [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.13/RememberLi-1.0.13.AppImage)
 
+Linux - Deb [Download] (https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.13/RememberLi_1.0.13_amd64.deb)
+
 ## Mac Install 
 
 On MacOs you might get a warning that the author is unkown and you cannot start the application. This happens becasue I didn't sign the app (cost me 99$)
