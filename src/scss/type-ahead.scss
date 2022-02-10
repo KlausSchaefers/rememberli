@@ -1,0 +1,14 @@
+@import './ds.scss';
+
+.rmli-type-ahead {
+    border: 1px solid red;
+    display: none;
+}
+
+.rmli-type-ahead-visible {
+    display: block;
+    position: fixed;
+    width: 100px;
+    height: 64px;
+    background: rgb(134, 134, 165);
+}

@@ -32,11 +32,11 @@ import Logger from './Logger'
  *  When we ask for innerText it will have three line breaks
  */
 
-export function innerText (node, lastChildWasBr =  {isTrue: true}, level = 0) {
+export function innerText(node, lastChildWasBr = { isTrue: true }, level = 0) {
 
     let result = ''
     const childNodes = node.childNodes
-    
+
     for (let i = 0; i < childNodes.length; i++) {
         const childNode = childNodes[i];
         if (childNode.nodeName === 'DIV') {
@@ -63,7 +63,7 @@ export function innerText (node, lastChildWasBr =  {isTrue: true}, level = 0) {
             }
         }
         if (!isDivWithBRChild(childNode)) {
-            result += innerText(childNode, lastChildWasBr, level+1);
+            result += innerText(childNode, lastChildWasBr, level + 1);
         }
     }
     return result
@@ -82,7 +82,7 @@ export function getText(html) {
 
     // make sure we do not get any evil html in here
     const decoder = document.createElement('div')
-   
+
     // we should somehow check that the content is ok...
     decoder.innerHTML = `<div contenteditable="true" >${html}</div>`
 
@@ -96,11 +96,11 @@ export function getText(html) {
 export function cleanInnerHTML(s) {
     const decoder = document.createElement('div')
     decoder.innerText = s
-    let sanitized = decoder.innerHTML  
+    let sanitized = decoder.innerHTML
     return replaceAllowedTags(sanitized)
 }
 
-export function replaceAllowedTags (sanitized, allowedTags = ['b', 'i', 'div', 'p', 'label', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol',' li', 'br', 'hr', 'blockquote']) {
+export function replaceAllowedTags(sanitized, allowedTags = ['b', 'i', 'div', 'p', 'label', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', ' li', 'br', 'hr', 'blockquote']) {
     allowedTags.forEach(tag => {
         let needle = new RegExp(`&lt;${tag}&gt;`, 'gi')
         let replace = `<${tag}>`
@@ -114,7 +114,7 @@ export function replaceAllowedTags (sanitized, allowedTags = ['b', 'i', 'div', '
 }
 
 
-export function on (node, event, callback) {
+export function on(node, event, callback) {
     if (node && node.toLowerCase) {
         node = document.getElementById(node)
     }
@@ -131,11 +131,11 @@ export function on (node, event, callback) {
     }
 }
 
-export function body () {
+export function body() {
     return document.getElementsByTagName("BODY")[0]
 }
 
-export function replaceLastPart (str, part) {
+export function replaceLastPart(str, part) {
     let parts = str.split(' ')
     if (parts.length > 1) {
         parts[parts.length - 1] = part
@@ -151,4 +151,65 @@ export function isDue(e, now) {
 export function stopEvent(e) {
     e.preventDefault()
     e.stopPropagation()
+}
+
+export function getCaretPosition(editableDiv) {
+    let caretPos = 0,
+        sel, range;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            if (range.commonAncestorContainer.parentNode == editableDiv) {
+                caretPos = range.endOffset;
+            }
+        }
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        if (range.parentElement() == editableDiv) {
+            var tempEl = document.createElement("span");
+            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+            var tempRange = range.duplicate();
+            tempRange.moveToElementText(tempEl);
+            tempRange.setEndPoint("EndToEnd", range);
+            caretPos = tempRange.text.length;
+        }
+    }
+    return caretPos;
+}
+
+
+export function getCaretTopPoint() {
+    const sel = document.getSelection()
+    const r = sel.getRangeAt(0)
+    let rect
+    let r2
+    // supposed to be textNode in most cases
+    // but div[contenteditable] when empty
+    const node = r.startContainer
+    const offset = r.startOffset
+    if (offset > 0) {
+        // new range, don't influence DOM state
+        r2 = document.createRange()
+        r2.setStart(node, (offset - 1))
+        r2.setEnd(node, offset)
+        rect = r2.getBoundingClientRect()
+        return { left: rect.right, top: rect.top }
+    } else if (offset < node.length) {
+        r2 = document.createRange()
+        // similar but select next on letter
+        r2.setStart(node, offset)
+        r2.setEnd(node, (offset + 1))
+        rect = r2.getBoundingClientRect()
+        return { left: rect.left, top: rect.top }
+    } else { // textNode has length
+        // https://developer.mozilla.org/en-US/docs/Web/API/Element.getBoundingClientRect
+        rect = node.getBoundingClientRect()
+        const styles = getComputedStyle(node)
+        const lineHeight = parseInt(styles.lineHeight)
+        const fontSize = parseInt(styles.fontSize)
+        // roughly half the whitespace... but not exactly
+        const delta = (lineHeight - fontSize) / 2
+        return { left: rect.left, top: (rect.top + delta) }
+    }
 }

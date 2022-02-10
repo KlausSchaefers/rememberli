@@ -79,6 +79,7 @@
       <div v-if="isTodoQuery && !hasFocus" @click="focus">
          <div :class="['rmli-editable']" v-html="todosText" @mousedown="onMouseDown"/>
       </div>
+      <TypeAhead ref="typehead" v-if="hasFocus"/>
   </div>
 </template>
 
@@ -94,6 +95,7 @@ import * as relativeTime from 'dayjs/plugin/relativeTime'
 dayjs.extend(relativeTime)
 import Highlighter from '../util/Highlighter'
 import DropDown from '../common/DropDown.vue'
+import TypeAhead from './TypeAhead.vue'
 import * as Util from '../util/Util'
 import * as RememberLi from '../services/RememberLi'
 
@@ -141,11 +143,12 @@ export default {
         hasFocus:false,
         hasPlaceHolder: false,
         hasSetInnerHTML: false,
+        hasTypeHead: false,
         value: ''
     }
   },
   components: {
-    DropDown
+    DropDown, TypeAhead
   },
   computed: {
       text () {
@@ -374,14 +377,21 @@ export default {
       this.$emit('folder', '')
     },
     onKeyUp () {
-        let value = this.getText()
-        this.hasPlaceHolder = value === ''
+      let value = this.getText()
+      this.hasPlaceHolder = value === ''
     },
     onKeyDown (e) {
-      if (e.key == 'Tab') {
+      let key = e.key
+      if (key == 'Tab') {
         e.preventDefault();
         this.insertAtCursor("\t")
+        return
       }
+      // FIXME: add for enter insertDimatCursoer(br) to avoid ugly line fuckups?
+      if (this.$refs.typehead) {
+        this.$refs.typehead.onKeyDown(e)
+      }
+      
     },
     insertAtCursor(text) {
         if (this.$refs.input) {
