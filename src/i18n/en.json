@@ -16,7 +16,8 @@
         "contact": "Contact"
     },
     "folderDialog": {
-        "none": "No folder"
+        "none": "No folder",
+        "new": "New Folder"
     },
     "settings": {
         "theme": "Theme",

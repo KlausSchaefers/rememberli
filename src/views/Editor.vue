@@ -18,6 +18,7 @@
         @changeFolder="changeFolder"
         @deleteFolder="deleteFolder"
         @moveElementToFolder="moveElementToFolder"
+        @moveFolderAbove="moveFolderAbove"
         :file="file" 
         :isDirty="isDirty" 
         @search="setSearch"
@@ -155,7 +156,7 @@ export default {
   props:['value'],
   data: function () {
       return {
-        version: '1.0.13',
+        version: '1.0.14',
         settings: {
           theme: 'default',
           fontSize: 's',
@@ -506,6 +507,20 @@ export default {
       } else {
         Logger.log(-2, 'Editor.moveElementToFolder() > Could not find element', elementId)
       }
+    },
+    moveFolderAbove (sourceId, targetId) {
+        Logger.log(-2, 'Editor.moveFolderAbove() > ', sourceId, targetId)
+        let sourceFolder = this.file.content.folders.find(f => f.id === sourceId)
+        let folders = this.file.content.folders.filter(f => f.id !== sourceId)
+        let targetIndex = folders.findIndex(f => f.id === targetId)
+        if (targetIndex > -1) {
+          folders.splice(targetIndex, 0, sourceFolder)
+          this.file.content.folders = folders
+          this.onSave()
+        } else {
+          Logger.log(-2, 'Editor.moveFolderAbove() > ', sourceId, targetId)
+        }
+        
     },
     /**
      *  Dialogs

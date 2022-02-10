@@ -1,6 +1,7 @@
 @import './ds.scss';
 
 $color-action-hover: $color1;
+$color-sidebar: #435b72;
 
 
 .rmli-theme-soft {
@@ -10,6 +11,8 @@ $color-action-hover: $color1;
     }
 
     .rmli-sidebar {
+ 
+        color: $color-sidebar;
 
     
         .rmli-sidebar-folder-selected {

@@ -37,7 +37,8 @@ $spacing-action: 12px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0px $spacing-action;
+        padding: 0px;
+        padding-left: $spacing-action;
     }
 
     .rmli-sidebar-folder-list {
@@ -64,7 +65,10 @@ $spacing-action: 12px;
                 opacity: 1;
             }
         }
+
     }
+
+ 
 
     .rmli-sidebar-content {
         display: flex;
@@ -103,6 +107,7 @@ $spacing-action: 12px;
         width: 160px;
         padding: $spacing-xs $spacing-action;
         border-radius: $border-radius-xl;
+        transition: all 0.25s;
        
 
         span {
@@ -147,6 +152,25 @@ $spacing-action: 12px;
     .rmli-sidebar-folder-dnd {
         color: $color1-hover;
     }
+
+    .rmli-sidebar-folder-list-dnd {
+        .rmli-sidebar-folder-dnd {
+            position: relative;
+    
+        }
+        .rmli-sidebar-folder-dnd::before {
+            content: "";
+            position: absolute;
+            top:0px;
+            left:0px;
+            display: block;
+            width: 100%;
+            height: 1px;
+          
+            border-top: 2px solid $color1-hover;
+        }
+    }
+    
 
     .rmli-sidebar-hint {
         font-style: italic;

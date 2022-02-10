@@ -317,7 +317,8 @@ export default {
     },
     onDragStart (e) {
         Logger.log(-3, 'Note.onDragStart() > enter', e)
-        e.dataTransfer.setData("text/plain", this.element.id);
+        let data = {noteId: this.element.id}
+        e.dataTransfer.setData("text/plain", JSON.stringify(data));
         this.isDnd = true
     },
     onPaste (e) {

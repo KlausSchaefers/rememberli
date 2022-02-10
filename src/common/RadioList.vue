@@ -7,6 +7,7 @@
       <label> {{o.label}}</label>
     </div>
 
+  
   </div>
 </template>
 <style lang="scss">
@@ -21,7 +22,8 @@ export default {
   props: ['options', 'modelValue'],
   data: function () {
     return {
-
+      newOption: '',
+      isNewChecked: false
     }
   },
   computed: {
@@ -31,7 +33,13 @@ export default {
 
   },
   methods: {
+    toggleNew () {
+      this.$emit('update:modelValue', null)
+      this.$emit('change', null)
+      this.isNewChecked = !this.isNewChecked
+    },
     setValue (value) {
+      this.isNewChecked = false
       this.$emit('update:modelValue', value)
       this.$emit('change', value)
     }

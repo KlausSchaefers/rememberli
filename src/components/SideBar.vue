@@ -3,11 +3,11 @@
 
     <div class="rmli-sidebar-content rmli-drag-bar-below">
         
-        <div class="rmli-sidebar-folder-list rmli-sidebar-list">
+        <div :class="['rmli-sidebar-folder-list rmli-sidebar-list', {'rmli-sidebar-folder-list-dnd': isDndFolder} ]">
 
           <div class="rmli-sidebar-section-header">
                <span>{{$t('sidebar.folders')}}</span>
-                <i class="ri-add-line rmli-folder-add rmli-tooltip" @click="showNewFolder" v-if="false" >
+                <i class="ri-add-line rmli-folder-add rmli-tooltip" @click="showNewFolder" >
                     <span class="rmli-tooltip-message"> {{$t('sidebar.new')}}</span>
                 </i> 
           </div>
@@ -16,7 +16,7 @@
             :class="[
                 'rmli-sidebar-folder', 
                 {'rmli-sidebar-folder-selected': selectedFolder === null },
-                {'rmli-sidebar-folder-dnd': dropFolder && dropFolder.id === allFolder.id }]"
+                {'rmli-sidebar-folder-dnd': dropFolder && dropFolder.id === allFolder.id && !isDndFolder }]"
                 @dragover="onDragOver(allFolder, $event)"
                 @dragleave="onDragLeave(allFolder, $event)"
                 @drop="onDrop(allFolder, $event)"
@@ -52,7 +52,9 @@
                   {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder.id === folder.id }, 
                   {'rmli-sidebar-folder-dnd': dropFolder && dropFolder.id === folder.id }
                 ]" 
-                v-for="folder in file.content.folders" 
+                v-for="folder in file.content.folders"
+                @dragstart="onDragStart(folder, $event)"
+                :draggable="isDragable"
                 @dragover="onDragOver(folder, $event)"
                 @dragleave="onDragLeave(folder, $event)"
                 @drop="onDrop(folder, $event)"
@@ -66,7 +68,7 @@
                   <input 
                     v-else
                     :placeholder="$t('sidebar.delete')"
-                    class="rmli-inline-edit" 
+                    class="" 
                     v-model="editFolderName" 
                     @blur="changeFolder" 
                     ref="editFolderInput"
@@ -79,14 +81,14 @@
                   <input 
                     
                     :placeholder="$t('sidebar.newplaceholder')"
-                    class="rmli-inline-edit" 
+                    class="" 
                     v-model="newFolderName" 
                     @blur="createNewFolder" 
                     ref="newFolderInput"
                   />
             </a>
 
-            <a class="rmli-sidebar-folder rmli-sidebar-folder-add " v-if="!hasNewFolderInput" @click="showNewFolder">
+            <a class="rmli-sidebar-folder rmli-sidebar-folder-add " v-if="!hasNewFolderInput && false" @click="showNewFolder">
                 <i class="ri-folder-add-line" v-if="false"></i> 
                 <span class="rmli-sidebar-hint ">
                       {{$t('sidebar.addFolder')}}
@@ -133,7 +135,8 @@ export default {
   name: 'SideBar',
   emits: [
       'save', 'select', 'search', 'new', 'exit', 'setFolder', 'deleteFolder', 
-      'createFolder', 'changeFolder', 'deleteFolder', 'settings', 'moveElementToFolder', 'help', 'load'
+      'createFolder', 'changeFolder', 'deleteFolder', 'settings', 
+      'moveElementToFolder', 'moveFolderAbove', 'help', 'load'
   ],
   props: ['file', 'isDirty', 'hasMenu', 'settings'],
   data: function () {
@@ -161,7 +164,9 @@ export default {
           id:'',
           label:'Todo'
         },
-        hasDueFilter: false
+        hasDueFilter: false,
+        isDragable: true,
+        isDndFolder: false
     }
   },
   components: {
@@ -180,6 +185,12 @@ export default {
     }
   },
   methods: {
+    onDragStart (folder, e) {
+      Logger.log(-3, 'SideBar.onDragStart() > enter', folder.label, e)
+      let data = {folderId: folder.id }
+      e.dataTransfer.setData("text/plain", JSON.stringify(data));
+      this.isDndFolder = true
+    },
     onDragOver (folder, e) {
       Logger.log(3, 'SideBar.onDragOver()', folder.label, e)
       e.preventDefault()
@@ -193,9 +204,22 @@ export default {
       this.dropFolder = null
       if (e && e.dataTransfer) {
         e.preventDefault();
-        var elementId = e.dataTransfer.getData("text");
-        this.$emit('moveElementToFolder', folder, elementId)
+        var json = e.dataTransfer.getData("text");
+        try {
+          let data = JSON.parse(json)
+          Logger.log(-3, 'SideBar.onDrop()', data)
+          if (data.noteId) {
+            this.$emit('moveElementToFolder', folder, data.noteId)
+          }
+          if (data.folderId) {
+            this.$emit('moveFolderAbove', data.folderId, folder.id)
+          }
+        } catch (err) {
+          Logger.error('SideBar.onDrop() > could not parse' , err)
+        }
+        
       }
+      this.isDndFolder = false
     },
     showEditFolder (folder) {
       Logger.log(3, 'SideBar.showEditFolder()', folder)

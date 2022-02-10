@@ -3,8 +3,9 @@
       <div class="rmli-settings">
      
       
-        <RadioList :options="folders" v-model="selected"/>
-        
+        <RadioList :options="folders" v-model="selected" :hasNew="true" />
+
+      
         <div class="rmli-button-bar">
             <button class="rmli-button" @click="save">{{$t('common.save')}}</button>
             <button class="rmli-button rmli-button-secondary " @click="cancel">{{$t('common.cancel')}}</button>
@@ -29,6 +30,7 @@ export default {
   props: ['file'],
   data: function () {
     return {
+        newFolderName:'',
         selected: ''
     }
   },

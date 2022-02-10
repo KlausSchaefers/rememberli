@@ -101,3 +101,13 @@ a {
         color: $color1-hover;
     }
 }
+
+.rmli-input-inline {
+    padding:$spacing-xs  0px;
+    font-size: $font-size-default;
+    color:$color1;
+    border: none;
+    &:focus{
+        outline: none;
+    }
+}
