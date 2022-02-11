@@ -19,9 +19,11 @@
     }
 
     &.rmli-add-animation-hidden{
-        height: 0px;
+        height: 1px;
         overflow: hidden;
         padding: 0px;
+        background: #fff;
+        transform: translateY(1px);
     }
     &.rmli-add-animation-grow{
         transition: all 0.5s;
