@@ -3,12 +3,32 @@
 .rmli-type-ahead {
     border: 1px solid red;
     display: none;
+    border:1px solid $border-color-hover;
+    box-shadow: $shadow-l;
+    z-index: 1000;
+    max-height: 150px;
+    overflow: auto;
+    background: #fff;
+    border-radius: $border-radius-m;
+    font-size: $font-size-s;
+    padding: $spacing-xs;
+    box-sizing: border-box;
+   
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    .rmli-type-ahead-item {
+        cursor: pointer;
+
+        &.rmli-type-ahead-item-selected {
+            color: $color1-hover;
+        }
+    }
 }
 
 .rmli-type-ahead-visible {
-    display: block;
+    display: flex;
     position: fixed;
-    width: 100px;
-    height: 64px;
-    background: rgb(134, 134, 165);
+    max-width: 200px;
+    max-height: 150px;
 }

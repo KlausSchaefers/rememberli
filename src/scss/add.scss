@@ -2,7 +2,9 @@
 
 .rmli-add.rmli-note{
     border-top: 1px solid rgba(0,0,0, 0.00);
-    padding: $spacing-m 0px; 
+    padding: $spacing-m 0px;
+    padding-top: $spacing-l;
+
     
     &.rmli-timeline-note {
         border-left-color: transparent;
@@ -14,6 +16,15 @@
         &.rmli-focus {
             border-left-color: rgba($border-color-focus, 1);
         }
+    }
+
+    &.rmli-add-animation-hidden{
+        height: 0px;
+        overflow: hidden;
+        padding: 0px;
+    }
+    &.rmli-add-animation-grow{
+        transition: all 0.5s;
     }
 }
 

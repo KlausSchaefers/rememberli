@@ -1,4 +1,4 @@
-import Logger from './Logger'
+
 /**
  *  enterring a<enter><enter>b will give such an HTML
  * 
@@ -52,7 +52,6 @@ export function innerText(node, lastChildWasBr = { isTrue: true }, level = 0) {
         }
         if (childNode.nodeType === 3 && childNode.textContent) {
             let text = childNode.textContent
-            Logger.space(level + 1, childNode.text)
             result += text;
             /**
              * If the text index with a \n, we should ignore

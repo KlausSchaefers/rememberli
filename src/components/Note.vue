@@ -79,7 +79,7 @@
       <div v-if="isTodoQuery && !hasFocus" @click="focus">
          <div :class="['rmli-editable']" v-html="todosText" @mousedown="onMouseDown"/>
       </div>
-      <TypeAhead ref="typehead" v-if="hasFocus"/>
+      <TypeAhead ref="typehead" v-if="hasFocus" @select="onTypeAhead"/>
   </div>
 </template>
 
@@ -330,6 +330,12 @@ export default {
       if (text) {
         e.preventDefault()
         this.insertAtCursor(text)
+      }
+    },
+    onTypeAhead (v) {
+      Logger.log(-3, 'Note.onTypeAhead() ', v)
+      if (v) {
+        this.insertAtCursor(v + ' ')
       }
     },
     onAlarm (v) {

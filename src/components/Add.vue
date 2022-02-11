@@ -1,6 +1,6 @@
 
 <template>
-  <div :class="['rmli-note rmli-add', {'rmli-focus': hasFocus}, {'rmli-timeline-note': settings.hasTimeline}]" @click="$emit('click')">
+  <div :class="['rmli-note rmli-add', {'rmli-focus': hasFocus}, {'rmli-timeline-note': settings.hasTimeline}, 'rmli-add-animation-' + animationStep]" @click="$emit('click')">
     <div class="rmli-placeholder-container">
         <span class="rmli-placeholder" v-if="hasPlaceHolder"  @click="onPlaceHolderClick"> {{placeholder}} </span> 
         <div 
@@ -15,6 +15,7 @@
             @blur="onBlur"/>
     </div>
   </div>
+  <TypeAhead ref="typehead" v-if="hasFocus" @select="onTypeAhead"/>
 </template>
 
 <style lang="scss">
@@ -33,6 +34,7 @@ export default {
   props: ['placeholder'],
   data: function () {
     return {
+      animationStep: 'none'
     }
   },
   components: {
@@ -52,6 +54,13 @@ export default {
         this.hasFocus = false
         if (text) {
             this.$emit('add', this.getValue())
+            this.animationStep = 'hidden'
+            setTimeout(() => {
+              this.animationStep = 'grow'
+            }, 500)
+            setTimeout(() => {
+              this.animationStep = 'none'
+            }, 1500)
         }
         this.reset()
     },
@@ -59,6 +68,7 @@ export default {
         // make somehow invisible and then popin again...
         this.setInnerHTML('')
         this.hasPlaceHolder = true
+      
     },
     setInnerHTML (html) {
       if (this.$refs.input) {

@@ -10,7 +10,8 @@
 
     &:hover .rmli-tooltip-message{
         display: block;
-        width: 70px;
+        min-width: 70px;
+        max-width: 200px;
         position: absolute;
         top:100%;
         right: 0px;
@@ -22,5 +23,6 @@
         border-radius: $border-radius-m;
         text-align: left;
         text-align: center;
+        white-space: nowrap;
     }
 }

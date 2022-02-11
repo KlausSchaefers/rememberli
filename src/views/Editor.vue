@@ -52,7 +52,7 @@
                   </h1>
             
                   <transition-group name="list" tag="div">
-                    <div :class="'rmli-element ' + (i === 0 ? 'rmli-element-no-border' : '')" v-for="(element,i) in filteredElements.pinned" :key="element.id" :data-element-id="element.id">
+                    <div :class="'rmli-element '" v-for="(element) in filteredElements.pinned" :key="element.id" :data-element-id="element.id">
                         <component 
                           :is="element.type" 
                           :element="element" 
@@ -80,7 +80,7 @@
                       {{selectedFolder ? selectedFolder.label : $t('list.rest')}}
                   </h1>
             
-                  <div class="rmli-element rmli-element-add rmli-element-no-border rmli-element-add-top">
+                  <div class="rmli-element rmli-element-add rmli-element-add-top">
                     <Add @add="addStart" :placeholder="$t('add.start')" ref="add" :settings="settings"/>
                   </div>
               
