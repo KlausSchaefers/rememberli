@@ -72,49 +72,57 @@ export default {
           this.open()
       }
 
-      if ('Backspace' === key) { // back
-        this.text = this.text.substring(0, this.text.length-1)
-        return
-      }
-     
-      if ('ArrowDown' === key) { // Down
-        e.preventDefault();
-        let index = this.matches.findIndex(o => o.value === this.selected.value)
-        if (index === -1) {
-          this.selected = this.matches[0]
-        } else {
-          this.selected = this.matches[index + 1]
+      if (this.isOpen) {
+        if ('Backspace' === key) { // back
+          this.text = this.text.substring(0, this.text.length-1)
+          return
         }
-        return
-      }
-
-      if ('ArrowUp' === key) { // UP
-        e.preventDefault();
-        let index = this.matches.findIndex(o => o.value === this.selected.value)
-        if (index === -1) {
-          this.selected = this.matches[0]
-        } else {
-          this.selected = this.matches[index - 1]
+      
+        if ('ArrowDown' === key) { // Down
+          e.preventDefault();
+          let index = this.matches.findIndex(o => o.value === this.selected.value)
+          if (index === -1) {
+            this.selected = this.matches[0]
+          } else {
+            this.selected = this.matches[index + 1]
+          }
+          return
         }
-        return
-      }
 
-      if ('Enter' === key) { // enter
-        e.preventDefault();
-        if (this.matches.length === 1) {
-          this.select(this.matches[0])
+        if ('ArrowUp' === key) { // UP
+          e.preventDefault();
+          let index = this.matches.findIndex(o => o.value === this.selected.value)
+          if (index === -1) {
+            this.selected = this.matches[0]
+          } else {
+            this.selected = this.matches[index - 1]
+          }
+          return
         }
-        if (this.selected.value) {
-          this.select(this.selected)
+
+        if ('Enter' === key) { // enter
+          
+          if (this.matches.length === 1) {
+            this.select(this.matches[0])
+            e.preventDefault();
+            return
+          }
+          if (this.selected.value) {
+            this.select(this.selected)
+            e.preventDefault();
+            return
+          }
+          this.close()
+          return
         }
-        return
-      }
 
-      if (!this.isValidTagChar(e)) {
-        this.close()
-      }
+        if (!this.isValidTagChar(e)) {
+          this.close()
+        }
 
-      this.text += e.key
+        this.text += e.key
+      }
+      
     },
     isValidTagChar (e) {
       var char = String.fromCharCode(e.keyCode);

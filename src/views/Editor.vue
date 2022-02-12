@@ -156,7 +156,7 @@ export default {
   props:['value'],
   data: function () {
       return {
-        version: '1.0.14',
+        version: '1.0.15',
         settings: {
           theme: 'default',
           fontSize: 's',
