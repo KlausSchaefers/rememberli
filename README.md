@@ -33,7 +33,7 @@ Linux - Snapp [Download](https://github.com/KlausSchaefers/rememberli/releases/d
 
 Linux - AppImage [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.13/RememberLi-1.0.13.AppImage)
 
-Linux - Deb [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.14/RememberLi_1.0.14_amd64.deb)
+Linux - Deb [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.15/RememberLi_1.0.15_amd64.deb)
 
 ## Mac Install 
 
