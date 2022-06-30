@@ -5,7 +5,7 @@
         
         <div :class="['rmli-sidebar-folder-list rmli-sidebar-list', {'rmli-sidebar-folder-list-dnd': isDndFolder} ]">
 
-          <div class="rmli-sidebar-section-header">
+          <div class="rmli-sidebar-section-header rmli-sidebar-section-header-top">
                <span>{{$t('sidebar.folders')}}</span>
                 <i class="ri-add-line rmli-folder-add rmli-tooltip" @click="showNewFolder" >
                     <span class="rmli-tooltip-message"> {{$t('sidebar.new')}}</span>

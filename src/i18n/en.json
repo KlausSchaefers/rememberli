@@ -87,7 +87,7 @@
     },
     "list": {
         "pinned": "Pinned",
-        "pinnedAndDue": "Pinned & Due",
+        "pinnedAndDue": "Due",
         "rest": "All notes"
     },
     "month": {

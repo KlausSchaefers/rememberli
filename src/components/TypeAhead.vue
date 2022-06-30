@@ -13,6 +13,7 @@
         {{ o.label }}
       </span>
   </div>
+  <div class="rmli-type-ahead-backdrop" v-if="isVisible"/>
 </template>
 
 <style lang="scss">
@@ -21,8 +22,6 @@
 <script>
 import Logger from '../util/Logger'
 import * as Util from '../util/Util'
-
-//const breakChars = {' ':true, '.': true, ',': true, ':': true, '!': true, "?": true, '/': true, 'Escape': true, 'ArrowLeft': true, 'ArrowRight': true}
 const validTagRegex = /[a-zA-Z0-9\-_&]/
 
 export default {

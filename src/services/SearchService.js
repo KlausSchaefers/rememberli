@@ -161,9 +161,21 @@ export default class SearchService {
     indexPersons (text) {
         let persons = text.match(/(@[a-zA-Z0-9\-_]+)/g)
         if (persons) {
-            persons.forEach(p => this.persons.add(p.toLocaleLowerCase()))
+            persons.forEach(p => {
+                let person = p.toLocaleLowerCase()
+                person = this.capitalizePerson(person)
+                this.persons.add(person)
+            })
         }
     }
+    
+    capitalizePerson(string) {
+        if (string.length > 2) {
+            return string.charAt(0) +  string.charAt(1).toUpperCase() + string.slice(2);
+        }
+        return string
+    }
+      
 
     updateTagsAndPersons (list) {
         Logger.log(1, 'SearchService.getTagsAndPersons() > enter')

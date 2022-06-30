@@ -393,11 +393,9 @@ export default {
         this.insertAtCursor("\t")
         return
       }
-      // FIXME: add for enter insertDimatCursoer(br) to avoid ugly line fuckups?
       if (this.$refs.typehead) {
         this.$refs.typehead.onKeyDown(e)
       }
-      
     },
     insertAtCursor(text) {
         if (this.$refs.input) {

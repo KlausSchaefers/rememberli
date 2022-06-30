@@ -6,7 +6,7 @@ $spacing-action: 12px;
 .rmli-sidebar {
     border-right: rgba($color: #000000, $alpha: 0.1);
     background: $background-secondary;
-    width: 200px;
+
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -16,7 +16,8 @@ $spacing-action: 12px;
     height: 100vh;
     overflow: scroll;
 
-    flex-basis: 200px;
+    width: 280px;
+    flex-basis: 280px;
     flex-grow: 0;
     flex-shrink: 0;
 
@@ -39,6 +40,11 @@ $spacing-action: 12px;
         align-items: center;
         padding: 0px;
         padding-left: $spacing-action;
+       
+
+        &.rmli-sidebar-section-header-top {
+            margin-top: $spacing-s;
+        }
     }
 
     .rmli-sidebar-folder-list {
