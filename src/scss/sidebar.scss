@@ -2,6 +2,7 @@
 
 $color-action-hover: $color1;
 $spacing-action: 12px;
+$spacing-action-x2: 24px;
 
 .rmli-sidebar {
     border-right: rgba($color: #000000, $alpha: 0.1);
@@ -110,7 +111,7 @@ $spacing-action: 12px;
         align-items: center;
         gap: $spacing-s;
         cursor: pointer;
-        width: 160px;
+        width: calc(100% - $spacing-action-x2);
         padding: $spacing-xs $spacing-action;
         border-radius: $border-radius-xl;
         transition: all 0.25s;
