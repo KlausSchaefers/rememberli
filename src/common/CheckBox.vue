@@ -10,7 +10,7 @@
 
 </template>
 <style lang="scss">
-    @import "../scss/check.scss";
+    @use "../scss/check.scss";
 </style>
 
 <script>

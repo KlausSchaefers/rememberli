@@ -17,7 +17,7 @@
 </template>
 
 <style lang="scss">
-  @import '../scss/type-ahead.scss';
+  @use '../scss/type-ahead.scss';
 </style>
 <script>
 import Logger from '../util/Logger'

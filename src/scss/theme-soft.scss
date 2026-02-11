@@ -1,4 +1,4 @@
-@import './ds.scss';
+@use './ds.scss' as *;
 
 $color-action-hover: $color1;
 $color-sidebar: #435b72;

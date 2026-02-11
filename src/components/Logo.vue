@@ -7,7 +7,7 @@
 </template>
 
 <style lang="scss">
-  @import '../scss/logo.scss';
+  @use '../scss/logo.scss';
 </style>
 <script>
 

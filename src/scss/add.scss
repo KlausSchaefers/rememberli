@@ -1,4 +1,4 @@
-@import './ds.scss';
+@use './ds.scss' as *;
 
 .rmli-add.rmli-note{
     border-top: 1px solid rgba(0,0,0, 0.00);

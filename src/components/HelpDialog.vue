@@ -221,14 +221,14 @@
 </template>
 
 <style lang="scss">
-  @import '../scss/tab.scss';
-  @import '../scss/help.scss';
+  @use '../scss/tab.scss';
+  @use '../scss/help.scss';
 </style>
 <script>
 
 import RDialog from '../common/Dialog.vue'
 import Logger from '../util/Logger'
-import Logo from '../components/Logo'
+import Logo from '../components/Logo.vue'
 
 export default {
   name: 'HelpDialog',

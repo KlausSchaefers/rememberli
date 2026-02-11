@@ -9,7 +9,7 @@
 </template>
 
 <style lang="scss">
-  @import '../scss/alarm.scss';
+  @use '../scss/alarm.scss';
 </style>
 <script>
 

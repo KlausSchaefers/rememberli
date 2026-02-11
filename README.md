@@ -24,73 +24,84 @@ RememberLi supports the following markups that make it easy for you to organize 
 4. [X]: Create on closed markup checkbox 
 5. ->: Create an arrow
 
-## Download
-Windows [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.18/RememberLi-Setup-1.0.18.exe)
+## Prerequisites
 
-Mac [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.18/RememberLi-1.0.18.dmg)
+Before getting started, make sure you have the following installed:
 
-Linux - Snapp [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.13/RememberLi_1.0.13_amd64.snap)
+- [Node.js](https://nodejs.org/) (v16 or later)
+- [Rust](https://rustup.rs/)
+- Platform-specific dependencies for Tauri (see [Tauri Prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites))
 
-Linux - AppImage [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.13/RememberLi-1.0.13.AppImage)
+## Development
 
-Linux - Deb [Download](https://github.com/KlausSchaefers/rememberli/releases/download/v1.0.15/RememberLi_1.0.15_amd64.deb)
+Install dependencies:
 
-## Mac Install 
-
-On MacOs you might get a warning that the author is unkown and you cannot start the application. This happens becasue I didn't sign the app (cost me 99$)
-
-![Mac os error](https://github.com/KlausSchaefers/rememberli/blob/main/src/assets/MacError1.png)
-
-To still open the app, perform the following steps:
-
-- Open "System Preferences" and go to "Security & Privacy"
-
-![Mac os error](https://github.com/KlausSchaefers/rememberli/blob/main/src/assets/MacError2.png)
-
-- In the "Allow apps downloaded from..." enable Rememberli by clicking "Open Anyway"
-
-![Mac os error](https://github.com/KlausSchaefers/rememberli/blob/main/src/assets/MacError3.png)
-
-- In following dialog click on "Open"
-
-![Mac os error](https://github.com/KlausSchaefers/rememberli/blob/main/src/assets/MacError4.png)
-
-## Project setup
-```
+```bash
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run electron:serve 
-```
+Start the development server:
 
-### Compiles and minifies for production
-
-Make sure github access token is set
-
-```
-export GH_TOKEN=<your token>
+```bash
+npm run tauri dev
 ```
 
+This will start both the Vite development server for the frontend and launch the Tauri application.
+
+## Building
+
+To create a production build:
+
+```bash
+#mac os
+npm run tauri build
+
+# linux
+docker build -f Dockerfile.linux -t rememberli-linux . && docker run --rm -v \\$(pwd)/linux-build:/output rememberli-linux cp -r /app/src-tauri/target/release/bundle /output
 ```
-npm run electron:build -- --win --linux --mac -p always
 ```
 
-### Run your unit tests
+This will create platform-specific bundles in `src-tauri/target/release/bundle/`.
+
+## Project Structure
+
 ```
-npm run test:unit
+rememberli2/
+├── src/                    # Vue.js frontend source
+│   ├── App.vue            # Main Vue component
+│   ├── main.ts            # Vue app entry point
+│   └── styles.css         # Global styles
+├── src-tauri/             # Tauri backend (Rust)
+│   ├── src/
+│   │   └── main.rs        # Rust main file with Tauri commands
+│   ├── Cargo.toml         # Rust dependencies
+│   └── tauri.conf.json    # Tauri configuration
+├── public/                # Static assets
+├── index.html             # HTML template
+├── vite.config.ts         # Vite configuration
+└── package.json           # Node.js dependencies and scripts
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Available Scripts
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- `npm run dev` - Start Vite development server only
+- `npm run build` - Build frontend for production
+- `npm run preview` - Preview production build locally
+- `npm run tauri dev` - Start Tauri development mode
+- `npm run tauri build` - Build Tauri application for production
 
+## Features
 
+- **Vue 3** with Composition API and `<script setup>` syntax
+- **TypeScript** for type safety
+- **Tauri** for cross-platform desktop functionality
+- **Vite** for fast development and building
+- **Hot Module Replacement** during development
+- Example Rust command integration between frontend and backend
 
-## Mention
-The logo background is based on the work https://pxhere.com/en/photo/1624621
+## Learn More
+
+- [Tauri Documentation](https://tauri.app/)
+- [Vue.js Documentation](https://vuejs.org/)
+- [Vite Documentation](https://vitejs.dev/)
+

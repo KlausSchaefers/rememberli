@@ -1,5 +1,5 @@
 <template>
-  <div class="rmli-drag-bar" style=""/>
+  <div class="rmli-drag-bar" data-tauri-drag-region style=""/>
 
     <router-view/>
 
@@ -7,8 +7,8 @@
 
 
 <style lang="scss">
-  @import './scss/app.scss';
-  @import './scss/layout.scss';
+  @use './scss/app.scss';
+  @use './scss/layout.scss';
 </style>
 
 <script>

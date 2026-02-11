@@ -48,8 +48,8 @@
 </template>
 
 <style lang="scss">
-  @import '../scss/tab.scss';
-  @import '../scss/settings.scss';
+  @use '../scss/tab.scss';
+  @use '../scss/settings.scss';
 </style>
 <script>
 

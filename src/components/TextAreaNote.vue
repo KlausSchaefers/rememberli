@@ -14,7 +14,7 @@
 </template>
 
 <style lang="scss">
-  @import '../scss/note.scss';
+  @use '../scss/note.scss';
 </style>
 <script>
 

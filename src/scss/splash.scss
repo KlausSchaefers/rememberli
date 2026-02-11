@@ -1,4 +1,4 @@
-@import './ds.scss';
+@use './ds.scss' as *;
 
 .rmli-splash {
     min-height: 100vh;

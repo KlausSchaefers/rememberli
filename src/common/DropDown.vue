@@ -8,8 +8,8 @@
   </div>
 </template>
 <style lang="scss">
-@import "../scss/combo.scss";
-@import "../scss/dropdown.scss";
+@use "../scss/combo.scss";
+@use "../scss/dropdown.scss";
 </style>
 <script>
 import * as Util from "../util/Util"

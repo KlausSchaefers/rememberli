@@ -11,7 +11,7 @@
   </div>
 </template>
 <style lang="scss">
-    @import "../scss/radio.scss";
+    @use "../scss/radio.scss";
 </style>
 
 <script>

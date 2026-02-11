@@ -1,4 +1,4 @@
-@import './ds.scss';
+@use './ds.scss' as *;
 
 $color-action-hover: $color1;
 $spacing-action: 12px;
@@ -10,12 +10,11 @@ $spacing-action-x2: 24px;
 
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     transition: all 0.2s;
     display: flex;
     flex-direction: column;
     height: 100vh;
-    overflow: scroll;
+    overflow: auto;
 
     width: 280px;
     flex-basis: 280px;

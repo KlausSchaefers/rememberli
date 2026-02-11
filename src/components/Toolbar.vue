@@ -26,7 +26,7 @@
 </template>
 
 <style lang="scss">
-  @import '../scss/toolbar.scss';
+  @use '../scss/toolbar.scss';
 </style>
 <script>
 import Combo from '../common/Combo.vue'

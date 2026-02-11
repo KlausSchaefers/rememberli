@@ -23,7 +23,7 @@
 </template>
 
 <style lang="scss">
-  @import '../scss/sidebar.scss';
+  @use '../scss/sidebar.scss';
 </style>
 <script>
 import Logger from '../util/Logger'

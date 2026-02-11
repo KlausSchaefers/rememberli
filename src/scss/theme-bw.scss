@@ -1,4 +1,4 @@
-@import './ds.scss';
+@use './ds.scss' as *;
 
 $border-color-bw: rgba($color: #000000, $alpha: 0.2);
 $color1-bw: #000;

@@ -125,26 +125,26 @@
 
 <style lang="scss">
 
-  @import '../scss/editor.scss';
-  @import '../scss/highlight.scss';
-  @import '../scss/animation.scss';
-  @import '../scss/theme-soft.scss';
-  @import '../scss/theme-bw.scss';
-  @import '../scss/theme-dark.scss';
+  @use '../scss/editor.scss';
+  @use '../scss/highlight.scss';
+  @use '../scss/animation.scss';
+  @use '../scss/theme-soft.scss';
+  @use '../scss/theme-bw.scss';
+  @use '../scss/theme-dark.scss';
 </style>
 <script>
 
-import APIService from '../services/APIService'
+import APIServiceTauri from '../services/APIServiceTauri'
 import AlarmDialog from '../components/AlarmDialog.vue'
 import CreateDialog from '../components/CreateDialog.vue'
 import SettingsDialog from '../components/SettingsDialog.vue'
 import FolderDialog from '../components/FolderDialog.vue'
 import Splash from '../desktop/Splash.vue'
-import Toolbar from '../components/Toolbar'
-import Note from '../components/Note'
-import Add from '../components/Add'
-import HelpDialog from '../components/HelpDialog'
-import SideBar from '../components/SideBar'
+import Toolbar from '../components/Toolbar.vue'
+import Note from '../components/Note.vue'
+import Add from '../components/Add.vue'
+import HelpDialog from '../components/HelpDialog.vue'
+import SideBar from '../components/SideBar.vue'
 import Logger from '../util/Logger'
 import SearchService from '../services/SearchService'
 import HistoryService from '../services/HistoryService'
@@ -406,12 +406,12 @@ export default {
       this.api.select()
     },
     onSelectReply (file) {
-      Logger.log(2, 'Editor.onSelectReply()', file)
+      Logger.log(-2, 'Editor.onSelectReply()', file)
       this.setFile(file)
       this.showStatusMessage('status.welcome')
     },
     setFile (file) {
-      Logger.log(2, 'Editor.setFile()', file)
+      Logger.log(-2, 'Editor.setFile()', file)
       this.file = file
       this.isDirty = false
       this.query = ''
@@ -427,7 +427,7 @@ export default {
     loadLastFile () {
       let url = localStorage.getItem('rmli-last-url')
       if (url) {
-        Logger.log(-2, 'SideBarActions.loadLastFile()', url)
+        Logger.log(-2, 'Editor.loadLastFile()', url)
         this.api.load(url)
       }
     },
@@ -584,10 +584,10 @@ export default {
   mounted () {
     this.initSettings()
     this.initRefreshTimer()
-    this.api = new APIService()
+    this.api = new APIServiceTauri()
     this.api.onSave(this.onSaveReply)
     this.api.onSelect(this.onSelectReply)
-    this.api.onAppLoaded()
+    //this.api.onAppLoaded()
     this.searchService = new SearchService()
     this.historyService = new HistoryService()
     this.keyUpHandler = (e) => this.onKeyUp(e)

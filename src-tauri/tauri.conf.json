@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schema.tauri.app/config/2.0.0",
+  "productName": "Rememberli",
+  "version": "2.0.0",
+  "identifier": "com.rememberli.app",
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:1420",
+    "frontendDist": "../dist"
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["app", "dmg", "deb", "appimage"],
+    "icon": [
+      "icons/icon.png"
+    ]
+  },
+  "app": {
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "Rememberli",
+        "width": 800,
+        "height": 600,
+        "decorations": true,
+        "transparent": true,
+        "titleBarStyle": "Overlay"
+      }
+    ],
+    "security": {
+      "csp": null,
+      "capabilities": [
+        {
+          "identifier": "main-capability",
+          "description": "Main app capabilities",
+          "windows": ["main"],
+          "permissions": [
+            "fs:default",
+            "fs:allow-read-text-file",
+            "fs:allow-write-text-file",
+            "fs:allow-read-dir",
+            "fs:allow-exists",
+            "dialog:default",
+            "dialog:allow-open",
+            "dialog:allow-save",
+            "shell:default",
+            "shell:allow-open",
+            "core:window:allow-start-dragging"
+          ]
+        }
+      ]
+    }
+  }
+}

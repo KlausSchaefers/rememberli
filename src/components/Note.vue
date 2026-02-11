@@ -84,14 +84,15 @@
 </template>
 
 <style lang="scss">
-  @import '../scss/note.scss';
-  @import '../scss/tooltip.scss';
+  @use '../scss/note.scss';
+  @use '../scss/tooltip.scss';
 </style>
 <script>
 
 import Logger from '../util/Logger'
 import dayjs from 'dayjs'
-import * as relativeTime from 'dayjs/plugin/relativeTime'
+import relativeTime from 'dayjs/plugin/relativeTime'
+// console.debug('dayjs', dayjs, relativeTime)
 dayjs.extend(relativeTime)
 import Highlighter from '../util/Highlighter'
 import DropDown from '../common/DropDown.vue'

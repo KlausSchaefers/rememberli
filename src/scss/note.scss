@@ -1,5 +1,5 @@
-@import './ds.scss';
-@import './note-timeline.scss';
+@use './ds.scss' as *;
+@use './note-timeline.scss';
 
 
 .rmli-note {

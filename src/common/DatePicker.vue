@@ -38,7 +38,7 @@
   </div>
 </template>
 <style lang="scss">
-    @import '../scss/date-picker.scss';
+    @use '../scss/date-picker.scss';
 </style>
 <script>
 
