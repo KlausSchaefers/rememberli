@@ -4,6 +4,10 @@
         "save": "Save",
         "close": "Close"
     },
+    "code": {
+        "run": "Run code",
+        "placeholder": "Type shell command here"
+    },
     "add": {
         "start": "Add new note",
         "end": "Append note to end",

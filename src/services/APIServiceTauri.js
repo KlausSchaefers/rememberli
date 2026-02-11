@@ -19,6 +19,15 @@ export default class APIServiceTauri {
     Logger.log(-2, "APIService.getElectronLog()");
   }
 
+  async run(code) {
+    // Open a new terminal
+    //await invoke('open_shell');
+
+    // Run a shell command
+    const output = await invoke('run_shell_command', { command: code });
+    console.log("Command output:", output);
+  }
+
   onLogReply(data) {
     Logger.log(-2, "APIService.onLogReply()", data);
     console.table(data.log);

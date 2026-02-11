@@ -250,8 +250,10 @@ export default {
       })
       return {pinned, rest}
     },
-    runCode(code) {
+    async runCode(code) {
       Logger.log(-1, 'Editor.runCode()', code)
+      this.showStatusMessage('code.run', 'info')
+      this.api.run(code)
     },
     setSearch (value) {
       Logger.log(1, 'Editor.setSearch()')
