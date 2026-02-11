@@ -50,7 +50,8 @@
         "addFolder": "Move to folder",
         "changereminder": "Change reminder",
         "metaKeyToSearch": "Press CTRL or CMD to search",
-        "metaKeyTask": "Press CTRL or CMD to toggle task"
+        "metaKeyTask": "Press CTRL or CMD to toggle task",
+        "copySuccess": "Copied!"
     },
     "toolbar": {
         "shrink": "Shrink results",

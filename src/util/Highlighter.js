@@ -13,8 +13,10 @@ class Highlighter {
         let result = this.replaceTasksDiv(html)      
         result = result.replace(/(#[a-zA-Z0-9\-_&]+)/g,'<span data-rmli-type="tag" class="rmi-highlight-tag">$1</span>')
         result = result.replace(/(@[a-zA-Z0-9\-_&]+)/g,'<span data-rmli-type="person" class="rmi-highlight-person">$1</span>')    
+        result = result.replaceAll(/```[\t ]*\n([\s\S]*?)\n```/g,`<div data-rmli-type="code" class="rmi-highlight-code"><code>$1</code><div class="rmi-highlight-code-action"><i data-rmli-type="copy" class="ri-file-copy-line"></i> <i data-rmli-type="play" class="ri-play-line"></i></div></div>`)         
         result = this.replaceAll(result, '->','<i class="ri-arrow-right-line rmi-highlight-icon"></i>')
        
+        
         /**
          * Replace query if needed
          */

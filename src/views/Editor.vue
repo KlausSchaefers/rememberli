@@ -68,6 +68,7 @@
                           @pinned="onPinned(element, $event)"
                           @change="onElementChange(element, $event)" 
                           @search="setSearch"
+                          @run="runCode"
                           @join="onJoinElement(element)"
                           :placeholder="$t('note.remove')"
                           ref="elements"/>
@@ -101,6 +102,7 @@
                         @pinned="onPinned(element, $event)"
                         @change="onElementChange(element, $event)" 
                         @join="onJoinElement(element)"
+                        @run="runCode"
                         :placeholder="$t('note.remove')"
                         ref="elements"/>
                     </div>
@@ -247,6 +249,9 @@ export default {
         }
       })
       return {pinned, rest}
+    },
+    runCode(code) {
+      Logger.log(-1, 'Editor.runCode()', code)
     },
     setSearch (value) {
       Logger.log(1, 'Editor.setSearch()')

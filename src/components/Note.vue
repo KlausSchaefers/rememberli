@@ -103,7 +103,7 @@ import * as RememberLi from '../services/RememberLi'
 
 export default {
   name: 'Note',
-  emits: ['change', 'focus', 'click', 'pinned', 'alarm', 'delete', 'folder', 'search', 'hint', 'create'],
+  emits: ['change', 'focus', 'click', 'pinned', 'alarm', 'delete', 'folder', 'search', 'hint', 'create', 'run'],
   props: {
     isTodoQuery: {
       type: Boolean,
@@ -282,6 +282,12 @@ export default {
           case 'taskDone':
             this.setTask(e, false)
             break
+          case 'copy':
+            this.copyCode(e)
+            break
+          case 'play':
+            this.runCode(e)
+            break
           default:
             break
         }
@@ -289,6 +295,30 @@ export default {
     },
     hasMeta (e) {
       return e.metaKey || !this.settings.needMetaKeyForNoteAction
+    },
+    copyCode(e) {
+      Logger.log(-1, 'Note.copyCode', this.getCode(e))
+      Util.stopEvent(e)
+      const code = this.getCode(e)
+      navigator.clipboard.writeText(code).then(() => {
+        this.$emit('hint', 'note.copySuccess')
+      }).catch(err => {
+        Logger.error("Note.copyCode() > error", err)
+      });
+    },
+    runCode(e) {
+      Logger.log(-1, 'Note.runCode', this.getCode(e))
+      Util.stopEvent(e)
+      const code = this.getCode(e)
+      this.$emit('run', code)
+    },
+    getCode(e) {
+      const target = e.target;
+      const codeContainer = target.closest('[data-rmli-type="code"]');
+      if (!codeContainer) return;
+      const codeEl = codeContainer.querySelector("code");
+      if (!codeEl) return;
+      return codeEl.innerText
     },
     setTask (e, done) {
       Logger.log(3, 'Note.setTask() > enter', done)
@@ -383,12 +413,22 @@ export default {
     onMoveFolder () {
       this.$emit('folder', '')
     },
-    onKeyUp () {
+    onKeyUp (e) {
       let value = this.getText()
       this.hasPlaceHolder = value === ''
+      if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+        Logger.log(-2, 'Note.onKeyDown() > undo')
+        Util.stopEvent(e)
+        return
+      }
     },
     onKeyDown (e) {
       let key = e.key
+      if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+        Logger.log(-2, 'Note.onKeyDown() > undo')
+        Util.stopEvent(e)
+        return
+      }
       if (key == 'Tab') {
         e.preventDefault();
         this.insertAtCursor("\t")

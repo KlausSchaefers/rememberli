@@ -6,6 +6,10 @@ $color-sidebar: #435b72;
 
 .rmli-theme-soft {
 
+    .rmi-highlight-code {
+        background: rgba($background-code, 0.4);
+    }
+
     .rmli-pinned {
         border-color: rgba($color-pinned-border, 0.4);
     }

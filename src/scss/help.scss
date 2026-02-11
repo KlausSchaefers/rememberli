@@ -19,14 +19,16 @@
     }
 
    
+    .rmli-paragraph{
+        line-height: 2;
+    }
 
     .rmli-help-about {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: $spacing-l;
         position: relative;
-
+ 
         .rmli-logo{
             margin-top: $spacing-xxl;
         }
@@ -39,9 +41,6 @@
         }
     }
 
-    b {
-
-    }
     
     h3 {
         font-size: $font-size-s ;
