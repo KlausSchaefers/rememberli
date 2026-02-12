@@ -1,25 +1,26 @@
-@use './ds.scss' as *;
+@use "./ds.scss" as *;
 
-body, html {
-    margin: 0px;
-    font-size: $font-size-default;
+body,
+html {
+  margin: 0px;
+  font-size: $font-size-default;
 }
 
 #app {
-    font-family: $font-family;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: $color1;
-    font-size: $font-size-default;
-    line-height: $line-height;
+  font-family: $font-family;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: $color1;
+  font-size: $font-size-default;
+  line-height: $line-height;
 }
 
 .rmli-button-bar {
-    display: flex;
-    gap: $spacing-m;
-    padding-top: $spacing-l;
+  display: flex;
+  gap: $spacing-m;
+  padding-top: $spacing-l;
 }
- 
+
 .rmli-button {
   display: flex;
   align-items: center;
@@ -34,24 +35,31 @@ body, html {
   font-size: $font-size-s;
   transition: 0.2s all;
 
-  &.rmli-button-danger{
+  &:disabled,&:disabled:hover {
+    cursor: not-allowed;
+    border: 1px solid $border-color-transparent;
+    background: $background-secondary;
+    color: $color1;
+  }
+
+  &.rmli-button-danger {
     background: $color4;
     border: 1px solid $color4;
 
     &:hover {
-        background: $color4-hover;
-        border: 1px solid $color4-hover;
+      background: $color4-hover;
+      border: 1px solid $color4-hover;
     }
   }
 
   &:hover {
-      background: $button-background-hover;
-      border: 1px solid $button-background-hover;
+    background: $button-background-hover;
+    border: 1px solid $button-background-hover;
   }
 
   i {
-      font-size: $font-size-default;
-      cursor: pointer;
+    font-size: $font-size-default;
+    cursor: pointer;
   }
 
   &.rmli-button-secondary {
@@ -59,56 +67,54 @@ body, html {
     background: $background-secondary;
     color: $color1;
 
-
     &:hover {
-        background: $background-secondary-hover;
-        border: 1px solid $border-color-transparent;
+      background: $background-secondary-hover;
+      border: 1px solid $border-color-transparent;
     }
   }
 }
 
 .rmli-drag-bar {
-    height: 32px;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    z-index: 10000;
-    -webkit-app-region: drag;
-    app-region: drag;
+  height: 32px;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  z-index: 10000;
+  -webkit-app-region: drag;
+  app-region: drag;
 }
 
 .rmli-drag-bar-below {
-    padding-top: 40px;
+  padding-top: 40px;
 }
 
-
 .rmli-action-link {
-    cursor: pointer;
-    color: $color1;
+  cursor: pointer;
+  color: $color1;
 
-    &:hover {
-        color: $color1-hover;
-    }
+  &:hover {
+    color: $color1-hover;
+  }
 }
 
 .rmli-secondary-label {
-    color: rgba($color1, 0.5);
+  color: rgba($color1, 0.5);
 }
 
 a {
-    text-decoration: none;
-    &.rmli-link{
-        color: $color1-hover;
-    }
+  text-decoration: none;
+  &.rmli-link {
+    color: $color1-hover;
+  }
 }
 
 .rmli-input-inline {
-    padding:$spacing-xs  0px;
-    font-size: $font-size-default;
-    color:$color1;
-    border: none;
-    &:focus{
-        outline: none;
-    }
+  padding: $spacing-xs 0px;
+  font-size: $font-size-default;
+  color: $color1;
+  border: none;
+  &:focus {
+    outline: none;
+  }
 }

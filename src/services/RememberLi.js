@@ -1,11 +1,16 @@
 export const TERMS = {
     TODO: ':todo',
     DUE: ':due',
-    FOCUS: ':focus'
+    FOCUS: ':focus',
+    CODE: ':code'
 }
 
 export function isDueTerm (query) {
     return query === TERMS.DUE
+}
+
+export function isCodeTerm (query) {
+    return query === TERMS.CODE
 }
 
 export function isDueQuery (str) {
@@ -24,12 +29,20 @@ export function isTodoQuery (str) {
     return str.indexOf(TERMS.TODO) >=0
 }
 
+export function isCodeQuery (str) {
+    return str.indexOf(TERMS.CODE) >=0
+}
+
 export function isTodoTerm (query) {
     return query === TERMS.TODO
 }
 
 export function matchesToDo (value) {
     return value.indexOf('[]') >= 0 || value.indexOf('[ ]') >= 0 || value.indexOf('[x]') >= 0
+}
+
+export function matchesCode (value) {
+    return value.indexOf('```') >= 0 || value.indexOf('`') >= 0
 }
 
 export function isLogicOr (query) {
@@ -56,6 +69,29 @@ export function isDue(e, now) {
     return e.due && e.due < now
 }
 
+const newValue=`
+This is an example. Click on it to see the markup. 
+
+You can use the following markup codes:
+- @person To tag a person.
+- #tag To tag a topic.
+- -> To insert an arrow icon.
+            
+You can also create tasks:
+- [] This is an open task.
+- [x] This is a done task.
+
+You can also use code markup:
+\`\`\`
+This is a code block
+\`\`\`   
+
+Add variable like {some_variable} to insert dynamic content in the future.
+\`\`\`
+This is a code block with variable {some_variable}
+\`\`\` 
+`.trim()
+
 export function createFile () {
     let now = getTimestamp()
     return {
@@ -73,8 +109,7 @@ export function createFile () {
             elements:[],
             pinned:false,
             type: 'Note',
-            value: `This is an example. Click on it to see the markup. You can use the following markup codes:\n\n - @person and #tag markup to highlight elements and get suggestion in the search.\n - [], [x] and -> to create symbols.
-                    `,
+            value: newValue,
             folder: ''
           }]
         }
@@ -92,6 +127,9 @@ export function parseQuery (str) {
     let operator = 'and'
 
     parts.forEach(part => {
+        if (isCodeQuery(part)) {
+            operator = 'and'
+        }
         if (isLogicAnd(part)) {
             operator = 'and'
         } else if (isLogicOr(part)) {

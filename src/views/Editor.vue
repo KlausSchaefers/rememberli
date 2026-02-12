@@ -43,9 +43,6 @@
 
         <div :class="'rmli-element-list ' + (hasListAnimation ? 'rmli-is-animated ': '')">
           <div class="rmli-container" ref="elementCntr">
-
-         
-         
                 
                   <h1 class="rmli-pinned" v-if="filteredElements.pinned.length > 0">
                     {{settings.hasDueInTop ? $t('list.pinnedAndDue'): $t('list.pinned')}}
@@ -86,13 +83,14 @@
                   </div>
               
                   <transition-group name="list" tag="div">
-                    <div class="rmli-element" v-for="(element) in filteredElements.rest" :key="element.id" :data-element-id="element.id">
+                    <div class="rmli-element" v-for="(element) in getCurrentPage(filteredElements.rest)" :key="element.id" :data-element-id="element.id">
                       <component 
                         :is="element.type"
                         :settings="settings"
                         :element="element" 
                         :query="query"
                         :isTodoQuery="isTodoQuery"
+                        :isCodeQuery="isCodeQuery"
                         :now="now"
                         @hint="showStatusMessage"
                         @search="setSearch"
@@ -103,11 +101,17 @@
                         @change="onElementChange(element, $event)" 
                         @join="onJoinElement(element)"
                         @run="runCode"
+                        @copy="copyCode"
                         :placeholder="$t('note.remove')"
                         ref="elements"/>
                     </div>
                   </transition-group>
                 
+                  <div v-if="hasPagination" class="rmli-editor-pagination">        
+                     
+                    <button class="rmli-button" @click="onBack" :disabled="currentPage === 0">{{$t('common.back')}}</button>
+                    <button class="rmli-button" @click="onNext" :disabled="currentPage + settings.pagingSize >= filteredElements.rest.length">{{$t('common.next')}}</button>
+                  </div>
 
             
           </div>
@@ -119,9 +123,10 @@
     <SettingsDialog ref="settingsDialog"/>
     <HelpDialog ref="helpDialog" @openWebLink="onOpenWebLink" :version="version"/>
     <FolderDialog ref="folderDialog" :file="file"/>
+    <CodeVariableDialog ref="codeVariableDialog" />
   </div>
   <div :class="'rmli-status rmli-status-' + (status.visible ? 'visibale' : 'hidden')"> 
-    {{status.message}}
+    {{status.message}} <b>{{status.info}}</b>
   </div>
 </template>
 
@@ -141,6 +146,7 @@ import AlarmDialog from '../components/AlarmDialog.vue'
 import CreateDialog from '../components/CreateDialog.vue'
 import SettingsDialog from '../components/SettingsDialog.vue'
 import FolderDialog from '../components/FolderDialog.vue'
+import CodeVariableDialog from '../components/CodeVariableDialog.vue'
 import Splash from '../desktop/Splash.vue'
 import Toolbar from '../components/Toolbar.vue'
 import Note from '../components/Note.vue'
@@ -158,23 +164,26 @@ export default {
   props:['value'],
   data: function () {
       return {
-        version: '1.0.17',
+        version: '2.0.0',
         settings: {
           theme: 'default',
-          fontSize: 's',
+          fontSize: 'm',
           hasDueFolder: true,
           hasTodoFolder: true,
+          hasCodeFolder: true,
           hasTimeline: false,
           hasBorderTop: true,
           hasDateLeft: false,
           hasDueInTop: false,
           hasBeta: false,
+          pagingSize: 100,
           needMetaKeyForNoteAction: false,
           hideStatusForToDoView: false,
           hasShrinkedSearch: false
         },
         status: {
           message: '',
+          info: '',
           visible: false
         },
         hasListAnimation: false,
@@ -188,6 +197,7 @@ export default {
         lastQuery: new Date().getTime(),
         tagsAndPersons: [':due', ':todo'],
         now: 0,
+        currentPage: 0,
         metaKeyPressed: false
     }
   },
@@ -201,7 +211,8 @@ export default {
     Splash,
     HelpDialog,
     FolderDialog,
-    CreateDialog
+    CreateDialog,
+    CodeVariableDialog
   },
   provide() {
     return {
@@ -209,12 +220,19 @@ export default {
     }
   },
   computed: {
+    hasPagination () {
+      return this.settings.pagingSize > 0 && this.filteredElements.rest.length > this.settings.pagingSize
+    },
     hasHighLightPointer () {
       return !this.settings.needMetaKeyForNoteAction || this.metaKeyPressed
     },
     isTodoQuery () {
       Logger.log(2, 'Editor.isTodoQuery()', this.query, RememberLi.isTodoQuery(this.query))
       return RememberLi.isTodoQuery(this.query)
+    },
+    isCodeQuery () {
+      Logger.log(2, 'Editor.isCodeQuery()', this.query, RememberLi.isCodeQuery(this.query))
+      return RememberLi.isCodeQuery(this.query)
     },
     folderElements () {
       if (this.selectedFolder) {
@@ -233,6 +251,25 @@ export default {
     }
   },
   methods: {
+    onBack () {
+      if (this.currentPage > 0) {
+        this.currentPage = this.currentPage - this.settings.pagingSize
+        //this.scrollToElement(this.filteredElements.rest[this.currentPage].id, false)
+      }
+    },
+    onNext () {
+      if (this.currentPage + this.settings.pagingSize < this.filteredElements.rest.length) {
+        this.currentPage = this.currentPage + this.settings.pagingSize
+        //this.scrollToElement(this.filteredElements.rest[this.currentPage].id, false)
+      }
+    },
+    getCurrentPage(elements) {
+      Logger.log(-1, 'Editor.getCurrentPage',this.currentPage, elements.length, this.settings.pagingSize)
+      if (this.settings.pagingSize > 0) {
+        return elements.slice(this.currentPage, this.currentPage + this.settings.pagingSize)
+      }
+      return elements
+    },
     getSplittedElements (elements) {
       const pinned = []
       const rest = []
@@ -251,9 +288,36 @@ export default {
       return {pinned, rest}
     },
     async runCode(code) {
+      code = await this.replaceCodeVariables(code)
       Logger.log(-1, 'Editor.runCode()', code)
       this.showStatusMessage('code.run', 'info')
       this.api.run(code)
+    },
+    async copyCode(code) {
+      code = await this.replaceCodeVariables(code)
+      Logger.log(-1, 'Editor.copyCode()', code)
+      navigator.clipboard.writeText(code).then(() => {
+        this.showStatusMessage('code.copy', 'info', code)
+      }).catch(err => {
+        Logger.error("Editor.copyCode() > error", err)
+      });
+    },
+    async replaceCodeVariables (code) {
+      const vars = code.match(/\{[^}]+[^}]+\}/g)
+      if (vars && vars.length > 0) {
+        return new Promise((resolve) => {
+          this.$refs.codeVariableDialog.show(vars, (replacements) => {
+            Logger.log(-1, 'Editor.replaceCodeVariables() > replacements', replacements)
+            let newCode = code
+            for (const key in replacements) {
+              newCode = newCode.replaceAll(key, replacements[key])
+            }
+            resolve(newCode)
+          })
+        })
+     }
+
+      return code
     },
     setSearch (value) {
       Logger.log(1, 'Editor.setSearch()')
@@ -276,21 +340,21 @@ export default {
         return results
     },
     addToEnd (value) {
-      Logger.log(-1, 'Editor.addToEnd()', value)
+      Logger.log(1, 'Editor.addToEnd()', value)
       const note = this.createNote(value)
       this.historyService.add(note, 'end', this.file)
       this.file.content.elements.push(note)
       this.onChange(note, true)
     },
     addAfter (element, value) {
-      Logger.log(-1, 'Editor.addAfter()', element, value)
+      Logger.log(1, 'Editor.addAfter()', element, value)
       let index = this.file.content.elements.findIndex(e => e.id === element.id)
       const note = this.createNote(value)
       this.file.content.elements.splice(index + 1, 0, note); 
       this.onChange(note, true)
     },
     addStart (value) {
-      Logger.log(-1, 'Editor.addStart()', value)
+      Logger.log(1, 'Editor.addStart()', value)
       const note = this.createNote(value)
       this.historyService.add(note, 'start', this.file)
       this.file.content.elements.unshift(note)
@@ -366,14 +430,14 @@ export default {
        * TODO: We could have here more, e.g. splitting
        */
       if (value) {
-        Logger.log(-1, 'Editor.onElementChange() > update element', element.id)
+        Logger.log(1, 'Editor.onElementChange() > update element', element.id)
         if (element.value !== value) {
           this.historyService.change(element, value, this.file)
           element.value = value
           this.onChange(element, true)
         }
       } else {
-        Logger.log(-1, 'Editor.onElementChange() > Delete element', element.id, value)
+        Logger.log(1, 'Editor.onElementChange() > Delete element', element.id, value)
         let index = this.file.content.elements.findIndex(e => e.id === element.id)
         if (index > -1) {
           this.historyService.delete(element, this.file)
@@ -401,7 +465,7 @@ export default {
     onSaveReply(file) {
       Logger.log(2, 'Editor.onSaveReply()', file)
       if (!this.file.url) {
-        Logger.log(-2, 'Editor.onSaveReply() > set url', file.url)
+        Logger.log(2, 'Editor.onSaveReply() > set url', file.url)
         this.file.url = file.url
       }
       this.isDirty = false
@@ -413,12 +477,13 @@ export default {
       this.api.select()
     },
     onSelectReply (file) {
-      Logger.log(-2, 'Editor.onSelectReply()', file)
+      Logger.log(2, 'Editor.onSelectReply()', file)
       this.setFile(file)
       this.showStatusMessage('status.welcome')
     },
     setFile (file) {
-      Logger.log(-2, 'Editor.setFile()', file)
+      Logger.log(2, 'Editor.setFile()', file)
+      
       this.file = file
       this.isDirty = false
       this.query = ''
@@ -456,10 +521,11 @@ export default {
         folder: this.selectedFolder ? this.selectedFolder.id : ''
       }
     },   
-    showStatusMessage (msgKey, type = 'success') {
+    showStatusMessage (msgKey, type = 'success', info = ''  ) {
       if (this.$t instanceof Function) {
         const msg = this.$t(msgKey)
         this.status.message = msg
+        this.status.info = info
         this.status.visible = true
         this.status.type = type
         setTimeout(() => this.status.visible = false, 1000)
@@ -573,7 +639,7 @@ export default {
         Logger.log(-2, 'Editor.onKeyDown() > new')
         this.$refs.add.focus()
       }
-       if (e.key === 's' && e.ctrlKey && this.$refs.toolbar) {
+      if (e.key === 's' && e.ctrlKey && this.$refs.toolbar) {
         Logger.log(-2, 'Editor.onKeyDown() > shrink')
         this.onShrink()
       }
@@ -603,6 +669,7 @@ export default {
     window.addEventListener('keydown', this.keyDownHandler );
     if (this.value) {
       this.file = this.value
+      
     } else {        
       this.loadLastFile()  
     }

@@ -22,8 +22,8 @@
         "fullscreen": false,
         "resizable": true,
         "title": "Rememberli",
-        "width": 800,
-        "height": 600,
+        "width": 1000,
+        "height": 800,
         "decorations": true,
         "transparent": true,
         "titleBarStyle": "Overlay"

@@ -2,10 +2,15 @@
     "common": {
         "cancel": "Cancel",
         "save": "Save",
-        "close": "Close"
+        "close": "Close",
+        "copy": "Copy",
+        "next": "Next",
+        "back": "Back"
     },
     "code": {
         "run": "Run code",
+        "copy": "Code copied to clipboard",
+        "dialogTitle": "Replace variables",
         "placeholder": "Type shell command here"
     },
     "add": {
@@ -40,7 +45,9 @@
         "beta": "Enable experimental features",
         "needMetaKeyForNoteAction": "Require CMD or CTRL for clicks on tags",
         "hideStatusForToDoView": "Hide date for :todo view",
-        "hasShrinkedSearch": "Shrink search results"
+        "hasShrinkedSearch": "Shrink search results",
+        "hasCodeFolder": "Code folder in sidebar",
+        "pagingSize": "Number of notes per page"
     },
     "note": {
         "remove": "Remove all text to delete note",
@@ -88,7 +95,8 @@
         "delete": "Remove",
         "due": "Due notes",
         "todos": "Only todos",
-        "addFolder": "Add new folder"
+        "addFolder": "Add new folder",
+        "code": "Code snippets"
     },
     "list": {
         "pinned": "Pinned",

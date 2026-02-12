@@ -62,7 +62,8 @@
            
       </div>
       <!-- must be show because otherwise ref might be not there on setValue() -->
-      <div class="rmli-placeholder-container" v-if="!isTodoQuery | hasFocus">
+
+      <div class="rmli-placeholder-container" v-if="(!isTodoQuery  && !isCodeQuery) || hasFocus">
         <span class="rmli-placeholder" v-if="hasPlaceHolder" @click="onPlaceHolderClick"> {{placeholder}} </span> 
         <div 
           :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
@@ -78,6 +79,9 @@
       </div>
       <div v-if="isTodoQuery && !hasFocus" @click="focus">
          <div :class="['rmli-editable']" v-html="todosText" @mousedown="onMouseDown"/>
+      </div>
+      <div v-if="isCodeQuery && !hasFocus" @click="focus">
+         <div :class="['rmli-editable']" v-html="codeText" @mousedown="onMouseDown"/>
       </div>
       <TypeAhead ref="typehead" v-if="hasFocus" @select="onTypeAhead"/>
   </div>
@@ -103,9 +107,13 @@ import * as RememberLi from '../services/RememberLi'
 
 export default {
   name: 'Note',
-  emits: ['change', 'focus', 'click', 'pinned', 'alarm', 'delete', 'folder', 'search', 'hint', 'create', 'run'],
+  emits: ['change', 'focus', 'click', 'pinned', 'alarm', 'delete', 'folder', 'search', 'hint', 'create', 'run', 'copy'],
   props: {
     isTodoQuery: {
+      type: Boolean,
+      default: false
+    },
+    isCodeQuery: {
       type: Boolean,
       default: false
     },
@@ -174,6 +182,15 @@ export default {
           return Highlighter.highlight(this.element.value, this.query)
         }
         return Highlighter.highlight(this.element.value)
+      },
+      codeText () {
+        if (this.isCodeQuery) {
+          let text = this.element.value
+          let snippets = text.match(/```[\t ]*\n([\s\S]*?)\n```/g)
+          snippets = snippets.join('\n')
+          return Highlighter.highlightCode(snippets)
+        }
+        return ''
       },
       todosText () {
         if (this.isTodoQuery) {
@@ -300,11 +317,7 @@ export default {
       Logger.log(-1, 'Note.copyCode', this.getCode(e))
       Util.stopEvent(e)
       const code = this.getCode(e)
-      navigator.clipboard.writeText(code).then(() => {
-        this.$emit('hint', 'note.copySuccess')
-      }).catch(err => {
-        Logger.error("Note.copyCode() > error", err)
-      });
+      this.$emit('copy', code)
     },
     runCode(e) {
       Logger.log(-1, 'Note.runCode', this.getCode(e))

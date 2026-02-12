@@ -63,11 +63,11 @@ export default class APIServiceTauri {
 
       if (filePath) {
         const result = await invoke("save_json_file", { filePath, data: file.content });
-        console.log("File saved successfully:", result);
+        Logger.log(2, "File saved successfully:", result);
         this.onSaveReply({ success: true, filePath });
       }
     } catch (error) {
-      console.error("Error saving file:", error);
+      Logger.error("Error saving file:", error);
     }
   }
 
@@ -95,11 +95,11 @@ export default class APIServiceTauri {
     try {
       if (filePath && typeof filePath === "string") {
         const data = await invoke("load_json_file", { filePath });
-        console.log("File loaded successfully:", data);
+        Logger.log(2, "File loaded successfully:", data);
         this.onSelectReply(data);
       }
     } catch (error) {
-      console.error("Error loading file:", error);
+      Logger.error("Error loading file:", error);
     }
   }
 

@@ -10,14 +10,15 @@
 .rmi-highlight-code {
     background: $background-code;
     color: $color-code;
-    padding: $spacing-xs $spacing-s;
+    padding: $spacing-s $spacing-s;
     border-radius: $border-radius-m;
     font-family: 'Courier New', Courier, monospace;
     position: relative;
+    line-height: 1;
     .rmi-highlight-code-action{
         position: absolute;
         right: $spacing-s;
-        top: $spacing-xs;
+        top: $spacing-s;
         display: flex;
         gap: $spacing-s;
 

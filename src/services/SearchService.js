@@ -16,7 +16,7 @@ export default class SearchService {
     }
 
     find(str) {
-        Logger.log(2, "SearchService.find() > " , str)
+        Logger.log(-2, "SearchService.find() > " , str)
         const result  = {}
   
         if (RememberLi.isValidQuery(str)) {
@@ -36,13 +36,19 @@ export default class SearchService {
                         runFullText = false
                     }
 
+                    if (RememberLi.isCodeTerm(term)) {
+                        if (RememberLi.matchesCode(e.value)) {
+                           this.incScore(scores, e)
+                        }
+                        runFullText = false
+                    }
+
                     if (RememberLi.isTodoTerm(term)) {
                         if (RememberLi.matchesToDo(e.value)) {
                            this.incScore(scores, e)
                         }
                         runFullText = false
                     }
-
 
                     if (this.isMonthTerm(term)) {
                         Logger.log(1, "SearchService.find() > isMonthTerm: " , term, e.month)

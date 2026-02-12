@@ -64,16 +64,15 @@
 
         i {
             position: absolute;
-            right: 10px;
-            
-            top:8px;
-           font-size: 14px;
+            right: 10px;            
+            top:7px;
+            font-size: 16px;
             cursor: pointer;
         }
 
         .rmli-toolbar-shrink {
             right: 32px;
-            top:$spacing-s;
+            top:7px;
             color: rgba($color: $color1, $alpha: 0.4);
 
             &.rmli-toolbar-shrink-active {

@@ -12,6 +12,14 @@
     .rmli-editor-body {
         flex-grow: 1;
     }
+
+    .rmli-editor-pagination{
+        display: flex;
+        gap: $spacing-m;
+        align-items: center;
+        margin-top: $spacing-m;
+        justify-content: center;
+    }
     
     .rmli-element-list {
         display: flex;

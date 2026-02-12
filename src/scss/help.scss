@@ -6,16 +6,25 @@
 
     ul {
         list-style: none;
+        margin: 0px;
+        padding: 0px;
+        padding-left: $spacing-m;
     }
 
     li{
-        padding: $spacing-s;
+        padding: $spacing-xs;
     }
 
-    .rmli-help-example-icon {
-        font-weight: 700;
-        border: 1px solid $border-color-hover;
+    .rmli-help-example-icon {  
         padding: $spacing-xs;
+        background: rgba($color: $color2, $alpha: 1.0);
+        border-radius: 50%;
+        height: $font-size-s;
+        width: $font-size-s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        
     }
 
    

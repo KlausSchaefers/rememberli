@@ -4,7 +4,8 @@
 
             <div class="rmli-tab-bar">
                 <a :class="{ 'rmli-tab-active': tab === 'help' }" @click="tab = 'help'">{{ $t('help.help') }}</a>
-                <a :class="{ 'rmli-tab-active': tab === 'contact' }" @click="tab = 'contact'">{{ $t('help.contact') }}</a>
+                <a :class="{ 'rmli-tab-active': tab === 'contact' }" @click="tab = 'contact'">{{ $t('help.contact')
+                }}</a>
                 <a :class="{ 'rmli-tab-active': tab === 'tos' }" @click="tab = 'tos'">{{ $t('help.tos') }}</a>
                 <a :class="{ 'rmli-tab-active': tab === 'about' }" @click="tab = 'about'">{{ $t('help.about') }}</a>
             </div>
@@ -28,7 +29,7 @@
                     </li>
                     <li>
                         A powerful search engine that allows you to find and filter all your notes.
-                        It support *magic* commands like ":due", ":todo", "#tag" or "@person" search with smart auto
+                        It support *magic* commands like ":due", ":todo", ":code", "#tag" or "@person" search with smart auto
                         complete.
                     </li>
                     <li>
@@ -38,11 +39,7 @@
                     </li>
                 </ol>
 
-                <div class="rmli-paragraph">
-                    In addition, you pin notes to the top to be always in the field of
-                    view when the app is loaded. You can also set reminders.
-                    When a note is due, it will be indicated with a red bar.
-                </div>
+         
 
                 <h3>Notes:</h3>
                 <div class="rmli-paragraph">
@@ -53,15 +50,15 @@
                 <div class="rmli-paragraph">
                     Rememberli supports the following markups that make it easy for you to organize your notes:
 
-                <ul>
-                    <li><b>@name</b>: Create a <span class="rmi-highlight-person">@person</span> markup</li>
-                    <li><b>#tag</b>: Create a and <span class="rmi-highlight-tag">#tag</span> markup</li>
-                    <li><b>[]</b>: Create a open task checkbox <span
-                            class="rmi-highlight-task rmi-highlight-task-open"></span></li>
-                    <li><b>[X]</b>: Create on closed markup checkbox <span
-                            class="rmi-highlight-task rmi-highlight-task-done"></span></li>
-                    <li><b>-></b>: Create an <i class="ri-arrow-right-line rmi-highlight-icon"></i></li>
-                </ul>
+                    <ul>
+                        <li><b>@name</b>: Create a <span class="rmi-highlight-person">@person</span> markup</li>
+                        <li><b>#tag</b>: Create a and <span class="rmi-highlight-tag">#tag</span> markup</li>
+                        <li><b>[]</b>: Create a open task checkbox <span
+                                class="rmi-highlight-task rmi-highlight-task-open"></span></li>
+                        <li><b>[X]</b>: Create on closed markup checkbox <span
+                                class="rmi-highlight-task rmi-highlight-task-done"></span></li>
+                        <li><b>-></b>: Create an <i class="ri-arrow-right-line rmi-highlight-icon"></i></li>
+                    </ul>
 
                 </div>
 
@@ -70,6 +67,35 @@
                     To delete a note, simply remove all content.
                 </div>
 
+                <h3>Pinning</h3>
+                <div class="rmli-paragraph">
+                    In addition, you can pin notes to the top to be always in the field of
+                    view when the app is loaded. 
+                    To pin a note follow these steps:
+                    <ol>
+                        <li>Click on the <i class="ri-more-line rmli-help-example-icon"></i> icon </li>
+                        <li>Select the <i class="ri-pushpin-2-line rmli-help-example-icon"> </i> 
+                            entry in the menu ({{ $t('note.pin') }}). </li>
+        
+                    </ol>
+                </div>
+
+
+                <h3>Reminders:</h3>
+                <div class="rmli-paragraph">
+                    You can set a remimnder for every note. When the reminder gets due, the note will be indicated with
+                    a red border at the left side. To create a reminder follow these steps:
+                    <ol>
+                        <li>Click on the <i class="ri-more-line rmli-help-example-icon"></i> icon </li>
+                        <li>Select the <i class="ri-alarm-line rmli-help-example-icon"></i> 
+                            entry in the menu ({{ $t('note.setreminder') }}). </li>
+                        <li>A dialog will show up. You can now set the date, when the note should become due. </li>
+                        <li>You can change or remove the reminder by opening the dialog again.</li>
+                    </ol>
+                </div>
+                <div class="rmli-paragraph">
+                    <b>Tip:</b> Type "due" in the search box to see all elements that are due
+                </div>
 
                 <h3>Search</h3>
                 <div class="rmli-paragraph">
@@ -79,54 +105,65 @@
                     command:
 
 
-                <ul>
-                    <li><b>#</b>: Show suggestions of all your persons</li>
-                    <li><b>@</b>: Show suggestions of all your tags</li>
-                    <li><b>:due</b>: Find all notes that are due</li>
-                    <li><b>:todo</b>: Find all notes that have a todo ([], [X]) in it and filter out lines that do not
-                        contain todos</li>
-                    <li><b>:month</b>: Find all notes from the month, e.g. :september</li>
-                    <li><b>:year</b>: Find all notes from the year, e.g. :2022</li>
-                    <li><b>and</b>:
-                        Run and AND query. If you type "A and B", only notes
-                        contain "A" and "B" will be shown. The shortcut is <b>&</b></li>
-                    <li><b>or</b>:
-                        Runs an OR quert. If you type "A or B", all notes that
-                        contain "A" or "B" will be shown. The shortcut is <b>|</b></li>
-
-                </ul>
+                    <ul>
+                        <li><b>#</b>: Show suggestions of all your persons</li>
+                        <li><b>@</b>: Show suggestions of all your tags</li>
+                        <li><b>:due</b>: Find all notes that are due</li>
+                        <li><b>:code</b>: Show only code blockes</li>
+                        <li><b>:todo</b>: Show only todos</li>
+                        <li><b>:month</b>: Find all notes from the month, e.g. :september</li>
+                        <li><b>:year</b>: Find all notes from the year, e.g. :2022</li>
+                        <li><b>and</b>: Run and AND query where ALL query terms must be present. The shortcut is <b>&</b></li>     
+                    </ul>
                 </div>
+
+
+                <h3>Code</h3>
+
+                <div class="rmli-paragraph">
+                    Use ``` to create code blocks. You can also use variables in the code blocks,
+                    simply write a word between curly brackets, e.g.
+                    {variable_name}. 
+
+
+                    <div data-rmli-type="code " class="rmi-highlight-code rmli-margin-top-m">
+                        <code>yourcommand {variable_name}</code>
+                        <div class="rmi-highlight-code-action">
+                            <i data-rmli-type="copy" class="ri-file-copy-line"></i>
+                            <i data-rmli-type="play" class="ri-play-line"></i>
+                        </div>
+                    </div>
+
+                    <div class="rmli-margin-top-m">
+                        <ul class="">
+                            <li><i data-rmli-type="copy" class="ri-file-copy-line rmli-help-example-icon"></i> Click on the copy icon to copy the command</li>
+                            <li><i data-rmli-type="play" class="ri-play-line rmli-help-example-icon"></i> Click on the play icon to execute the command</li>
+                        </ul>
+                    </div>
+
+                     <div class="rmli-margin-top-m">
+                        If you use variables in the code block, a dialog will show up when you 
+                        click on the play icon, and you can enter the values for the variables. 
+                        After that, you can execute the command with the filled in values.
+                    </div>
+                </div>
+
 
                 <h3>Keyboard shortcuts:</h3>
 
                 <div class="rmli-paragraph">
                     You can use teh following keyboard shortcuts:
 
-                <ul>
-                    <li><b>CTRl + F</b>: Focus search field.</li>
-                    <li><b>CTRl + N</b>: Create new note</li>
-                    <li><b>CTRl + Z</b>: Undo</li>
-                </ul>
+                    <ul>
+                        <li><b>CTRl + F</b>: Focus search field.</li>
+                        <li><b>CTRl + N</b>: Create new note</li>
+                        <li><b>CTRl + Z</b>: Undo</li>
+                    </ul>
 
                 </div>
 
 
-                <h3>Reminders:</h3>
-                <div class="rmli-paragraph">
-                    You can set a remimnder for every note. When the reminder gets due, the note will be indicated with
-                    a red border
-                    at the left side. To create a reminder follow these steps:
-                <ol>
-                    <li>Click on the <i class="ri-more-line rmli-help-example-icon" /> icon </li>
-                    <li>Select the <i class="ri-alarm-line rmli-help-example-icon"></i> {{ $t('note.setreminder') }} entry
-                        in the menu. </li>
-                    <li>A dialog will show up. You can now set the date, when the note should become due. </li>
-                    <li>You can change or remove the reminder by opening the dialog again.</li>
-                </ol>
-                </div>
-                <div class="rmli-paragraph">
-                    <b>Tip:</b> Type "due" in the search box to see all elements that are due
-                </div>
+  
 
                 <h3>Folders</h3>
                 <div class="rmli-paragraph">
@@ -185,7 +222,7 @@
                 <Logo />
 
                 <div class="">
-                   Version: {{ version }} 
+                    Version: {{ version }}
                 </div>
 
 

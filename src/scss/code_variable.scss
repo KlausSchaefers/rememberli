@@ -1,0 +1,31 @@
+@use './ds.scss' as *;
+
+.rmli-code-variables {
+    margin-top: $spacing-l;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-m;
+}
+.rmli-code-variable {
+    label {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: 600;
+    }
+}
+.rmli-code-variable-input{
+    border-radius: 2px;       
+    border-radius: $border-radius-s;
+    display: inline-block;
+    border: 1px solid $color1;
+    padding: $spacing-s;
+    outline: none;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: $font-size-default;
+
+    &:hover, &:focus {
+        border: 1px solid $border-color-focus;
+        outline: none;
+    }
+}

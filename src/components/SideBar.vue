@@ -36,6 +36,17 @@
                   <span>{{$t('sidebar.due')}}</span>
             </a>
 
+
+            <a @click="setCode()" v-if="settings.hasCodeFolder"
+              :class="[
+                'rmli-sidebar-folder', 
+                {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder.isCode}
+                ]"
+                >
+                  <i class="ri-play-line" ></i> 
+                  <span>{{$t('sidebar.code')}}</span>
+            </a>
+
              <a @click="setTodo()" v-if="settings.hasTodoFolder"
               :class="[
                 'rmli-sidebar-folder', 
@@ -159,6 +170,11 @@ export default {
           id:'',
           label:'Due'
         },
+        codeFolder: {
+          isCode: true,
+          id:'',
+          label:'Code'
+        },
         todoFolder: {
           isTodo: true,
           id:'',
@@ -244,6 +260,12 @@ export default {
       this.isDue = true
       this.$emit('search', TERMS.DUE)
       this.selectedFolder = this.dueFolder
+      this.$emit('setFolder', null)
+    },
+    setCode () {
+      this.isDue = true
+      this.$emit('search', TERMS.CODE)
+      this.selectedFolder = this.codeFolder
       this.$emit('setFolder', null)
     },
     setTodo () {

@@ -19,6 +19,7 @@
           <div class="rmli-checkbox-list">  
             <CheckBox v-model="settings.hasDueFolder" :label="$t('settings.hasDueFolder')"/>
             <CheckBox v-model="settings.hasTodoFolder" :label="$t('settings.hasTodoFolder')"/>
+            <CheckBox v-model="settings.hasCodeFolder" :label="$t('settings.hasCodeFolder')"/>
           </div>
 
         </div>
@@ -35,8 +36,12 @@
               <CheckBox v-model="settings.hideStatusForToDoView" :label="$t('settings.hideStatusForToDoView')"/>
               <CheckBox v-if="false" v-model="settings.hasBeta" :label="$t('settings.beta')"/>
             </div>
+
+            <h1 class="rmli-margin-top-l">{{$t('settings.pagingSize')}}</h1>
+            <RadioList :options="pagingSizes" v-model="settings.pagingSize"/>
         </div>
 
+   
         
 
         <div class="rmli-button-bar">
@@ -76,6 +81,12 @@ export default {
             {label: "Small", value: "s"},
             {label: "Medium", value: "m"},
             {label: "Large", value: "l"}
+        ],
+        pagingSizes: [
+            {label: "All", value: -1},
+            //{label: "5", value: 5},
+            {label: "100", value: 100},
+            {label: "200", value: 200}
         ],
         settings: null
     }
