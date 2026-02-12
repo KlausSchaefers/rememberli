@@ -5,7 +5,7 @@ description = "RememberLI - To simple note app for nerds"
 authors = ["Klaus Schaefers"]
 license = ""
 repository = ""
-edition = "2026"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
