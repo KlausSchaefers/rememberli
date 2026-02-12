@@ -195,7 +195,7 @@ export default {
         selectedFolder:'',
         selectedFolderName: '',
         lastQuery: new Date().getTime(),
-        tagsAndPersons: [':due', ':todo'],
+        tagsAndPersons: [':due', ':todo', ':code'],
         now: 0,
         currentPage: 0,
         metaKeyPressed: false

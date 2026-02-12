@@ -110,11 +110,16 @@ fn run_shell_command(command: String) -> Result<String, String> {
     #[cfg(target_os = "linux")]
     {
         // Try common Linux terminals with command execution
+        let gnome_cmd = format!("{}; exec bash", command);
+        let konsole_cmd = format!("{}; exec bash", command);
+        let xfce_cmd = format!("bash -c '{}; exec bash'", command);
+        let xterm_cmd = format!("{}; exec bash", command);
+        
         let terminals = vec![
-            ("gnome-terminal", vec!["--", "bash", "-c", &format!("{}; exec bash", command)]),
-            ("konsole", vec!["-e", "bash", "-c", &format!("{}; exec bash", command)]),
-            ("xfce4-terminal", vec!["-e", &format!("bash -c '{}; exec bash'", command)]),
-            ("xterm", vec!["-e", "bash", "-c", &format!("{}; exec bash", command)]),
+            ("gnome-terminal", vec!["--", "bash", "-c", &gnome_cmd]),
+            ("konsole", vec!["-e", "bash", "-c", &konsole_cmd]),
+            ("xfce4-terminal", vec!["-e", &xfce_cmd]),
+            ("xterm", vec!["-e", "bash", "-c", &xterm_cmd]),
         ];
         
         for (terminal, args) in terminals {

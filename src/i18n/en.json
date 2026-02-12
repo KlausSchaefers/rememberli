@@ -65,9 +65,9 @@
         "copySuccess": "Copied!"
     },
     "toolbar": {
-        "shrink": "Shrink results",
+        "shrink": "Filter lines",
         "search": "Search",
-        "search_hint": "e.g. :due, :todo, #tag"
+        "search_hint": "e.g. :due, :todo, :code, #tag"
     },
     "status": {
         "saved": "Changes saved...",

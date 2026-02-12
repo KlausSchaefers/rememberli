@@ -13,7 +13,7 @@
                     <Combo :options="tagsAndPersons" :placeholder="$t('toolbar.search')" :placeholder2="$t('toolbar.search_hint')" v-model="search" @change="onSearch" @focus="onFocus" @blur="onBlur" ref="searchInput" />
                  
 
-                    <i :class="['rmli-toolbar-shrink rmli-tooltip', {'rmli-toolbar-shrink-active ri-toggle-fill' : hasShrinkedSearch}, {'ri-toggle-line' : !hasShrinkedSearch}] " v-if="showShrink" @click="onShrink">
+                    <i :class="['rmli-toolbar-shrink rmli-tooltip', {'rmli-toolbar-shrink-active ri-filter-line' : hasShrinkedSearch}, {'ri-filter-off-line' : !hasShrinkedSearch}] " v-if="showShrink" @click="onShrink">
                            <span class="rmli-tooltip-message"> {{$t('toolbar.shrink')}}</span>
                     </i>
                     <i class="ri-close-line rmli-toolbar-reset" v-if="search !== ''" @click="reset"></i>
