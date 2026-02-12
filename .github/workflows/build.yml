@@ -59,7 +59,9 @@ jobs:
             libwebkit2gtk-4.0-dev \
             libssl-dev \
             libayatana-appindicator3-dev \
-            librsvg2-dev
+            librsvg2-dev \
+            file \
+            libfuse2
 
       - name: Install npm dependencies
         run: npm install
@@ -84,6 +86,7 @@ jobs:
       - name: Upload Linux artifacts
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: rememberli-${{ matrix.target }}
           path: |
