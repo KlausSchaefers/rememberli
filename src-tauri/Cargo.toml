@@ -1,11 +1,11 @@
 [package]
-name = "rememberli2"
+name = "rememberli"
 version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "RememberLI - To simple note app for nerds"
+authors = ["Klaus Schaefers"]
 license = ""
 repository = ""
-edition = "2021"
+edition = "2026"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
