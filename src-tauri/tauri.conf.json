@@ -14,7 +14,15 @@
     "targets": ["app", "dmg", "deb", "appimage", "msi", "nsis"],
     "icon": [
       "icons/icon.png"
-    ]
+    ],
+    "macOS": {
+      "minimumSystemVersion": "10.13",
+      "entitlements": null,
+      "exceptionDomain": null,
+      "signingIdentity": "-",
+      "providerShortName": null,
+      "hardenedRuntime": true
+    }
   },
   "app": {
     "windows": [
