@@ -75,7 +75,7 @@ export default {
             {label: "Pop!", value: "default"},
             {label:"Soft", value: "soft"},
             //{label:"Black & White", value: "bw"},
-            //{label:"Dark", value: "dark"}
+            {label:"Dark", value: "dark"}
         ],
         sizes: [
             {label: "Small", value: "s"},
