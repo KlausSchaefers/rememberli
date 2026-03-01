@@ -10,11 +10,14 @@
 .rmi-highlight-code {
     background: $background-code;
     color: $color-code;
-    padding: $spacing-s $spacing-s;
+    padding: 0 $spacing-s;
     border-radius: $border-radius-m;
     font-family: 'Courier New', Courier, monospace;
     position: relative;
-    line-height: 1;
+
+    .rmi-highlight-code-padding{
+        opacity: 0;
+    }
     .rmi-highlight-code-action{
         position: absolute;
         right: $spacing-s;
@@ -31,6 +34,7 @@
 
         i:hover{
             opacity: 1;
+            color: $color8;
         }
     }
 }

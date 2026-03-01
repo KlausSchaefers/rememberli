@@ -7,7 +7,7 @@
     padding: $spacing-l 0px;
     padding-top: 0px; 
     border-left: 2px solid $border-color-transparent;
-
+    line-height: 1;
 
 
     .rmli-note-status {
@@ -69,8 +69,8 @@
         .rmli-dropdown {      
             cursor: pointer;
             font-size: $font-size-s;
-            width: 24px;
-            height: 24px;
+            width: 16px;
+            height: 16px;
             border-radius: 50px;
             text-align: center;
             color:$color1;

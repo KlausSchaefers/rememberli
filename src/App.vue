@@ -7,6 +7,7 @@
 
 
 <style lang="scss">
+  @use './scss/fonts/fonts.scss';
   @use './scss/app.scss';
   @use './scss/layout.scss';
 </style>

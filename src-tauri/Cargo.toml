@@ -1,6 +1,6 @@
 [package]
 name = "rememberli"
-version = "0.0.0"
+version = "2.0.1"
 description = "RememberLI - To simple note app for nerds"
 authors = ["Klaus Schaefers"]
 license = ""
