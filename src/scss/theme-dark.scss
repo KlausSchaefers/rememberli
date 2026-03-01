@@ -1,33 +1,200 @@
 @use './ds.scss' as *;
 
-$font-color-dark: #bbb;
-$border-color-dark: #555;
+$dark-bg: #1e1e1e;
+$dark-bg-secondary: #252525;
+$dark-bg-sidebar: #181818;
+$dark-bg-element: #2a2a2a;
+$dark-bg-hover: #333;
+$dark-text: #d4d4d4;
+$dark-text-secondary: #999;
+$dark-border: #3a3a3a;
+$dark-dialog-bg: #2d2d2d;
 
 .rmli-theme-dark {
 
-    background: #222;
-    color:$font-color-dark;
+    background: $dark-bg;
+    color: $dark-text;
 
-    .rmli-note{ 
+    // Editor body
+    .rmli-editor-body {
+        background: $dark-bg;
+        color: $dark-text;
+    }
+
+    // Sidebar
+    .rmli-sidebar {
+        background: $dark-bg-sidebar;
+        color: $dark-text;
+
+        .rmli-sidebar-section-header {
+            color: $dark-text-secondary;
+        }
+
+        .rmli-sidebar-menu {
+            border-top-color: $dark-border;
+        }
+
+        .rmli-sidebar-folder-add {
+            span, i {
+                color: rgba($dark-text, 0.4);
+            }
+            &:hover {
+                span, i {
+                    color: $dark-text;
+                }
+            }
+        }
+
+        a {
+            color: $dark-text;
+            &:hover {
+                color: #fff;
+                background: $dark-bg-hover;
+            }
+
+            input {
+                color: $dark-text;
+                &::-webkit-input-placeholder {
+                    color: rgba($dark-text, 0.4);
+                }
+            }
+        }
+
+        .rmli-sidebar-folder-selected {
+            background: $primary-color;
+            span, i {
+                color: #fff;
+            }
+            input {
+                color: #fff;
+            }
+            &:hover {
+                background: $primary-color-hover;
+            }
+        }
+    }
+
+    // Notes
+    .rmli-note {
+        color: $dark-text;
+
         .rmli-note-status {
-            color:$font-color-dark;
+            color: $dark-text-secondary;
+
+            .rmli-dropdown {
+                color: $dark-text;
+                .rmli-dropdown-popup {
+                    background: $dark-dialog-bg;
+                    border-color: $dark-border;
+                    color: $dark-text;
+                }
+            }
+
+            .rmli-note-more:hover .rmli-drowpdown-icon,
+            .rmli-dropdown-open .rmli-drowpdown-icon {
+                background: $dark-bg-hover;
+                color: $dark-text;
+            }
+        }
+
+        textarea, .rmli-editable {
+            background: transparent;
+            color: $dark-text;
         }
 
         .rmli-placeholder {
-            color:rgba($font-color-dark, 0.6);
+            color: rgba($dark-text, 0.35);
         }
     }
 
-    .rmli-editor {
-       
+    // Toolbar
+    .rmli-toolbar {
+        color: $dark-text;
+
+        .rmli-search {
+            input {
+                background: $dark-bg-secondary;
+                color: $dark-text;
+                border-color: $dark-border;
+
+                &:focus {
+                    background: $dark-bg-secondary;
+                    border-color: $primary-color;
+                }
+            }
+
+            i {
+                color: $dark-text-secondary;
+            }
+
+            .rmli-toolbar-shrink {
+                color: rgba($dark-text, 0.4);
+                &.rmli-toolbar-shrink-active {
+                    color: $dark-text;
+                }
+            }
+        }
     }
 
-    .rmli-toolbar .rmli-search input {
-        background:rgba($font-color-dark, 0.6);
-    }
-
+    // Element border
     .rmli-element-border {
-        border-top: 1px solid $border-color-dark;
-    }    
+        border-top-color: $dark-border;
+    }
+
+    // Dialogs
+    .rmli-dialog-background {
+        .rmli-dialog {
+            background: $dark-dialog-bg;
+            color: $dark-text;
+
+            h1 {
+                color: $dark-text;
+            }
+        }
+    }
+
+    // Buttons
+    .rmli-button-secondary {
+        background: $dark-bg-hover;
+        color: $dark-text;
+        border-color: transparent;
+
+        &:hover {
+            background: #444;
+        }
+    }
+
+    // Highlight / code blocks
+    .rmi-highlight-code {
+        background: rgba(#fff, 0.08);
+        color: $dark-text;
+    }
+
+    // Links
+    a.rmli-link {
+        color: #7aabf0;
+    }
+
+    .rmli-action-link {
+        color: $dark-text;
+        &:hover {
+            color: #7aabf0;
+        }
+    }
+
+    .rmli-secondary-label {
+        color: rgba($dark-text, 0.5);
+    }
+
+    // Input inline
+    .rmli-input-inline {
+        background: transparent;
+        color: $dark-text;
+    }
+
+    // Add note animation
+    .rmli-add-animation-hidden {
+        background: $dark-bg;
+    }
 }
 
