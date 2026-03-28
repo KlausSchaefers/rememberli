@@ -1,7 +1,7 @@
 {
-  "name": "rememberli2",
+  "name": "rememberli",
   "private": true,
-  "version": "2.0.0",
+  "version": "2.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,7 @@
     "@tauri-apps/plugin-dialog": "^2.0.0",
     "@tauri-apps/plugin-fs": "^2.0.0",
     "@tauri-apps/plugin-shell": "^2.0.0",
-    "dayjs": "^1.11.19",
+    "dayjs": "^1.11.20",
     "moment": "^2.29.1",
     "remixicon": "^2.5.0",
     "vue": "^3.5.27",

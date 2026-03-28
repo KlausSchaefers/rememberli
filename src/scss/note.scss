@@ -45,6 +45,7 @@
             border-radius: $border-radius-xl;
             padding: $spacing-xs;
             font-size: $font-size-xs;
+            gap: $spacing-s;
             &.rmli-due {
                 color: $color-due;
             }
@@ -53,8 +54,6 @@
         i {
             cursor: pointer;
             font-size: $font-size-s;
-            width: 24px;
-            height: 24px;
             border-radius: 50px;
             text-align: center;
         }

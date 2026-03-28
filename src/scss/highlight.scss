@@ -56,18 +56,19 @@
     box-sizing: border-box;
     vertical-align: middle;
     line-height: 1;
+    margin-right: 4px;
 }
 
 
 
 .rmi-highlight-task-done::after {
-    content: '';   
+    content: "";
     display: block;
     height: 50%;
-    width: 100%;
-    border-bottom: 2px solid $color1;
-    border-left: 2px solid $color1;
-    transform: rotate(-45deg);
+    width: 120%;
+    border-bottom: 2px solid #2c3e50;
+    border-left: 2px solid #2c3e50;
+    transform: translateX(-1px) rotate(-50deg);
 }
 
 .rmi-highlight-pointer {
@@ -81,4 +82,20 @@
 
 .rmli-lowlight {
     color: rgba($color1, 0.5)
+}
+
+.rmli-font-size-l {
+
+  .rmi-highlight-task {
+    height: $font-size-l;
+    width: $font-size-l;
+  }
+}
+
+.rmli-font-size-m {
+
+  .rmi-highlight-task {
+    height: $font-size-m;
+    width: $font-size-m;
+  }
 }

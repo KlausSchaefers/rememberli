@@ -1,33 +1,120 @@
-@use './ds.scss' as *;
+@use "./ds.scss" as *;
 
-$font-color-dark: #bbb;
-$border-color-dark: #555;
+$font-color-dark: #cfcfcf;
+$border-color-dark: rgba(0, 0, 0, 0.2);
 
 .rmli-theme-dark {
+  background: #111;
+  color: $font-color-dark;
 
-    background: #222;
+  .rmli-sidebar {
+    background: #1a1a1a;
+  }
+
+  .rmli-note {
+    .rmli-note-status {
+      color: $font-color-dark;
+    }
+
+    .rmli-placeholder {
+      color: rgba($font-color-dark, 0.6);
+    }
+  }
+
+  .rmli-editor {
+  }
+
+  .rmli-toolbar .rmli-search input {
+    background: rgba($border-color-dark, 0.6);
     color:$font-color-dark;
+  }
+  .rmli-toolbar .rmli-search input:focus {
+    border-color: transparent;
+  }
 
-    .rmli-note{ 
-        .rmli-note-status {
-            color:$font-color-dark;
-        }
+  .rmli-toolbar .rmli-search input::placeholder {
+    color: rgba($font-color-dark, 0.6);
+  }
 
-        .rmli-placeholder {
-            color:rgba($font-color-dark, 0.6);
-        }
+  .rmli-toolbar .rmli-search i {
+    color:$font-color-dark;
+  }
+
+  .rmli-element-border {
+    border-top: 1px solid $border-color-dark;
+  }
+
+  .rmli-sidebar-section-header {
+    color: $font-color-dark;
+  }
+
+  .rmli-action-link {
+    color: $font-color-dark;
+  }
+
+  .rmi-highlight-code {
+    background: rgba(44, 62, 80, 0.1333333333);
+    color: $font-color-dark;
+  }
+
+  .rmi-highlight-tag,
+  .rmi-highlight-person {
+    color: #000;
+  }
+  .rmi-highlight-task,
+  .rmi-highlight-task-done::after {
+    border-color: $font-color-dark;
+  }
+
+  .rmli-note:hover {
+    border-left-color: rgba(15, 106, 224, 0.7);
+  }
+
+
+
+  .rmli-dialog-background .rmli-dialog {
+    background: #000;
+
+    .rmli-button.rmli-button-secondary {
+      color: $font-color-dark;
+    }
+  }
+
+  .rmli-note {
+    &.rmli-due {
+      border-left-color: rgba($color-due-border, 0.7);
     }
 
-    .rmli-editor {
-       
+    .rmli-note-status-due-message.rmli-due {
+      color: rgba($color-due-border, 0.7);
     }
 
-    .rmli-toolbar .rmli-search input {
-        background:rgba($font-color-dark, 0.6);
+    &.rmli-focus {
+      border-left-color: rgba($border-color-focus, 0.7);
     }
 
-    .rmli-element-border {
-        border-top: 1px solid $border-color-dark;
-    }    
+    textarea,
+    .rmli-editable {
+      line-height: $line-height-m;
+      .rmi-highlight-tag {
+        background: rgba($color: $color2, $alpha: 0.9);
+      }
+
+      .rmi-highlight-person {
+        background: rgba($color: $color3, $alpha: 0.9);
+      }
+    }
+  }
+
+  .rmli-dropdown .rmli-dropdown-popup {
+    background: #000;
+
+    .rmli-type-ahead-item {
+      cursor: pointer;
+
+      &.rmli-type-ahead-item-selected {
+        color: $color1-hover;
+      }
+    }
+  }
 }
-
