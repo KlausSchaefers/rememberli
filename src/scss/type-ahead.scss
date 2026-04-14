@@ -1,7 +1,6 @@
 @use './ds.scss' as *;
 
 .rmli-type-ahead {
-    border: 1px solid red;
     display: none;
     border:1px solid $border-color-hover;
     box-shadow: $shadow-l;
@@ -15,7 +14,7 @@
     box-sizing: border-box;
    
     flex-direction: column;
-    gap: $spacing-xs;
+    gap: $spacing-s;
 
     .rmli-type-ahead-item {
         cursor: pointer;

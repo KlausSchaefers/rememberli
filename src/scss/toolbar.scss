@@ -60,6 +60,10 @@
                 background: none;
                 width: 300px;
             }
+
+            &::placeholder {
+                font-style: italic;
+            }
         }
 
         i {

@@ -19,6 +19,7 @@
         font-size: $font-size-s;
         padding: $spacing-xs;
         box-sizing: border-box;
+        flex-direction: column;
 
         .rmli-dropdown-item {
             display: block;
@@ -36,7 +37,7 @@
 
     &.rmli-dropdown-open .rmli-dropdown-popup,
     &:focus .rmli-dropdown-popup{
-        display: block;
+        display: flex;
     }
    
 }

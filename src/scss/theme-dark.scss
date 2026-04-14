@@ -114,4 +114,10 @@ $border-color-dark: rgba(0, 0, 0, 0.2);
       }
     }
   }
+
+   .rmli-dropdown-popup {
+    .rmli-combo-item-selected {
+      color: $color1-hover;
+    }
+  }
 }

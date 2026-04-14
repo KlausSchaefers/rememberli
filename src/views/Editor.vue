@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <Splash :version="version" v-if="!file" :settings="settings" @new="onNew" @select="onSelect" @load="setFile"/>
   <div :class="'rmli-editor rmli-add-popX  rmli-theme-' + settings.theme + ' rmli-font-size-' + settings.fontSize" v-if="file">
@@ -138,10 +139,11 @@
   @use '../scss/theme-soft.scss';
   @use '../scss/theme-bw.scss';
   @use '../scss/theme-dark.scss';
+  @use '../scss/theme-clean.scss';
 </style>
 <script>
 
-import APIServiceTauri from '../services/APIServiceTauri'
+import Services from '../services/Services'
 import AlarmDialog from '../components/AlarmDialog.vue'
 import CreateDialog from '../components/CreateDialog.vue'
 import SettingsDialog from '../components/SettingsDialog.vue'
@@ -472,15 +474,6 @@ export default {
       this.showStatusMessage('status.saved')
       this.saveLastFile()
     },
-    onSelect () {
-      Logger.log(2, 'Editor.onSelect()')
-      this.api.select()
-    },
-    onSelectReply (file) {
-      Logger.log(2, 'Editor.onSelectReply()', file)
-      this.setFile(file)
-      this.showStatusMessage('status.welcome')
-    },
     setFile (file) {
       Logger.log(2, 'Editor.setFile()', file)
       
@@ -502,6 +495,15 @@ export default {
         Logger.log(-2, 'Editor.loadLastFile()', url)
         this.api.load(url)
       }
+    },
+    onSelect () {
+      Logger.log(2, 'Editor.onSelect()')
+      this.api.select()
+    },
+    onSelectReply (file) {
+      Logger.log(2, 'Editor.onSelectReply()', file)
+      this.setFile(file)
+      this.showStatusMessage('status.welcome')
     },
     onNew () {
       Logger.log(-2, 'Editor.onNew()')
@@ -593,7 +595,6 @@ export default {
         } else {
           Logger.log(-2, 'Editor.moveFolderAbove() > ', sourceId, targetId)
         }
-        
     },
     /**
      *  Dialogs
@@ -657,7 +658,7 @@ export default {
   mounted () {
     this.initSettings()
     this.initRefreshTimer()
-    this.api = new APIServiceTauri()
+    this.api = Services.getAPI()
     this.api.onSave(this.onSaveReply)
     this.api.onSelect(this.onSelectReply)
     //this.api.onAppLoaded()

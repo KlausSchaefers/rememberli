@@ -44,7 +44,7 @@
             align-items: center;
             border-radius: $border-radius-xl;
             padding: $spacing-xs;
-            font-size: $font-size-xs;
+            
             gap: $spacing-s;
             &.rmli-due {
                 color: $color-due;
@@ -75,10 +75,7 @@
             color:$color1;
 
             .rmli-dropdown-item {
-                font-size: $font-size-xs;
-                &.rmli-note-delete:hover{
-                    color: $color5;
-                }
+                font-size: $font-size-xs;            
             }
 
             .rmli-dropdown-popup {
@@ -86,6 +83,8 @@
                 left:auto;
                 right:0px;
                 text-align: left;
+                gap: $spacing-s;
+                flex-direction: column; 
             }
         }
 
@@ -144,9 +143,10 @@
     .rmli-placeholder {
         color: $color1-placeholder;
         position: absolute;
-        top:16px;
+        top:18px;
         left: $spacing-m;
         font-style: italic;
+        font-size: $font-size-m;
     }
 
     .rmli-placeholder-container {

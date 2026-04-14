@@ -73,8 +73,8 @@ export default {
         tab: 'appearance',
         themes: [
             {label: "Pop!", value: "default"},
+            {label:"Clean", value: "clean"},
             {label:"Soft", value: "soft"},
-            //{label:"Black & White", value: "bw"},
             {label:"Dark", value: "dark"}
         ],
         sizes: [

@@ -1,0 +1,167 @@
+@use "./ds.scss" as *;
+
+$color-yellow: #ebb247;
+$color-light-yellow: #fbda6e;
+$color-orange: #ff5d1f;
+$color-green: #5b6e53;
+$color-light-green: #90ae83;
+$color-dark-green: #313d2b;
+$color-background: #fefefe;
+$color-dark-grey: #626b6f;
+$color-light-grey: #ced3d4;
+
+$color-action-hover: $color1;
+$color-sidebar: $color1;
+$background-sidebar: #c6beac;
+$background-sidebar: #dbdbdb;
+$selected-background-sidebar: $color-green;
+$selected-color-sidebar: #fefefe; // #CED3D4;
+$hover-sidebar-color: $color-green;
+
+.rmli-theme-clean {
+  background: $color-background;
+  color: $color1;
+
+  .rmi-highlight-code {
+  }
+
+  .rmli-pinned {
+    border-color: rgba($color-pinned-border, 0.4);
+  }
+
+  .rmli-sidebar {
+    color: $color-sidebar;
+    background: $background-sidebar;
+
+    .rmli-sidebar-folder:hover {
+      color: $hover-sidebar-color;
+    }
+
+    .rmli-sidebar-folder-selected {
+      background: $selected-background-sidebar;
+      span,
+      i {
+        color: $selected-color-sidebar;
+      }
+      &:hover {
+        span,
+        i {
+          color: $selected-color-sidebar;
+        }
+      }
+    }
+
+    input {
+      &::-webkit-input-placeholder {
+        /* Edge */
+        color: rgba($color1, $alpha: 0.5);
+      }
+    }
+
+    a {
+      input {
+        color: $color1;
+      }
+    }
+
+    .rmli-sidebar-actions a:hover {
+      color: $hover-sidebar-color;
+    }
+  }
+
+  .rmli-note {
+    &.rmli-due {
+      border-left-color: $color-orange;
+    }
+    &.rmli-due:hover {
+        border-left-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .rmli-note-status-due-message.rmli-due {
+      background: $color-orange;
+      color: #fff;
+      padding: $spacing-xs $spacing-m;
+    }
+
+    &.rmli-focus,    
+    &.rmli-focus.rmli-due {
+      border-left-color: $color-light-green;
+    }
+
+    textarea,
+    .rmli-editable {
+      line-height: $line-height-m;
+      .rmi-highlight-tag {
+        background: none;
+        font-weight: 600;
+        background: rgba($color-light-grey, 0.3);
+      }
+
+      .rmi-highlight-person {
+        background: none;
+        font-weight: 600;
+        background: rgba($color-light-grey, 0.3);
+      }
+
+      .rmi-highlight-code {
+        background: rgba($color-light-grey, 0.3);
+      }
+
+      .rmi-highlight-query {
+        background: rgba($color-yellow, 1);
+        color: #fff;
+      }
+    }
+  }
+
+  .rmli-note .rmli-note-status .rmli-note-more:hover .rmli-drowpdown-icon,
+  .rmli-note .rmli-note-status .rmli-dropdown-open .rmli-drowpdown-icon {
+    background: $color-green;
+    color: #fff;
+  }
+
+  .rmli-dropdown .rmli-dropdown-popup .rmli-dropdown-item:hover {
+    color: $color-light-green;
+  }
+
+  .rmli-element-border {
+    border-top: 1px solid transparent;
+    margin-top: 32px;
+  }
+
+  .rmli-toolbar .rmli-search input:focus {
+    border-color: $color-yellow;
+    background: $color-yellow;
+    color: #fff;
+
+    &::placeholder {
+      color: rgba(#fff, 0.5);
+    }
+  }
+
+  .rmli-dropdown-popup {
+    .rmli-combo-item:hover,
+    .rmli-combo-item-selected {
+      color: $color-yellow;
+    }
+  }
+
+  .rmli-type-ahead {
+    .rmli-type-ahead-item {
+      &.rmli-type-ahead-item-selected {
+        color: $color-light-green;
+      }
+    }
+  }
+
+  .rmli-action-link {
+    &:hover {
+      color: $color-orange;
+    }
+  }
+
+  .rmli-sidebar .rmli-sidebar-folder-list i.rmli-folder-add:hover {
+    color: $color-orange;
+  }
+
+}
