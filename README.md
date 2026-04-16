@@ -1,8 +1,6 @@
 # RememberLi
 
 
-RememberLi — the note-taking app built for what actually matters.
-
 I’ve tried a lot of note-taking apps over the years, but one thing always frustrated me. Finding the important information was harder than it should be. The search just wasn’t good enough.
 
 So I built RememberLi. Instead of adding more and more features, I focused on simplicity. A simple UI, a simple markup language and a **powerful search engine**.
