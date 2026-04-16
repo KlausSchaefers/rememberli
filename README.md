@@ -18,7 +18,7 @@ What truly sets RememberLi apart? Speed and precision. Its powerful search is de
 
 
 
-![RemeberLI Preview](https://github.com/KlausSchaefers/rememberli/blob/main/img/Preview.png)
+![RemeberLI Preview](https://github.com/KlausSchaefers/rememberli/blob/main/img/Preview2.png)
 
 
 
