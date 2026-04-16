@@ -112,15 +112,6 @@ docker build -f Dockerfile.linux -t rememberli-linux . && docker run --rm -v \\$
 - `npm run tauri dev` - Start Tauri development mode
 - `npm run tauri build` - Build Tauri application for production
 
-## Features
-
-- **Vue 3** with Composition API and `<script setup>` syntax
-- **TypeScript** for type safety
-- **Tauri** for cross-platform desktop functionality
-- **Vite** for fast development and building
-- **Hot Module Replacement** during development
-- Example Rust command integration between frontend and backend
-
 ## Learn More
 
 - [Tauri Documentation](https://tauri.app/)
