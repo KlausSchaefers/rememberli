@@ -39,7 +39,6 @@ What truly sets RememberLi apart? Speed and precision. Its powerful search is de
 
 
 
-
 ### Concept
 
 The app is built around three main concepts:
@@ -59,6 +58,10 @@ RememberLi supports the following markups that make it easy for you to organize 
 3. []: Create a open task checkbox 
 4. [X]: Create on closed markup checkbox 
 5. ->: Create an arrow
+6. \`\`\` \`\`\` For code
+
+![RemeberLI Preview](https://github.com/KlausSchaefers/rememberli/blob/main/img/Code.png)
+
 
 
 # Installation
