@@ -16,11 +16,26 @@ For developers, RememberLi goes even further. Add executable code snippets with 
 
 What truly sets RememberLi apart? Speed and precision. Its powerful search is designed to surface exactly what you’re looking for — in seconds.
 
-Remember less. Find more. Stay in control.
+
+
+![RemeberLI Preview](https://github.com/KlausSchaefers/rememberli/blob/main/img/Preview.png)
+
+
+
+# Download
 
 [Download the latest release](https://github.com/KlausSchaefers/rememberli/releases/latest)
 
-![RemeberLI Preview](https://github.com/KlausSchaefers/rememberli/blob/main/img/Preview.png)
+| Platform | Format | Link |
+|----------|--------|------|
+| macOS (Apple Silicon) | DMG | [Download .dmg](https://github.com/KlausSchaefers/rememberli/releases/latest/download/Rememberli.dmg) |
+| Linux | Debian | [Download .deb](https://github.com/KlausSchaefers/rememberli/releases/latest/download/rememberli.deb) |
+| Linux | AppImage | [Download .AppImage](https://github.com/KlausSchaefers/rememberli/releases/latest/download/rememberli.AppImage) |
+| Windows | MSI | [Download .msi](https://github.com/KlausSchaefers/rememberli/releases/latest/download/rememberli.msi) |
+| Windows | Installer | [Download .exe](https://github.com/KlausSchaefers/rememberli/releases/latest/download/rememberli.exe) |
+
+> **macOS users:** Since RememberLi is not signed with an Apple Developer certificate, macOS will block the app on first launch. To allow it, go to **System Settings → Privacy & Security**, scroll down, and click **Open Anyway** next to the RememberLi message.
+
 
 
 
