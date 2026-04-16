@@ -1,8 +1,25 @@
 # RememberLi
 
-![RemeberLI Logo](https://github.com/KlausSchaefers/rememberli/blob/main/src/assets/Logo_Window_Circle_R_Triangle_Small.png)
 
- RememberLi is a simple note-taking app, that is focussed on finding and remembering the important things in your life.
+RememberLi — the note-taking app built for what actually matters.
+
+Capture the important moments, ideas, and details of your life without clutter or complexity. With its clean design and intuitive workflow, RememberLi helps you focus on what’s worth remembering — and find it instantly when you need it.
+
+Write faster with a lightweight, easy-to-learn markup system:
+
+Organize with tags
+
+@ Mention people
+[] Track tasks effortlessly
+
+For developers, RememberLi goes even further. Add executable code snippets with dynamic placeholders to streamline your workflow and save time on repetitive tasks.
+
+What truly sets RememberLi apart? Speed and precision. Its powerful search is designed to surface exactly what you’re looking for — in seconds.
+
+Remember less. Find more. Stay in control.
+
+![RemeberLI Logo](https://github.com/KlausSchaefers/rememberli/blob/main/img/Preview.png)
+
 
 ### Concept
 
@@ -58,28 +75,6 @@ npm run tauri build
 
 # linux
 docker build -f Dockerfile.linux -t rememberli-linux . && docker run --rm -v \\$(pwd)/linux-build:/output rememberli-linux cp -r /app/src-tauri/target/release/bundle /output
-```
-```
-
-This will create platform-specific bundles in `src-tauri/target/release/bundle/`.
-
-## Project Structure
-
-```
-rememberli2/
-├── src/                    # Vue.js frontend source
-│   ├── App.vue            # Main Vue component
-│   ├── main.ts            # Vue app entry point
-│   └── styles.css         # Global styles
-├── src-tauri/             # Tauri backend (Rust)
-│   ├── src/
-│   │   └── main.rs        # Rust main file with Tauri commands
-│   ├── Cargo.toml         # Rust dependencies
-│   └── tauri.conf.json    # Tauri configuration
-├── public/                # Static assets
-├── index.html             # HTML template
-├── vite.config.ts         # Vite configuration
-└── package.json           # Node.js dependencies and scripts
 ```
 
 ## Available Scripts
