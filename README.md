@@ -3,18 +3,9 @@
 
 RememberLi — the note-taking app built for what actually matters.
 
-Capture the important moments, ideas, and details of your life without clutter or complexity. With its clean design, RememberLi helps you focus on what’s worth remembering — and find it instantly when you need it.
+I’ve tried a lot of note-taking apps over the years, but one thing always frustrated me. Finding the important information was harder than it should be. The search just wasn’t good enough.
 
-Write faster with a lightweight, easy-to-learn markup system:
-
-Organize with tags
-
-@ Mention people
-[] Track tasks effortlessly
-
-For developers, RememberLi goes even further. Add executable code snippets with dynamic placeholders to streamline your workflow and save time on repetitive tasks.
-
-What truly sets RememberLi apart? Speed and precision. Its powerful search is designed to surface exactly what you’re looking for — in seconds.
+So I built RememberLi. Instead of adding more and more features, I focused on simplicity. A simple UI and simple markup language paired with a powerful search engine.
 
 
 
