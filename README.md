@@ -28,11 +28,11 @@ What truly sets RememberLi apart? Speed and precision. Its powerful search is de
 
 | Platform | Format | Link |
 |----------|--------|------|
-| macOS (Apple Silicon) | DMG | [Download .dmg](https://github.com/KlausSchaefers/rememberli/releases/latest/download/Rememberli.dmg) |
-| Linux | Debian | [Download .deb](https://github.com/KlausSchaefers/rememberli/releases/latest/download/rememberli.deb) |
-| Linux | AppImage | [Download .AppImage](https://github.com/KlausSchaefers/rememberli/releases/latest/download/rememberli.AppImage) |
-| Windows | MSI | [Download .msi](https://github.com/KlausSchaefers/rememberli/releases/latest/download/rememberli.msi) |
-| Windows | Installer | [Download .exe](https://github.com/KlausSchaefers/rememberli/releases/latest/download/rememberli.exe) |
+| macOS (Apple Silicon) | DMG | [Download .dmg](https://github.com/KlausSchaefers/rememberli/releases/latest/download/Rememberli_2.0.0_aarch64.dmg) |
+| Linux | Debian | [Download .deb](https://github.com/KlausSchaefers/rememberli/releases/latest/download/Rememberli_2.0.0_amd64.deb) |
+| Linux | AppImage | [Download .AppImage](https://github.com/KlausSchaefers/rememberli/releases/latest/download/Rememberli_2.0.0_amd64.AppImage) |
+| Windows | MSI | [Download .msi](https://github.com/KlausSchaefers/rememberli/releases/latest/download/Rememberli_2.0.0_x64_en-US.msi) |
+| Windows | Installer | [Download .exe](https://github.com/KlausSchaefers/rememberli/releases/latest/download/Rememberli_2.0.0_x64-setup.exe) |
 
 > **macOS users:** Since RememberLi is not signed with an Apple Developer certificate, macOS will block the app on first launch. To allow it, go to **System Settings → Privacy & Security**, scroll down, and click **Open Anyway** next to the RememberLi message.
 
