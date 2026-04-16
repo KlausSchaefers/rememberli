@@ -3,7 +3,7 @@
 
 RememberLi — the note-taking app built for what actually matters.
 
-Capture the important moments, ideas, and details of your life without clutter or complexity. With its clean design and intuitive workflow, RememberLi helps you focus on what’s worth remembering — and find it instantly when you need it.
+Capture the important moments, ideas, and details of your life without clutter or complexity. With its clean design, RememberLi helps you focus on what’s worth remembering — and find it instantly when you need it.
 
 Write faster with a lightweight, easy-to-learn markup system:
 
@@ -18,7 +18,11 @@ What truly sets RememberLi apart? Speed and precision. Its powerful search is de
 
 Remember less. Find more. Stay in control.
 
-![RemeberLI Logo](https://github.com/KlausSchaefers/rememberli/blob/main/img/Preview.png)
+[Download the latest release](https://github.com/KlausSchaefers/rememberli/releases/latest)
+
+![RemeberLI Preview](https://github.com/KlausSchaefers/rememberli/blob/main/img/Preview.png)
+
+
 
 
 ### Concept
@@ -40,6 +44,14 @@ RememberLi supports the following markups that make it easy for you to organize 
 3. []: Create a open task checkbox 
 4. [X]: Create on closed markup checkbox 
 5. ->: Create an arrow
+
+
+# Installation
+
+
+
+
+# Developer Setup
 
 ## Prerequisites
 
