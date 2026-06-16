@@ -458,6 +458,7 @@ export default {
           var sel = doc.getSelection();
           var range = sel.getRangeAt(0);
           var tabNode = document.createTextNode(text);
+          range.deleteContents();
           range.insertNode(tabNode);
           range.setStartAfter(tabNode);
           range.setEndAfter(tabNode); 
