@@ -53,12 +53,13 @@
             background: none;
             background: $background-secondary;
             transition: all 0.2s;
-        
+
             &:focus {
                 border: 1px solid $border-color-focus;
                 outline:none;
-                background: none;
+                background: rgba($color: $border-color-focus, $alpha: 0.1);
                 width: 300px;
+                transition: width 0.2s, border-color 0.2s, background 0.2s 0.2s;
             }
 
             &::placeholder {

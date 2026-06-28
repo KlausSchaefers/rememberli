@@ -28,6 +28,35 @@ export default class APIServiceTauri {
     console.log("Command output:", output);
   }
 
+  async downloadModels() {
+    Logger.log(-2, "APIService.downloadModels()");
+    try {
+      const paths = await invoke('download_models');
+      Logger.log(2, "APIService.downloadModels() result:", paths);
+      return paths;
+    } catch (error) {
+      Logger.error("APIService.downloadModels() error:", error);
+      throw error;
+    }
+  }
+
+  async runGliner(texts, labels, tokenizerPath, modelPath) {
+    Logger.log(-2, "APIService.runGliner()", texts, labels);
+    try {
+      const result = await invoke('run_gliner', {
+        texts,
+        labels,
+        tokenizerPath,
+        modelPath,
+      });
+      Logger.log(2, "APIService.runGliner() result:", result);
+      return result;
+    } catch (error) {
+      Logger.error("APIService.runGliner() error:", error);
+      throw error;
+    }
+  }
+
   onLogReply(data) {
     Logger.log(-2, "APIService.onLogReply()", data);
     console.table(data.log);
