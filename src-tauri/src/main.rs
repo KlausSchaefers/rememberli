@@ -6,7 +6,7 @@ use serde_json::{Value, from_str, to_string_pretty, json};
 use tauri::command;
 use std::process::Command;
 use gliner::model::{GLiNER, input::text::TextInput, params::Parameters};
-use gliner::model::pipeline::token::TokenMode;
+use gliner::model::pipeline::span::SpanMode;
 use gliner::model::pipeline::{token::TokenPipeline, relation::RelationPipeline};
 use gliner::model::input::relation::schema::RelationSchema;
 use orp::params::RuntimeParameters;
@@ -218,13 +218,13 @@ struct GlinerSpan {
 }
 
 #[command]
-fn run_gliner(
+async fn run_gliner(
     texts: Vec<String>,
     labels: Vec<String>,
     tokenizer_path: String,
     model_path: String,
 ) -> Result<Vec<GlinerSpan>, String> {
-    let model = GLiNER::<TokenMode>::new(
+    let model = GLiNER::<SpanMode>::new(
         Parameters::default(),
         RuntimeParameters::default(),
         &tokenizer_path,
@@ -273,7 +273,7 @@ struct GlinerRelation {
 }
 
 #[command]
-fn run_gliner_relations(
+async fn run_gliner_relations(
     texts: Vec<String>,
     labels: Vec<String>,
     relations: Vec<RelationDef>,

@@ -33,8 +33,8 @@
               <CheckBox v-model="settings.hasBorderTop" :label="$t('settings.hasBorderTop')"/>
               <CheckBox v-model="settings.hasDateLeft" :label="$t('settings.hasDateLeft')"/>
               <CheckBox v-model="settings.needMetaKeyForNoteAction" :label="$t('settings.needMetaKeyForNoteAction')"/>
-              <CheckBox v-model="settings.hideStatusForToDoView" :label="$t('settings.hideStatusForToDoView')"/>
-              <CheckBox v-if="false" v-model="settings.hasBeta" :label="$t('settings.beta')"/>
+              <CheckBox v-model="settings.hideStatusForToDoView" :label="$t('settings.hideStatusForToDoView')"/>          
+              <CheckBox v-model="settings.enableAI" :label="$t('settings.enableAI')"/>
             </div>
 
             <h1 class="rmli-margin-top-l">{{$t('settings.pagingSize')}}</h1>

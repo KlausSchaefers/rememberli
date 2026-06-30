@@ -30,11 +30,11 @@
          <Toolbar
             :open="hasMenu"
             :settings="settings"
-            :file="file" 
-            :isDirty="isDirty" 
+            :file="file"
+            :isDirty="isDirty"
             ref="toolbar"
             @shrink="onShrink"
-            @menu="hasMenu = !hasMenu"
+            @menu="toggleMenu"
             @save="onSave" 
             @select="onSelect"  
             @new="onNew" 
@@ -59,6 +59,7 @@
                           :hasMenu="hasMenu"
                           :isTodoQuery="isTodoQuery"
                           :now="now"
+                          :isRunningAI="element.id === runningAIElementID"
                           @hint="showStatusMessage"
                           @folder="showFolderDialog(element)"
                           @alarm="onAlarm(element, $event)"
@@ -93,6 +94,7 @@
                         :isTodoQuery="isTodoQuery"
                         :isCodeQuery="isCodeQuery"
                         :now="now"
+                        :isRunningAI="element.id === runningAIElementID"
                         @hint="showStatusMessage"
                         @search="setSearch"
                         @folder="showFolderDialog(element)"
@@ -200,7 +202,8 @@ export default {
         tagsAndPersons: [':due', ':todo', ':code'],
         now: 0,
         currentPage: 0,
-        metaKeyPressed: false
+        metaKeyPressed: false,
+        runningAIElementID: null
     }
   },
   components: {
@@ -448,14 +451,59 @@ export default {
         }
       }
     },
-    onChange (element, updateIndex) {
+    async onChange (element, updateIndex) {
       Logger.log(1, 'Editor.onChange()', element)
       if (updateIndex) {
         this.searchService.indexElement(element)
         this.updateTagsAndPersons()
-      }      
+        setTimeout(() => {
+          this.runAI(element)
+        }, 10)
+      }
       this.isDirty = true
       this.onSave()
+    },
+    async runAI(element) {
+      if (!this.settings.enableAI) {
+        return
+      }
+      if (this.modelPaths) {
+        Logger.log(-1, "Editor.runAI() > ", element)
+        this.showStatusMessage("runAI")
+        this.runningAIElementID = element.id
+        const start = new Date().getTime()
+        const result = await this.api.runGliner(
+          [element.value],
+          ["Person", "Place"],
+          this.modelPaths.tokenizer_path,
+          this.modelPaths.model_path
+        )
+        const end = new Date().getTime()
+        Logger.log(-1, "Editor.runAI() > Took ", end - start)
+        this.runningAIElementID = false
+        if (result && result.length > 0) {
+          // this is needed for new elements
+          const reactiveEl = this.file.content.elements.find(e => e.id === element.id) ?? element
+          reactiveEl.value = this.applyGlinerTags(reactiveEl.value, result)
+          this.searchService.indexElement(reactiveEl)
+          this.updateTagsAndPersons()
+          this.onSave()
+        }
+      }
+    },
+
+    applyGlinerTags(text, spans) {
+      // Longest spans first so multi-word matches are replaced before their parts
+      const sorted = [...spans].sort((a, b) => b.text.length - a.text.length)
+      let result = text
+      for (const span of sorted) {
+        const prefix = span.class.toLowerCase() === 'person' ? '@' : '#'
+        const escaped = span.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        // Negative lookbehind skips words already prefixed with @ or #
+        const pattern = new RegExp(`(?<![#@])\\b${escaped}\\b`, 'g')
+        result = result.replace(pattern, `${prefix}${span.text}`)
+      }
+      return result
     },
     updateTagsAndPersons () {
       this.searchService.updateTagsAndPersons(this.tagsAndPersons)
@@ -603,6 +651,7 @@ export default {
       Logger.log(2, 'Editor.showSettings()')
       this.$refs.settingsDialog.show(this.settings, (settings) => {
           localStorage.setItem('rmli-settings', JSON.stringify(settings))
+          this.initAI()
       })
     },
     initSettings () {
@@ -653,14 +702,38 @@ export default {
     onShrink () {
       Logger.log(-2, 'Editor.onKeyDown() > onShrink')
       this.settings.hasShrinkedSearch = !this.settings.hasShrinkedSearch
-    }
+    },
+    toggleMenu () {
+      this.hasMenu = !this.hasMenu
+      localStorage.setItem('rmli-has-menu', this.hasMenu)
+    },
+    initHasMenu () {
+      let value = localStorage.getItem('rmli-has-menu')
+      if (value !== null) {
+        this.hasMenu = value === 'true'
+      }
+    },
+    async initAI() {        
+      if (this.settings.enableAI) {
+        Logger.log(3, 'Editor.initAI()')
+        const res = await this.api.downloadModels();        
+        Logger.log(3, 'Editor.initAI() > exit ', res)
+        if (res.model_path) {
+          this.showStatusMessage("status.aiDownloaded")
+          this.modelPaths = res
+        }        
+      }
+    },
   },
   mounted () {
+    this.initHasMenu()
     this.initSettings()
     this.initRefreshTimer()
+
     this.api = Services.getAPI()
     this.api.onSave(this.onSaveReply)
     this.api.onSelect(this.onSelectReply)
+    this.initAI()
     //this.api.onAppLoaded()
     this.searchService = new SearchService()
     this.historyService = new HistoryService()

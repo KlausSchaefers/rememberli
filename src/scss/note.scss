@@ -51,6 +51,8 @@
             }
         } 
 
+  
+
         i {
             cursor: pointer;
             font-size: $font-size-s;
@@ -149,6 +151,15 @@
         font-size: $font-size-m;
     }
 
+    .rmli-editable-ai-running {
+        animation: rmli-ai-pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes rmli-ai-pulse {
+        0%, 100% { opacity: 0.8; }
+        50%       { opacity: 0.4; }
+    }
+
     .rmli-placeholder-container {
         position: relative;
     }
@@ -160,6 +171,14 @@
     }
 
 
+}
+
+.rmli-note-footer-ai {
+    padding: 0px $spacing-m;
+    flex-grow: 1;
+    font-style: italic;
+    font-size: $font-size-xxs;
+    position: absolute;
 }
 
 .rmli-font-size-s {

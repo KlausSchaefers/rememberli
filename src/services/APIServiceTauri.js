@@ -12,11 +12,11 @@ export default class APIServiceTauri {
   async init() {}
 
   onAppLoaded() {
-    Logger.log(-2, "APIService.onAppLoaded()");
+    Logger.log(2, "APIService.onAppLoaded()");
   }
 
   getElectronLog() {
-    Logger.log(-2, "APIService.getElectronLog()");
+    Logger.log(2, "APIService.getElectronLog()");
   }
 
   async run(code) {
@@ -92,7 +92,7 @@ export default class APIServiceTauri {
   }
 
   async save(file) {
-    Logger.log(-2, "APIService.save()", file);
+    Logger.log(2, "APIService.save()", file);
 
     try {
       let filePath = file.url;

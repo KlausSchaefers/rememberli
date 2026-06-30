@@ -1,5 +1,5 @@
 <template>
-    <RDialog ref="dialog" size="m">
+    <RDialog ref="dialog" size="s">
         <div class="rmli-help">
 
             <div class="rmli-tab-bar">
@@ -146,6 +146,16 @@
                         click on the play icon, and you can enter the values for the variables. 
                         After that, you can execute the command with the filled in values.
                     </div>
+                </div>
+
+
+                <h3>AI</h3>
+
+                <div class="rmli-paragraph">
+                    When you enable <b>{{$t('settings.enableAI')}}</b> in the settings, RememberLi will 
+                    automatically extract information from your notes.
+                    Please note, that some larger model files will be downlaoded into the <b>~/.rememberli</b> folder.            
+                
                 </div>
 
 

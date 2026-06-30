@@ -15,11 +15,16 @@
 
   .rmli-dialog {
     background: $dialog-background;
-    padding: $spacing-l $spacing-l;
+    padding: $spacing-lx $spacing-lx;
     border-radius: $border-radius-m;
     box-shadow: $shadow-m;
     width: 400px;
     overflow: auto;
+
+    &.rmli-dialog-s {
+      width: 560px;
+    }
+
 
     &.rmli-dialog-m {
       width: 720px;

@@ -47,7 +47,8 @@
         "hideStatusForToDoView": "Hide date for :todo view",
         "hasShrinkedSearch": "Shrink search results",
         "hasCodeFolder": "Code folder in sidebar",
-        "pagingSize": "Number of notes per page"
+        "pagingSize": "Number of notes per page",
+        "enableAI": "Enable AI"
     },
     "note": {
         "remove": "Remove all text to delete note",
@@ -62,7 +63,8 @@
         "changereminder": "Change reminder",
         "metaKeyToSearch": "Press CTRL or CMD to search",
         "metaKeyTask": "Press CTRL or CMD to toggle task",
-        "copySuccess": "Copied!"
+        "copySuccess": "Copied!",
+        "aiRunning": "AI running..."
     },
     "toolbar": {
         "shrink": "Filter lines",
@@ -71,7 +73,9 @@
     },
     "status": {
         "saved": "Changes saved...",
-        "welcome": "Welcome..."
+        "welcome": "Welcome...",
+        "aiDownloaded": "AI Downloaded",
+        "runAI": "Running Ai..."
     },
     "actions": {
         "new": "New",

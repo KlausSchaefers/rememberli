@@ -25,7 +25,7 @@
             <div class="rmli-timeline-note-knop" v-if="settings.hasTimeline"/>
             <div class="rmli-note-status-dates" > 
              
-             
+       
                 <div :class="['rmli-note-status-due-message',{'rmli-due': isDue}]" v-if="isAlarmSet"  @mousedown="onAlarm(true)">
                   <i class="ri-alarm-line"></i>{{printDate(element.due)}}
                 </div>
@@ -63,10 +63,12 @@
       </div>
       <!-- must be show because otherwise ref might be not there on setValue() -->
 
+
+
       <div class="rmli-placeholder-container" v-if="(!isTodoQuery  && !isCodeQuery) || hasFocus">
         <span class="rmli-placeholder" v-if="hasPlaceHolder" @click="onPlaceHolderClick"> {{placeholder}} </span> 
         <div 
-          :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}]" 
+          :class="['rmli-editable', { 'rmli-editable-placeholder': hasPlaceHolder}, {'rmli-editable-ai-running': isRunningAI}]" 
           contenteditable="true" 
           ref="input"
           v-html="text"
@@ -83,6 +85,10 @@
       <div v-if="isCodeQuery && !hasFocus" @click="focus">
          <div :class="['rmli-editable']" v-html="codeText" @mousedown="onMouseDown"/>
       </div>
+      <!-- <div v-if="isRunningAI" class="rmli-note-footer-ai">
+          {{$t('note.aiRunning')}}
+      </div>
+              -->
       <TypeAhead ref="typehead" v-if="hasFocus" @select="onTypeAhead"/>
   </div>
 </template>
@@ -145,6 +151,10 @@ export default {
         return { value: ''}
       }
     },
+    isRunningAI: {
+      type: Boolean,
+      default: false
+    }
   },
   data: function () {
     return {
