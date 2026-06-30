@@ -40,6 +40,24 @@ export default class APIServiceTauri {
     }
   }
 
+  async runGlinerRelations(texts, labels, relations, tokenizerPath, modelPath) {
+    Logger.log(-2, "APIService.runGlinerRelations()", texts, labels, relations);
+    try {
+      const result = await invoke('run_gliner_relations', {
+        texts,
+        labels,
+        relations,
+        tokenizerPath,
+        modelPath,
+      });
+      Logger.log(2, "APIService.runGlinerRelations() result:", result);
+      return result;
+    } catch (error) {
+      Logger.error("APIService.runGlinerRelations() error:", error);
+      throw error;
+    }
+  }
+
   async runGliner(texts, labels, tokenizerPath, modelPath) {
     Logger.log(-2, "APIService.runGliner()", texts, labels);
     try {

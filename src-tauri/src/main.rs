@@ -7,7 +7,12 @@ use tauri::command;
 use std::process::Command;
 use gliner::model::{GLiNER, input::text::TextInput, params::Parameters};
 use gliner::model::pipeline::token::TokenMode;
+use gliner::model::pipeline::{token::TokenPipeline, relation::RelationPipeline};
+use gliner::model::input::relation::schema::RelationSchema;
 use orp::params::RuntimeParameters;
+use orp::model::Model;
+use orp::pipeline::Pipeline;
+use composable::Composable;
 use futures_util::StreamExt;
 
 const TOKENIZER_URL: &str = "https://huggingface.co/onnx-community/gliner_small-v2.1/resolve/main/tokenizer.json";
@@ -251,12 +256,79 @@ fn run_gliner(
     Ok(results)
 }
 
+#[derive(serde::Deserialize)]
+struct RelationDef {
+    label: String,
+    subject_labels: Vec<String>,
+    object_labels: Vec<String>,
+}
+
+#[derive(serde::Serialize)]
+struct GlinerRelation {
+    sequence: usize,
+    subject: String,
+    relation: String,
+    object: String,
+    probability: f32,
+}
+
+#[command]
+fn run_gliner_relations(
+    texts: Vec<String>,
+    labels: Vec<String>,
+    relations: Vec<RelationDef>,
+    tokenizer_path: String,
+    model_path: String,
+) -> Result<Vec<GlinerRelation>, String> {
+    let params = Parameters::default();
+    let runtime_params = RuntimeParameters::default();
+
+    let mut schema = RelationSchema::new();
+    for rel in &relations {
+        let subjects: Vec<&str> = rel.subject_labels.iter().map(|s| s.as_str()).collect();
+        let objects: Vec<&str> = rel.object_labels.iter().map(|s| s.as_str()).collect();
+        schema.push_with_allowed_labels(&rel.label, &subjects, &objects);
+    }
+
+    let texts_refs: Vec<&str> = texts.iter().map(|s| s.as_str()).collect();
+    let labels_refs: Vec<&str> = labels.iter().map(|s| s.as_str()).collect();
+    let input = TextInput::from_str(&texts_refs, &labels_refs)
+        .map_err(|e| e.to_string())?;
+
+    let model = Model::new(&model_path, runtime_params).map_err(|e| e.to_string())?;
+
+    let token_step = TokenPipeline::new(&tokenizer_path)
+        .map_err(|e| e.to_string())?
+        .to_composable(&model, &params);
+    let relation_step = RelationPipeline::default(&tokenizer_path, &schema)
+        .map_err(|e| e.to_string())?
+        .to_composable(&model, &params);
+
+    let span_output = token_step.apply(input).map_err(|e| e.to_string())?;
+    let relation_output = relation_step.apply(span_output).map_err(|e| e.to_string())?;
+
+    let mut results = Vec::new();
+    for rels in relation_output.relations {
+        for rel in rels {
+            results.push(GlinerRelation {
+                sequence: rel.sequence(),
+                subject: rel.subject().to_string(),
+                relation: rel.class().to_string(),
+                object: rel.object().to_string(),
+                probability: rel.probability(),
+            });
+        }
+    }
+
+    Ok(results)
+}
+
 fn main() {
     tauri::Builder::default()
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![greet, load_json_file, save_json_file, open_shell, run_shell_command, run_gliner, download_models])
+        .invoke_handler(tauri::generate_handler![greet, load_json_file, save_json_file, open_shell, run_shell_command, run_gliner, run_gliner_relations, download_models])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
