@@ -57,9 +57,9 @@
             &:focus {
                 border: 1px solid $border-color-focus;
                 outline:none;
-                background: rgba($color: $border-color-focus, $alpha: 0.1);
+                background: transparent;
                 width: 300px;
-                transition: width 0.2s, border-color 0.2s, background 0.2s 0.2s;
+                transition: width 0.2s, border-color 0.2s 0.1s, background 0.1s 0.2s;
             }
 
             &::placeholder {

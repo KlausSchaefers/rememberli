@@ -1,0 +1,10 @@
+@use './ds.scss' as *;
+
+.rmli-input{
+    border: 1px solid transparent;
+    background: $background-secondary;
+    border-radius: $border-radius-m;
+    padding: $spacing-s $spacing-s;
+    font-size: $font-size-s;
+    box-sizing: border-box;
+}

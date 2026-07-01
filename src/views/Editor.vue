@@ -168,7 +168,7 @@ export default {
   props:['value'],
   data: function () {
       return {
-        version: '2.0.2',
+        version: '2.0.3',
         settings: {
           theme: 'default',
           fontSize: 'm',
@@ -183,7 +183,8 @@ export default {
           pagingSize: 100,
           needMetaKeyForNoteAction: false,
           hideStatusForToDoView: false,
-          hasShrinkedSearch: false
+          hasShrinkedSearch: false,
+          tags:"Person, Event, Place"
         },
         status: {
           message: '',
@@ -472,9 +473,10 @@ export default {
         this.showStatusMessage("runAI")
         this.runningAIElementID = element.id
         const start = new Date().getTime()
+        const tags = this.settings.tags.split(',').map(s => s.trim())
         const result = await this.api.runGliner(
           [element.value],
-          ["Person", "Place"],
+          tags,
           this.modelPaths.tokenizer_path,
           this.modelPaths.model_path
         )
@@ -721,6 +723,8 @@ export default {
         if (res.model_path) {
           this.showStatusMessage("status.aiDownloaded")
           this.modelPaths = res
+          this.settings.ai_tokenizer_path = res.tokenizer_path
+          this.settings.ai_model_path = res.model_path
           await this.api.loadModel(res.tokenizer_path, res.model_path)
         }
       }

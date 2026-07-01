@@ -5,6 +5,7 @@
         <div class="rmli-tab-bar">
             <a :class="{'rmli-tab-active': tab=== 'appearance'}" @click="tab = 'appearance'">{{ $t('settings.appearance')}}</a>
             <a :class="{'rmli-tab-active': tab=== 'advanced'}" @click="tab = 'advanced'">{{ $t('settings.advanced')}}</a>
+            <a :class="{'rmli-tab-active': tab=== 'ai'}" @click="tab = 'ai'">{{ $t('settings.ai')}}</a>
         </div>
 
         <div  class="rmli-dialog-content-m" v-if="tab ==='appearance'">
@@ -34,13 +35,47 @@
               <CheckBox v-model="settings.hasDateLeft" :label="$t('settings.hasDateLeft')"/>
               <CheckBox v-model="settings.needMetaKeyForNoteAction" :label="$t('settings.needMetaKeyForNoteAction')"/>
               <CheckBox v-model="settings.hideStatusForToDoView" :label="$t('settings.hideStatusForToDoView')"/>          
-              <CheckBox v-model="settings.enableAI" :label="$t('settings.enableAI')"/>
+
             </div>
 
             <h1 class="rmli-margin-top-l">{{$t('settings.pagingSize')}}</h1>
             <RadioList :options="pagingSizes" v-model="settings.pagingSize"/>
         </div>
 
+          <div  class="rmli-dialog-content-m" v-if="tab ==='ai'">
+              <CheckBox v-model="settings.enableAI" :label="$t('settings.enableAI')"/>
+
+              <div v-if="settings.enableAI">
+
+                <!-- Files -->
+                <!-- <h3>{{$t('settings.titleAITags')}}</h3> -->
+                <p class="">
+                  {{$t('settings.hintAITags')}}
+                </p>
+
+                <TagList v-model="settings.tags"></TagList>
+                
+
+
+                <!-- Files -->
+                <!-- <h3>{{$t('settings.titleAIDownload')}}</h3> -->
+                 <p class="rmli-margin-top-l">
+                  {{$t('settings.hintAiDownload')}}
+                </p>
+                <div class="rmli-input rmli-margin-top-m">
+                  {{settings.ai_tokenizer_path}}
+                </div>
+           
+                <div class="rmli-input rmli-margin-top-m">
+                  {{settings.ai_model_path}}
+                </div>
+                    
+
+              </div>
+               <p class="rmli-dialog-hint" v-else>
+                  {{$t('settings.hintEnableAI')}}
+                </p>
+          </div>
    
         
 
@@ -55,12 +90,14 @@
 <style lang="scss">
   @use '../scss/tab.scss';
   @use '../scss/settings.scss';
+  @use '../scss/input.scss';
 </style>
 <script>
 
 import RDialog from '../common/Dialog.vue'
 import RadioList from '../common/RadioList.vue'
 import CheckBox from '../common/CheckBox.vue'
+import TagList from '../common/TagList.vue'
 import Logger from '../util/Logger'
 //import Util from '../util/Util'
 
@@ -92,7 +129,7 @@ export default {
     }
   },
   components: {
-    RDialog, RadioList, CheckBox
+    RDialog, RadioList, CheckBox, TagList
   },
   methods: {
     onChange (e) {

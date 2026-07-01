@@ -48,7 +48,13 @@
         "hasShrinkedSearch": "Shrink search results",
         "hasCodeFolder": "Code folder in sidebar",
         "pagingSize": "Number of notes per page",
-        "enableAI": "Enable AI"
+        "enableAI": "Enable AI",
+        "hintEnableAI": "When you enable AI, RembemberLi will automatically search your notes and mark persons and important words. Please note that the AI will run locally. No data is send to he cloud.",
+        "ai": "AI",
+        "titleAITags": "Entities & Concepts",
+        "hintAITags": "Edit here the entities and concepts the AI should automatically tag",
+        "titleAIDownload": "Files",
+        "hintAiDownload": "You can find the AI model files here:"
     },
     "note": {
         "remove": "Remove all text to delete note",

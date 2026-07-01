@@ -30,6 +30,10 @@
       width: 720px;
     }
 
+    .rmli-dialog-hint {
+      font-style: italic;
+      color: $color-hint;
+    }
 
     h1 {
       margin: 0;
@@ -46,5 +50,9 @@
     height: 500px;
     overflow: auto;
   }
- 
+
+  .rmli-check .rmli-check-icon {
+    width: 16px;
+    height: 16px;
+  }
 }
