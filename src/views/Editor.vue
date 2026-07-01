@@ -77,7 +77,7 @@
               
 
                   <h1 :class="{'rmli-margin-top-xxl': filteredElements.pinned.length > 0 }">
-                      {{selectedFolder ? selectedFolder.label : $t('list.rest')}}
+                      {{headline}}
                   </h1>
             
                   <div class="rmli-element rmli-element-add rmli-element-add-top">
@@ -239,6 +239,21 @@ export default {
     isCodeQuery () {
       Logger.log(2, 'Editor.isCodeQuery()', this.query, RememberLi.isCodeQuery(this.query))
       return RememberLi.isCodeQuery(this.query)
+    },
+    headline () {
+      if (RememberLi.isTodoQuery(this.query)) {
+        return this.$t('list.todos')
+      }
+      if (RememberLi.isDueQuery(this.query)) {
+        return this.$t('list.due')
+      }
+      if (RememberLi.isCodeQuery(this.query)) {
+        return this.$t('list.code')
+      }
+      if (this.searchService.isValidQuery(this.query)) {
+        return this.$t('list.filtered')
+      }
+      return this.selectedFolder ? this.selectedFolder.label : this.$t('list.rest')
     },
     folderElements () {
       if (this.selectedFolder) {
@@ -487,6 +502,7 @@ export default {
           // this is needed for new elements
           const reactiveEl = this.file.content.elements.find(e => e.id === element.id) ?? element
           reactiveEl.value = this.applyGlinerTags(reactiveEl.value, result)
+          reactiveEl.tags = result.map(r => {return{v: r.text.toLowerCase().replace(/@/g, '').replace(/#/g, ''), t: r.class.toLowerCase()}})
           this.searchService.indexElement(reactiveEl)
           this.updateTagsAndPersons()
           this.onSave()

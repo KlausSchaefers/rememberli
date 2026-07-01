@@ -88,7 +88,7 @@
       <!-- <div v-if="isRunningAI" class="rmli-note-footer-ai">
           {{$t('note.aiRunning')}}
       </div>
-              -->
+       -->      
       <TypeAhead ref="typehead" v-if="hasFocus" @select="onTypeAhead"/>
   </div>
 </template>

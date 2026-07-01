@@ -6,10 +6,8 @@
         <div :class="['rmli-sidebar-folder-list rmli-sidebar-list', {'rmli-sidebar-folder-list-dnd': isDndFolder} ]">
 
           <div class="rmli-sidebar-section-header rmli-sidebar-section-header-top">
-               <span>{{$t('sidebar.folders')}}</span>
-                <i class="ri-add-line rmli-folder-add rmli-tooltip" @click="showNewFolder" >
-                    <span class="rmli-tooltip-message"> {{$t('sidebar.new')}}</span>
-                </i> 
+               <span>{{$t('sidebar.views')}}</span>
+              
           </div>
 
            <a @click="setFolder(null)" 
@@ -57,6 +55,13 @@
                   <span>{{$t('sidebar.todos')}}</span>
             </a>
 
+           <!-- Folders-->
+           <div class="rmli-sidebar-section-header rmli-sidebar-section-space">
+               <span>{{$t('sidebar.folders')}}</span>
+                <i class="ri-add-line rmli-folder-add rmli-tooltip" @click="showNewFolder" >
+                    <span class="rmli-tooltip-message"> {{$t('sidebar.new')}}</span>
+                </i> 
+           </div>
             <a @click="setFolder(folder)" @dblclick="showEditFolder(folder)"
                 :class="[
                   'rmli-sidebar-folder', 
@@ -106,9 +111,35 @@
                 </span>
             </a>
 
-        
+
+            <!-- Tags-->
+            <template v-if="tags.length > 0">
+              <div class="rmli-sidebar-section-header rmli-sidebar-section-space" >
+                  <span>{{$t('sidebar.ai')}}</span>                  
+              </div>
+
+
+              <a @click="setTag(tag)"
+                :class="[
+                  'rmli-sidebar-folder', 
+                  {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder === tag}         
+                ]" 
+                v-for="tag in tags"
+                :key="tag">
+                  <i class="ri-price-tag-3-fill" v-if="selectedFolder && selectedFolder === tag"></i>
+                  <i class="ri-price-tag-3-line" v-else></i>                   
+                  <span class="rmli-sidebar-tag">
+                      {{tag}}
+                  </span>                
+            </a>
+
+
+            </template>
+
         </div>
 
+        
+    
 
         <div class="rmli-sidebar-list rmli-sidebar-menu">
             <div class="rmli-sidebar-section-header">
@@ -198,6 +229,17 @@ export default {
         })
       }
       return result
+    },
+    hasTags () {
+      return this.tags.length > 0
+    },
+    tags() {
+      if (this.file?.content?.elements) {
+          const tags = this.file.content.elements.flatMap(e => e.tags).filter(t => t != null && t!== undefined).map(t => t.t)
+          const result = new Set(tags)
+          return Array.from(result)
+      }
+      return []
     }
   },
   methods: {
@@ -286,6 +328,12 @@ export default {
       }
       this.isDue = false
       this.$emit('setFolder', folder)
+    },
+    setTag (tag) {
+      this.selectedFolder = tag
+      this.isDue = true
+      this.$emit('setFolder', null)
+      this.$emit('search', ":" + tag)
     },
     showNewFolder () {
       Logger.log(3, 'SideBar.createNewFolder()')

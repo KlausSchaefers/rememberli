@@ -37,12 +37,27 @@ export function isTodoTerm (query) {
     return query === TERMS.TODO
 }
 
+export function isAITagTerm(query) {
+    if (isCodeQuery(query) || isTodoQuery(query) || isDueQuery(query) || isFocusQuery(query)) {
+        return false
+    }
+    return query[0] === ':'
+}
+
 export function matchesToDo (value) {
     return value.indexOf('[]') >= 0 || value.indexOf('[ ]') >= 0 || value.indexOf('[x]') >= 0
 }
 
 export function matchesCode (value) {
     return value.indexOf('```') >= 0 || value.indexOf('`') >= 0
+}
+
+export function matchesAITag(element, term) {
+    console.debug(element.tags, term)
+    if (element.tags) {
+        return element.tags.has(term)
+    }
+    return false
 }
 
 export function isLogicOr (query) {

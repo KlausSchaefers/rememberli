@@ -10,6 +10,7 @@ export default class SearchService {
     constructor () {
         this.elements = {}
         this.tags = new Set()
+        this.aiTags = new Set()
         this.persons = new Set()
         this.months = new Set()
         this.years = new Set()
@@ -45,6 +46,13 @@ export default class SearchService {
 
                     if (RememberLi.isTodoTerm(term)) {
                         if (RememberLi.matchesToDo(e.value)) {
+                           this.incScore(scores, e)
+                        }
+                        runFullText = false
+                    }
+
+                     if (RememberLi.isAITagTerm(term)) {                        
+                        if (RememberLi.matchesAITag(e, term)) {
                            this.incScore(scores, e)
                         }
                         runFullText = false
@@ -138,16 +146,26 @@ export default class SearchService {
         let created = dayjs(element.created)
         let month = ':' + created.format('MMMM').toLocaleLowerCase()
         let year = ':' + created.format('YYYY').toLocaleLowerCase()
+        let aiTags = new Set()
+        if (element.tags) {
+            element.tags.forEach(tag => {
+                const v = ":" + tag.t
+                aiTags.add(v)
+            })
+        }
+
         
         this.elements[element.id] = {
             value : text,
             month: month,
             year: year,
             due: element.due,
-            id: element.id
+            id: element.id,
+            tags: aiTags
         }
 
         this.indexTags(text)
+        this.indexAITags(aiTags)
         this.indexPersons(text)
         this.indexDate(month, year)
     }
@@ -155,6 +173,12 @@ export default class SearchService {
     indexDate (month, year) {
         this.months.add(month)
         this.years.add(year)
+    }
+
+    indexAITags(tags) {
+        for (const element of tags) {
+            this.aiTags.add(element);
+        }
     }
 
     indexTags (text) {
@@ -203,6 +227,11 @@ export default class SearchService {
         this.years.forEach(y => {
             if (!list.includes(y)) {
                 list.push(y)
+            }
+        })
+        this.aiTags.forEach(t => {
+            if (!list.includes(t)) {
+                list.push(t)
             }
         })
     }

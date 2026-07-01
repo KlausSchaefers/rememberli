@@ -97,7 +97,7 @@
     "sidebar": {
         "menu": "Links",
         "folders": "Folders",
-        "tags": "Tags",
+        "ai": "AI Entities",
         "persons": "Persons",
         "all": "All notes",
         "new": "Create new folder",
@@ -106,12 +106,17 @@
         "due": "Due notes",
         "todos": "Only todos",
         "addFolder": "Add new folder",
-        "code": "Code snippets"
+        "code": "Code snippets",
+        "views": "Views"
     },
     "list": {
         "pinned": "Pinned",
         "pinnedAndDue": "Due",
-        "rest": "All notes"
+        "rest": "All notes",
+        "filtered": "Search",
+        "todos": "ToDos",
+        "due": "Due Notes",
+        "code": "Code Snippets"
     },
     "month": {
         "0": "January",

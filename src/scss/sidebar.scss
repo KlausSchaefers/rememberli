@@ -45,6 +45,11 @@ $spacing-action-x2: 24px;
         &.rmli-sidebar-section-header-top {
             margin-top: $spacing-s;
         }
+
+
+        &.rmli-sidebar-section-space{
+            margin-top: $spacing-l;
+        }
     }
 
     .rmli-sidebar-folder-list {
@@ -74,6 +79,10 @@ $spacing-action-x2: 24px;
 
     }
 
+
+    .rmli-sidebar-tag {
+        text-transform: capitalize;
+    }
  
 
     .rmli-sidebar-content {
