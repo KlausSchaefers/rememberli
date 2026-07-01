@@ -55,6 +55,19 @@
                   <span>{{$t('sidebar.todos')}}</span>
             </a>
 
+
+
+             <a @click="setGraph()" v-if="settings.hasGraph"
+              :class="[
+                'rmli-sidebar-folder', 
+                {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder.isGraph }
+                ]"
+                >
+                  <i class="ri-bubble-chart-line"></i> 
+                  <span>{{$t('sidebar.graph')}}</span>
+            </a>
+
+
            <!-- Folders-->
            <div class="rmli-sidebar-section-header rmli-sidebar-section-space">
                <span>{{$t('sidebar.folders')}}</span>
@@ -178,7 +191,7 @@ export default {
   emits: [
       'save', 'select', 'search', 'new', 'exit', 'setFolder', 'deleteFolder', 
       'createFolder', 'changeFolder', 'deleteFolder', 'settings', 
-      'moveElementToFolder', 'moveFolderAbove', 'help', 'load'
+      'moveElementToFolder', 'moveFolderAbove', 'help', 'load', "setView"
   ],
   props: ['file', 'isDirty', 'hasMenu', 'settings'],
   data: function () {
@@ -208,6 +221,12 @@ export default {
         },
         todoFolder: {
           isTodo: true,
+          id:'',
+          label:'Todo'
+        },
+        graphFolder: {
+          isTodo: false,
+          isGraph: true,
           id:'',
           label:'Todo'
         },
@@ -309,6 +328,13 @@ export default {
       this.$emit('search', TERMS.CODE)
       this.selectedFolder = this.codeFolder
       this.$emit('setFolder', null)
+    },
+    setGraph() {
+      this.isDue = true
+      this.$emit('search', '')
+      this.selectedFolder = this.graphFolder
+      this.$emit('setFolder', null)
+      this.$emit('setView', 'Graph')
     },
     setTodo () {
       this.isDue = true

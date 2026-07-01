@@ -20,6 +20,7 @@
         @deleteFolder="deleteFolder"
         @moveElementToFolder="moveElementToFolder"
         @moveFolderAbove="moveFolderAbove"
+        @setView="setView"
         :file="file" 
         :isDirty="isDirty" 
         @search="setSearch"
@@ -41,10 +42,11 @@
             @search="onSearch"
           />
 
+        <KnowledgeGraph v-if="selectedView === 'Graph'" :elements="graphElements" @search="query"/>
 
-        <div :class="'rmli-element-list ' + (hasListAnimation ? 'rmli-is-animated ': '')">
+        <div :class="'rmli-element-list ' + (hasListAnimation ? 'rmli-is-animated ': '')" v-else>
           <div class="rmli-container" ref="elementCntr">
-                
+
                   <h1 class="rmli-pinned" v-if="filteredElements.pinned.length > 0">
                     {{settings.hasDueInTop ? $t('list.pinnedAndDue'): $t('list.pinned')}}
                   </h1>
@@ -157,6 +159,7 @@ import Note from '../components/Note.vue'
 import Add from '../components/Add.vue'
 import HelpDialog from '../components/HelpDialog.vue'
 import SideBar from '../components/SideBar.vue'
+import KnowledgeGraph from '../components/KnowledgeGraph.vue'
 import Logger from '../util/Logger'
 import SearchService from '../services/SearchService'
 import HistoryService from '../services/HistoryService'
@@ -184,6 +187,7 @@ export default {
           needMetaKeyForNoteAction: false,
           hideStatusForToDoView: false,
           hasShrinkedSearch: false,
+          hasGraph: true,
           tags:"Person, Event, Place"
         },
         status: {
@@ -204,7 +208,8 @@ export default {
         now: 0,
         currentPage: 0,
         metaKeyPressed: false,
-        runningAIElementID: null
+        runningAIElementID: null,
+        selectedView: ''
     }
   },
   components: {
@@ -212,6 +217,7 @@ export default {
     Note,
     Add,
     SideBar,
+    KnowledgeGraph,
     AlarmDialog,
     SettingsDialog,
     Splash,
@@ -269,6 +275,13 @@ export default {
         return this.getSplittedElements(this.getFilteredElements(elements))
       }
       return this.getSplittedElements(elements)
+    },
+    graphElements () {
+      let elements = this.folderElements
+      if (this.searchService.isValidQuery(this.query)) {
+        return this.getFilteredElements(elements)
+      }
+      return elements
     }
   },
   methods: {
@@ -342,6 +355,7 @@ export default {
     },
     setSearch (value) {
       Logger.log(1, 'Editor.setSearch()')
+      this.selectedView = ''
       this.$refs.toolbar.setSearch(value)
     },
     onSearch (query) {
@@ -605,6 +619,11 @@ export default {
     setFolder (folder) {
       Logger.log(-2, 'Editor.setFolder() > ', folder)
       this.selectedFolder = folder
+      this.selectedView = ''
+    },
+    setView(v) {
+      Logger.log(-2, 'Editor.setView() > ', v)
+      this.selectedView = v
     },
     changeFolder (folderId, newLabel) {
       Logger.log(-2, 'Editor.changeFolder() > ', folderId, newLabel)

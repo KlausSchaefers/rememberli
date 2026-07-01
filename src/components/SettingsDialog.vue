@@ -21,6 +21,7 @@
             <CheckBox v-model="settings.hasDueFolder" :label="$t('settings.hasDueFolder')"/>
             <CheckBox v-model="settings.hasTodoFolder" :label="$t('settings.hasTodoFolder')"/>
             <CheckBox v-model="settings.hasCodeFolder" :label="$t('settings.hasCodeFolder')"/>
+            <CheckBox v-model="settings.hasGraph" :label="$t('settings.hasGraph')"/>        
           </div>
 
         </div>
@@ -36,6 +37,7 @@
               <CheckBox v-model="settings.needMetaKeyForNoteAction" :label="$t('settings.needMetaKeyForNoteAction')"/>
               <CheckBox v-model="settings.hideStatusForToDoView" :label="$t('settings.hideStatusForToDoView')"/>          
 
+              
             </div>
 
             <h1 class="rmli-margin-top-l">{{$t('settings.pagingSize')}}</h1>

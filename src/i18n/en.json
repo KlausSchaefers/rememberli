@@ -49,12 +49,13 @@
         "hasCodeFolder": "Code folder in sidebar",
         "pagingSize": "Number of notes per page",
         "enableAI": "Enable AI",
-        "hintEnableAI": "When you enable AI, RembemberLi will automatically search your notes and mark persons and important words. Please note that the AI will run locally. No data is send to he cloud.",
+        "hintEnableAI": "When you enable AI, RememberLi will automatically search your notes and mark persons and important words. Please note that the AI will run locally. No data is sent to the cloud.",
         "ai": "AI",
         "titleAITags": "Entities & Concepts",
         "hintAITags": "Edit here the entities and concepts the AI should automatically tag",
         "titleAIDownload": "Files",
-        "hintAiDownload": "You can find the AI model files here:"
+        "hintAiDownload": "You can find the AI model files here:",
+        "hasGraph": "Graph in Sidebar"
     },
     "note": {
         "remove": "Remove all text to delete note",
@@ -95,7 +96,7 @@
         "continue": "Continue"
     },
     "sidebar": {
-        "menu": "Links",
+        "menu": "Menu",
         "folders": "Folders",
         "ai": "AI Entities",
         "persons": "Persons",
@@ -107,7 +108,8 @@
         "todos": "Only todos",
         "addFolder": "Add new folder",
         "code": "Code snippets",
-        "views": "Views"
+        "views": "Views",
+        "graph": "Knowledge Graph"
     },
     "list": {
         "pinned": "Pinned",
@@ -154,5 +156,8 @@
         "headline": "Pick the due date",
         "set": "Change create date",
         "cancel": "Cancel"
+    },
+    "graph": {
+        "empty": "No tags yet. Tag your notes with @persons or #topics to build a knowledge graph."
     }
 }

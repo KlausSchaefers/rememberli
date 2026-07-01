@@ -53,7 +53,6 @@ export function matchesCode (value) {
 }
 
 export function matchesAITag(element, term) {
-    console.debug(element.tags, term)
     if (element.tags) {
         return element.tags.has(term)
     }

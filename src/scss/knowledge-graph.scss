@@ -1,0 +1,137 @@
+@use './ds.scss' as *;
+
+.rmli-knowledge-graph {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: $spacing-l;
+
+    .rmli-knowledge-graph-controls {
+        position: absolute;
+        top: $spacing-m;
+        right: $spacing-m;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-s;
+        background: $background-primary;
+        border: 1px solid $border-color-hover;
+        border-radius: $border-radius-m;
+        padding: $spacing-s;
+        box-shadow: $shadow-s;
+        z-index: 1;
+
+        i {
+            cursor: pointer;
+            color: $color1;
+            font-size: $font-size-m;
+            opacity: 0.8;
+            transition: opacity 0.15s;
+
+            &:hover {
+                opacity: 1;
+                color: $primary-color;
+            }
+        }
+    }
+
+    .rmli-knowledge-graph-svg {
+        width: 100%;
+        height: 100%;
+        cursor: grab;
+
+        &:active {
+            cursor: grabbing;
+        }
+    }
+
+    .rmli-knowledge-graph-viewport {
+        transform-origin: 200px 200px;
+    }
+
+    .rmli-knowledge-graph-edge {
+        stroke: $border-color-hover;
+        stroke-width: 1;
+    }
+
+    .rmli-knowledge-graph-node-note {
+        circle {
+            fill: $color-hint;
+        }
+
+        foreignObject i {
+            font-size: 10px;
+            color: $background-primary;
+        }
+    }
+
+    .rmli-knowledge-graph-node-tag {
+        cursor: pointer;
+
+        circle {
+            fill: $background-secondary;
+            stroke: $primary-color;
+            stroke-width: 1.5;
+            transition: fill 0.15s;
+        }
+
+        foreignObject i {
+            font-size: $font-size-xxs;
+            color: $primary-color;
+            pointer-events: none;
+        }
+
+        text {
+            font-family: $font-family;
+            font-size: $font-size-xxs;
+            fill: $color1;
+            pointer-events: none;
+        }
+
+        &:hover {
+            circle {
+                fill: $primary-color;
+            }
+
+            text {
+                fill: $primary-color;
+            }
+
+            foreignObject i {
+                color: $button-color;
+            }
+        }
+
+        &.rmli-knowledge-graph-node-person {
+            circle {
+                stroke: $color-pinned;
+            }
+
+            foreignObject i {
+                color: $color-pinned;
+            }
+        }
+    }
+
+    foreignObject {
+        overflow: visible;
+
+        i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    }
+
+    .rmli-knowledge-graph-empty {
+        color: $color-hint;
+        font-style: italic;
+        font-size: $font-size-s;
+    }
+}
