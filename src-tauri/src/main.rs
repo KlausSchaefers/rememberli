@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::fs;
+use std::sync::{Arc, Mutex, OnceLock};
 use serde_json::{Value, from_str, to_string_pretty, json};
 use tauri::command;
 use std::process::Command;
@@ -217,6 +218,61 @@ struct GlinerSpan {
     probability: f32,
 }
 
+/// Cache of the span-mode GLiNER model, keyed so a change of paths reloads it.
+static GLINER_MODEL: OnceLock<Mutex<Option<(String, String, Arc<GLiNER<SpanMode>>)>>> = OnceLock::new();
+
+/// Cache of the raw model used by the relation pipeline, keyed by model path.
+static RELATION_MODEL: OnceLock<Mutex<Option<(String, Arc<Model>)>>> = OnceLock::new();
+
+/// Loads (or returns the already loaded) span-mode GLiNER model for the given paths.
+fn get_or_load_gliner_model(tokenizer_path: &str, model_path: &str) -> Result<Arc<GLiNER<SpanMode>>, String> {
+    let cache = GLINER_MODEL.get_or_init(|| Mutex::new(None));
+    let mut guard = cache.lock().map_err(|e| e.to_string())?;
+
+    if let Some((cached_tokenizer, cached_model, model)) = guard.as_ref() {
+        if cached_tokenizer == tokenizer_path && cached_model == model_path {
+            return Ok(Arc::clone(model));
+        }
+    }
+
+    let model = Arc::new(
+        GLiNER::<SpanMode>::new(
+            Parameters::default(),
+            RuntimeParameters::default(),
+            tokenizer_path,
+            model_path,
+        )
+        .map_err(|e| e.to_string())?,
+    );
+    *guard = Some((tokenizer_path.to_string(), model_path.to_string(), Arc::clone(&model)));
+    Ok(model)
+}
+
+/// Loads (or returns the already loaded) raw model for the relation pipeline.
+fn get_or_load_relation_model(model_path: &str) -> Result<Arc<Model>, String> {
+    let cache = RELATION_MODEL.get_or_init(|| Mutex::new(None));
+    let mut guard = cache.lock().map_err(|e| e.to_string())?;
+
+    if let Some((cached_model, model)) = guard.as_ref() {
+        if cached_model == model_path {
+            return Ok(Arc::clone(model));
+        }
+    }
+
+    let model = Arc::new(Model::new(model_path, RuntimeParameters::default()).map_err(|e| e.to_string())?);
+    *guard = Some((model_path.to_string(), Arc::clone(&model)));
+    Ok(model)
+}
+
+/// Eagerly loads and caches both models so subsequent inference calls are fast.
+/// Safe to call multiple times - loading only happens once per set of paths.
+#[command]
+async fn load_model(tokenizer_path: String, model_path: String) -> Result<(), String> {
+    get_or_load_gliner_model(&tokenizer_path, &model_path)?;
+    get_or_load_relation_model(&model_path)?;
+    Ok(())
+}
+
 #[command]
 async fn run_gliner(
     texts: Vec<String>,
@@ -224,13 +280,7 @@ async fn run_gliner(
     tokenizer_path: String,
     model_path: String,
 ) -> Result<Vec<GlinerSpan>, String> {
-    let model = GLiNER::<SpanMode>::new(
-        Parameters::default(),
-        RuntimeParameters::default(),
-        &tokenizer_path,
-        &model_path,
-    )
-    .map_err(|e| e.to_string())?;
+    let model = get_or_load_gliner_model(&tokenizer_path, &model_path)?;
 
     let texts_refs: Vec<&str> = texts.iter().map(|s| s.as_str()).collect();
     let labels_refs: Vec<&str> = labels.iter().map(|s| s.as_str()).collect();
@@ -281,7 +331,6 @@ async fn run_gliner_relations(
     model_path: String,
 ) -> Result<Vec<GlinerRelation>, String> {
     let params = Parameters::default();
-    let runtime_params = RuntimeParameters::default();
 
     let mut schema = RelationSchema::new();
     for rel in &relations {
@@ -295,7 +344,7 @@ async fn run_gliner_relations(
     let input = TextInput::from_str(&texts_refs, &labels_refs)
         .map_err(|e| e.to_string())?;
 
-    let model = Model::new(&model_path, runtime_params).map_err(|e| e.to_string())?;
+    let model = get_or_load_relation_model(&model_path)?;
 
     let token_step = TokenPipeline::new(&tokenizer_path)
         .map_err(|e| e.to_string())?
@@ -328,7 +377,7 @@ fn main() {
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![greet, load_json_file, save_json_file, open_shell, run_shell_command, run_gliner, run_gliner_relations, download_models])
+        .invoke_handler(tauri::generate_handler![greet, load_json_file, save_json_file, open_shell, run_shell_command, run_gliner, run_gliner_relations, download_models, load_model])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -721,7 +721,8 @@ export default {
         if (res.model_path) {
           this.showStatusMessage("status.aiDownloaded")
           this.modelPaths = res
-        }        
+          await this.api.loadModel(res.tokenizer_path, res.model_path)
+        }
       }
     },
   },

@@ -40,6 +40,17 @@ export default class APIServiceTauri {
     }
   }
 
+  async loadModel(tokenizerPath, modelPath) {
+    Logger.log(-2, "APIService.loadModel()", tokenizerPath, modelPath);
+    try {
+      await invoke('load_model', { tokenizerPath, modelPath });
+      Logger.log(2, "APIService.loadModel() done");
+    } catch (error) {
+      Logger.error("APIService.loadModel() error:", error);
+      throw error;
+    }
+  }
+
   async runGlinerRelations(texts, labels, relations, tokenizerPath, modelPath) {
     Logger.log(-2, "APIService.runGlinerRelations()", texts, labels, relations);
     try {
