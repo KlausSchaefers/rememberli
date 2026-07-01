@@ -63,7 +63,7 @@
                 {'rmli-sidebar-folder-selected': selectedFolder && selectedFolder.isGraph }
                 ]"
                 >
-                  <i class="ri-bubble-chart-line"></i> 
+                  <i class="ri-brain-ai-3-line"></i> 
                   <span>{{$t('sidebar.graph')}}</span>
             </a>
 

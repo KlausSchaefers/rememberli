@@ -1,60 +1,12 @@
 <template>
   <div class="rmli-knowledge-graph">
-
-    <div class="rmli-knowledge-graph-controls" v-if="tagNodes.length > 0">
-      <i class="ri-zoom-in-line" @click="zoomIn"></i>
-      <i class="ri-zoom-out-line" @click="zoomOut"></i>
-      <i class="ri-focus-3-line" @click="resetView"></i>
+    <div class="rmli-knowledge-graph-controls" v-if="hasData">
+      <i class="ri-zoom-in-line" @click="zoomBy(1.3)"></i>
+      <i class="ri-zoom-out-line" @click="zoomBy(1 / 1.3)"></i>
+      <i class="ri-focus-3-line" @click="resetZoom"></i>
     </div>
-
-    <svg
-      v-if="tagNodes.length > 0"
-      class="rmli-knowledge-graph-svg"
-      :viewBox="'0 0 ' + viewBoxSize + ' ' + viewBoxSize"
-      preserveAspectRatio="xMidYMid meet"
-      @wheel="onWheel"
-      @mousedown="startPan"
-      ref="svg"
-    >
-      <g class="rmli-knowledge-graph-viewport" :transform="viewportTransform">
-        <line
-          v-for="(edge, index) in edges"
-          :key="index"
-          :x1="edge.from.x"
-          :y1="edge.from.y"
-          :x2="edge.to.x"
-          :y2="edge.to.y"
-          class="rmli-knowledge-graph-edge"
-        />
-
-        <g
-          v-for="note in noteNodes"
-          :key="note.id"
-          class="rmli-knowledge-graph-node rmli-knowledge-graph-node-note"
-          :transform="'translate(' + note.x + ',' + note.y + ')'"
-        >
-          <circle :r="note.radius"/>
-          <foreignObject :x="-note.radius / 2" :y="-note.radius / 2" :width="note.radius" :height="note.radius">
-            <i xmlns="http://www.w3.org/1999/xhtml" class="ri-sticky-note-line"></i>
-          </foreignObject>
-        </g>
-
-        <g
-          v-for="tag in tagNodes"
-          :key="tag.label"
-          :class="['rmli-knowledge-graph-node', 'rmli-knowledge-graph-node-tag', {'rmli-knowledge-graph-node-person': tag.type === 'person'}]"
-          :transform="'translate(' + tag.x + ',' + tag.y + ')'"
-          @click="selectTag(tag)"
-        >
-          <circle :r="tag.radius"/>
-          <foreignObject :x="-tag.radius / 2" :y="-tag.radius / 2" :width="tag.radius" :height="tag.radius">
-            <i xmlns="http://www.w3.org/1999/xhtml" :class="tag.type === 'person' ? 'ri-user-line' : 'ri-price-tag-3-line'"></i>
-          </foreignObject>
-          <text text-anchor="middle" :dy="-(tag.radius + 6)">{{tag.label}}</text>
-        </g>
-      </g>
-    </svg>
-    <p class="rmli-knowledge-graph-empty" v-else>{{$t('graph.empty')}}</p>
+    <div class="rmli-knowledge-graph-canvas" ref="canvas" v-show="hasData"></div>
+    <p class="rmli-knowledge-graph-empty" v-if="!hasData">{{$t('graph.empty')}}</p>
   </div>
 </template>
 <style lang="scss">
@@ -62,19 +14,7 @@
 </style>
 
 <script>
-
-const MIN_ZOOM = 0.25
-const MAX_ZOOM = 4
-const DRAG_THRESHOLD = 3
-
-const VIEW_SIZE = 400
-const CENTER = VIEW_SIZE / 2
-const TAG_RING_RADIUS = VIEW_SIZE * 0.35
-const NOTE_RING_RADIUS = VIEW_SIZE * 0.17
-const TAG_BASE_RADIUS = VIEW_SIZE * 0.0125
-const TAG_RADIUS_STEP = VIEW_SIZE * 0.0025
-const TAG_MAX_COUNT_STEPS = 4
-const NOTE_RADIUS = VIEW_SIZE * 0.0125
+import * as d3 from 'd3'
 
 export default {
   name: 'KnowledgeGraph',
@@ -82,134 +22,205 @@ export default {
   emits: ['search'],
   data: function () {
     return {
-      zoom: 1,
-      pan: {x: 0, y: 0},
-      isPanning: false,
-      hasDragged: false,
-      panStart: {x: 0, y: 0},
-      panOrigin: {x: 0, y: 0}
+      hasData: false
     }
   },
   computed: {
-    viewBoxSize () {
-      return VIEW_SIZE
-    },
-    viewportTransform () {
-      return `translate(${this.pan.x}, ${this.pan.y}) scale(${this.zoom})`
-    },
-    tagStats () {
-      const stats = new Map()
+    graphData () {
+      const tagIndex = new Map()
+      const nodes = []
+      const links = []
       const elements = this.elements || []
       elements.forEach(e => {
-        (e.tags || []).forEach(tag => {
-          if (!tag || !tag.v) {
-            return
+        const tags = (e.tags || []).filter(tag => tag && tag.v)
+        if (tags.length === 0) {
+          return
+        }
+        const noteId = 'note:' + e.id
+        nodes.push({id: noteId, type: 'note'})
+        tags.forEach(tag => {
+          const tagId = 'tag:' + tag.v
+          if (!tagIndex.has(tagId)) {
+            tagIndex.set(tagId, {id: tagId, type: 'tag', label: tag.v, tagType: tag.t})
+            nodes.push(tagIndex.get(tagId))
           }
-          if (!stats.has(tag.v)) {
-            stats.set(tag.v, {label: tag.v, type: tag.t, count: 0})
-          }
-          stats.get(tag.v).count++
+          links.push({source: noteId, target: tagId})
         })
       })
-      return Array.from(stats.values())
-    },
-    tagNodes () {
-      const count = this.tagStats.length
-      return this.tagStats.map((tag, index) => {
-        const angle = (index / count) * Math.PI * 2
-        return {
-          ...tag,
-          x: CENTER + Math.cos(angle) * TAG_RING_RADIUS,
-          y: CENTER + Math.sin(angle) * TAG_RING_RADIUS,
-          radius: TAG_BASE_RADIUS + Math.min(tag.count, TAG_MAX_COUNT_STEPS) * TAG_RADIUS_STEP
-        }
-      })
-    },
-    noteNodes () {
-      const notes = (this.elements || []).filter(e => e.tags && e.tags.length > 0)
-      const count = notes.length
-      return notes.map((note, index) => {
-        const angle = (index / count) * Math.PI * 2
-        return {
-          id: note.id,
-          tags: note.tags,
-          radius: NOTE_RADIUS,
-          x: CENTER + Math.cos(angle) * NOTE_RING_RADIUS,
-          y: CENTER + Math.sin(angle) * NOTE_RING_RADIUS
-        }
-      })
-    },
-    edges () {
-      const tagPositions = new Map(this.tagNodes.map(tag => [tag.label, tag]))
-      const result = []
-      this.noteNodes.forEach(note => {
-        (note.tags || []).forEach(tag => {
-          const target = tagPositions.get(tag.v)
-          if (target) {
-            result.push({from: {x: note.x, y: note.y}, to: {x: target.x, y: target.y}})
-          }
-        })
-      })
-      return result
+      return {nodes, links}
+    }
+  },
+  watch: {
+    graphData (data) {
+      this.hasData = data.nodes.length > 0
+      this.updateGraph(data)
     }
   },
   methods: {
-    selectTag (tag) {
-      if (this.hasDragged) {
+    nodeRadius (d) {
+      return d.type === 'tag' ? 10 : 8
+    },
+    measure () {
+      const rect = this.$refs.canvas.getBoundingClientRect()
+      return {width: rect.width || 600, height: rect.height || 400}
+    },
+    zoomBy (factor) {
+      this.svg.transition().duration(200).call(this.zoomBehavior.scaleBy, factor)
+    },
+    resetZoom () {
+      this.svg.transition().duration(200).call(this.zoomBehavior.transform, d3.zoomIdentity)
+    },
+    selectTag (d) {
+      this.$emit('search', ':' + d.label)
+    },
+    drag (simulation) {
+      const dragstarted = (event, d) => {
+        if (!event.active) {
+          simulation.alphaTarget(0.3).restart()
+        }
+        d.fx = d.x
+        d.fy = d.y
+      }
+      const dragged = (event, d) => {
+        d.fx = event.x
+        d.fy = event.y
+      }
+      const dragended = (event, d) => {
+        if (!event.active) {
+          simulation.alphaTarget(0)
+        }
+        d.fx = null
+        d.fy = null
+      }
+      return d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended)
+    },
+    initGraph () {
+      const {width, height} = this.measure()
+
+      this.svg = d3.select(this.$refs.canvas)
+        .append('svg')
+        .attr('class', 'rmli-knowledge-graph-svg')
+
+      this.svg.append('defs').append('marker')
+        .attr('id', 'rmli-graph-arrow')
+        .attr('viewBox', '0 -5 10 10')
+        .attr('refX', 20)
+        .attr('refY', 0)
+        .attr('markerWidth', 6)
+        .attr('markerHeight', 6)
+        .attr('orient', 'auto')
+        .append('path')
+        .attr('class', 'rmli-knowledge-graph-arrow-head')
+        .attr('d', 'M0,-5L10,0L0,5')
+
+      this.viewport = this.svg.append('g').attr('class', 'rmli-knowledge-graph-viewport')
+      this.linkSelection = this.viewport.append('g').attr('class', 'rmli-knowledge-graph-links').selectAll('line')
+      this.nodeSelection = this.viewport.append('g').attr('class', 'rmli-knowledge-graph-nodes').selectAll('g')
+
+      this.simulation = d3.forceSimulation()
+        .force('link', d3.forceLink().id(d => d.id).distance(80))
+        .force('charge', d3.forceManyBody().strength(-260))
+        .force('x', d3.forceX(width / 2))
+        .force('y', d3.forceY(height / 2))
+        .force('collide', d3.forceCollide().radius(d => this.nodeRadius(d) + 12))
+        .on('tick', () => this.onTick())
+
+      this.zoomBehavior = d3.zoom()
+        .scaleExtent([0.25, 4])
+        .on('zoom', (event) => this.viewport.attr('transform', event.transform))
+      this.svg.call(this.zoomBehavior)
+
+      this.resizeHandler = () => this.onResize()
+      window.addEventListener('resize', this.resizeHandler)
+    },
+    onResize () {
+      if (!this.simulation) {
         return
       }
-      this.$emit('search', ':' + tag.label)
+      const {width, height} = this.measure()
+      this.simulation.force('x', d3.forceX(width / 2))
+      this.simulation.force('y', d3.forceY(height / 2))
+      this.simulation.alpha(0.3).restart()
     },
-    onWheel (e) {
-      e.preventDefault()
-      const factor = e.deltaY > 0 ? 0.9 : 1.1
-      this.zoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, this.zoom * factor))
+    onTick () {
+      this.linkSelection
+        .attr('x1', d => d.source.x)
+        .attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x)
+        .attr('y2', d => d.target.y)
+
+      this.nodeSelection.attr('transform', d => `translate(${d.x},${d.y})`)
     },
-    zoomIn () {
-      this.zoom = Math.min(MAX_ZOOM, this.zoom * 1.2)
-    },
-    zoomOut () {
-      this.zoom = Math.max(MIN_ZOOM, this.zoom / 1.2)
-    },
-    resetView () {
-      this.zoom = 1
-      this.pan = {x: 0, y: 0}
-    },
-    getViewBoxScale () {
-      const rect = this.$refs.svg.getBoundingClientRect()
-      // "meet" fits the viewBox using the smaller of the two ratios
-      return Math.min(rect.width, rect.height) / VIEW_SIZE
-    },
-    startPan (e) {
-      this.isPanning = true
-      this.hasDragged = false
-      this.panStart = {x: e.clientX, y: e.clientY}
-      this.panOrigin = {...this.pan}
-      this.panScale = this.getViewBoxScale()
-      this.moveHandler = (ev) => this.movePan(ev)
-      this.upHandler = () => this.endPan()
-      window.addEventListener('mousemove', this.moveHandler)
-      window.addEventListener('mouseup', this.upHandler)
-    },
-    movePan (e) {
-      if (!this.isPanning) {
+    updateGraph (data) {
+      if (!this.simulation) {
         return
       }
-      const dx = (e.clientX - this.panStart.x) / this.panScale
-      const dy = (e.clientY - this.panStart.y) / this.panScale
-      if (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD) {
-        this.hasDragged = true
-      }
-      this.pan = {x: this.panOrigin.x + dx, y: this.panOrigin.y + dy}
-    },
-    endPan () {
-      this.isPanning = false
-      window.removeEventListener('mousemove', this.moveHandler)
-      window.removeEventListener('mouseup', this.upHandler)
+
+      // Keep existing x/y/vx/vy so nodes that survive an update don't jump (d3 general update pattern)
+      const oldPositions = new Map(this.simulation.nodes().map(d => [d.id, d]))
+      const nodes = data.nodes.map(d => Object.assign({}, oldPositions.get(d.id), d))
+      const links = data.links.map(d => Object.assign({}, d))
+
+      this.linkSelection = this.linkSelection
+        .data(links, d => d.source + '>' + d.target)
+        .join(enter => enter.append('line')
+          .attr('class', 'rmli-knowledge-graph-edge')
+          .attr('marker-end', 'url(#rmli-graph-arrow)')
+        )
+
+      this.nodeSelection = this.nodeSelection
+        .data(nodes, d => d.id)
+        .join(enter => {
+          const g = enter.append('g')
+            .attr('class', d => [
+              'rmli-knowledge-graph-node',
+              'rmli-knowledge-graph-node-' + d.type,
+              d.tagType === 'person' ? 'rmli-knowledge-graph-node-person' : ''
+            ].join(' '))
+            .call(this.drag(this.simulation))
+            .on('click', (event, d) => {
+              if (d.type === 'tag') {
+                this.selectTag(d)
+              }
+            })
+          g.append('circle').attr('r', d => this.nodeRadius(d))
+          g.filter(d => d.type === 'note')
+            .append('foreignObject')
+            .attr('class', 'rmli-knowledge-graph-icon')
+            .attr('x', d => -this.nodeRadius(d))
+            .attr('y', d => -this.nodeRadius(d))
+            .attr('width', d => this.nodeRadius(d) * 2)
+            .attr('height', d => this.nodeRadius(d) * 2)
+            .append('xhtml:i')
+            .attr('class', 'ri-file-text-line')
+          g.append('text')
+            .attr('class', 'rmli-knowledge-graph-label')
+            .attr('text-anchor', 'middle')
+            .attr('dy', d => -(this.nodeRadius(d) + 6))
+            .text(d => d.type === 'tag' ? d.label : '')
+          return g
+        })
+
+      this.simulation.nodes(nodes)
+      this.simulation.force('link').links(links)
+      this.simulation.alpha(0.6).restart()
     }
   },
+  mounted () {
+    this.initGraph()
+    this.hasData = this.graphData.nodes.length > 0
+    this.updateGraph(this.graphData)
+  },
   beforeUnmount () {
-    this.endPan()
+    if (this.simulation) {
+      this.simulation.stop()
+    }
+    if (this.resizeHandler) {
+      window.removeEventListener('resize', this.resizeHandler)
+    }
+    if (this.svg) {
+      this.svg.remove()
+    }
   }
 }
 </script>
